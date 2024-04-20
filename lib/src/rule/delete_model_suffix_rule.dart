@@ -5,28 +5,26 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 
-class DeleteImplementationSuffixRule extends DartLintRule {
+class DeleteModelSuffixRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deleteImplementationSuffix) {
+    if (!config.deleteModelSuffix) {
       return;
     }
 
     ruleList.add(
-      DeleteImplementationSuffixRule(),
+      DeleteModelSuffixRule(),
     );
   }
 
-  const DeleteImplementationSuffixRule()
+  const DeleteModelSuffixRule()
       : super(
           code: const LintCode(
-            name: "delete_implementation_suffix",
-            problemMessage:
-                "Сlass name must not contain an 'Impl' or 'Implementation' suffix.",
-            correctionMessage:
-                "Please delete 'Impl' or 'Implementation' suffix in class.",
+            name: "delete_model_suffix",
+            problemMessage: "Сlass name must not contain an 'Model' suffix.",
+            correctionMessage: "Please delete 'Model' suffix in class.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -47,7 +45,7 @@ class DeleteImplementationSuffixRule extends DartLintRule {
           ClassDeclaration node,
         ) {
           final String lexeme = node.name.lexeme;
-          if (!lexeme.endsWith("Impl") && !lexeme.endsWith("Implementation")) {
+          if (!lexeme.endsWith("Model")) {
             return;
           }
 
@@ -80,9 +78,7 @@ class _Fix extends DartFix {
           if (analysisError.sourceRange.intersects(
             node.sourceRange,
           )) {
-            final String validName = node.name.lexeme
-                .replaceAll("Impl", "")
-                .replaceAll("Implementation", "");
+            final String validName = node.name.lexeme.replaceAll("Model", "");
             final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
               message: "Raname to '$validName'",
               priority: 0,

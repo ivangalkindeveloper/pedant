@@ -15,15 +15,16 @@ class DeletePackageRule extends DartLintRule {
       return;
     }
 
-    if (config.packageBlackList.isEmpty) {
-      for (final BlackListItem item in packageBlackList) {
-        ruleList.add(
-          DeletePackageRule(
-            packageName: item.name,
-            description: item.description,
-          ),
-        );
-      }
+    final List<BlackListItem> blackList = config.packageBlackList.isNotEmpty
+        ? config.packageBlackList
+        : packageBlackList;
+    for (final BlackListItem item in blackList) {
+      ruleList.add(
+        DeletePackageRule(
+          packageName: item.name,
+          description: item.description,
+        ),
+      );
     }
   }
 
@@ -33,9 +34,9 @@ class DeletePackageRule extends DartLintRule {
   }) : super(
           code: LintCode(
             name: "delete_package",
-            problemMessage: "Dont use unrecommended package: $packageName.\n"
-                "Please delete this package from pubspec.yaml",
-            correctionMessage: description,
+            problemMessage: "Don't use unrecommended package: $packageName.",
+            correctionMessage:
+                "Please delete this package from pubspec.yaml.${description != null ? "\n$description" : ""}",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -57,13 +58,15 @@ class DeletePackageRule extends DartLintRule {
     final File file = File(resolver.path);
     final String fileContent = file.readAsStringSync();
     final int indexOf = fileContent.lastIndexOf(packageName);
-    if (indexOf != -1) {
-      reporter.reportErrorForOffset(
-        code,
-        indexOf,
-        packageName.length,
-      );
+    if (indexOf == -1) {
+      return;
     }
+
+    reporter.reportErrorForOffset(
+      code,
+      indexOf,
+      packageName.length,
+    );
   }
 
   @override
@@ -100,6 +103,10 @@ class _Fix extends DartFix {
       ),
     );
     lines.removeAt(indexOf);
-    file.writeAsStringSync(lines.join('\n'));
+    file.writeAsStringSync(
+      lines.join(
+        '\n',
+      ),
+    );
   }
 }

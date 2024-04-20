@@ -1,50 +1,34 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
-import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:pedant/src/core/black_list/black_list_item.dart';
-import 'package:pedant/src/core/black_list/type_black_list.dart';
 import 'package:pedant/src/core/config/config.dart';
 
-class DeleteTypeRule extends DartLintRule {
+class DeletePrintRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deleteType) {
+    if (!config.deletePrint) {
       return;
     }
 
-    final List<BlackListItem> blackList =
-        config.typeBlackList.isNotEmpty ? config.typeBlackList : typeBlackList;
-    for (final BlackListItem item in blackList) {
-      ruleList.add(
-        DeleteTypeRule(
-          typeName: item.name,
-          description: item.description,
-        ),
-      );
-    }
+    ruleList.add(
+      DeletePrintRule(),
+    );
   }
 
-  DeleteTypeRule({
-    required this.typeName,
-    this.description,
-  }) : super(
+  DeletePrintRule()
+      : super(
           code: LintCode(
-            name: "delete_type",
-            problemMessage: "Don't use unrecommended type: $typeName.",
-            correctionMessage:
-                "Please delete this type from code snippet.${description != null ? "\n$description" : ""}",
+            name: "delete_print",
+            problemMessage:
+                "Don't use 'print' / 'debugPrint' function in code snippet.",
+            correctionMessage: "Please delete 'print' / 'debugPrint' function.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
-
-  final String typeName;
-  final String? description;
 
   @override
   List<String> get filesToAnalyze => const [
@@ -57,19 +41,12 @@ class DeleteTypeRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addTypeAnnotation(
+      context.registry.addFunctionReference(
         (
-          TypeAnnotation node,
+          node,
         ) {
-          final DartType? type = node.type;
-          if (type == null) {
-            return;
-          }
-
-          final String typeDisplay = type.getDisplayString(
-            withNullability: false,
-          );
-          if (typeDisplay != this.typeName) {
+          final String? name = node.staticType?.alias?.element.name;
+          if (name != "print" && name != "debugPrint") {
             return;
           }
 
@@ -95,18 +72,15 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addTypeAnnotation(
+      context.registry.addCommentReference(
         (
-          TypeAnnotation node,
+          CommentReference node,
         ) {
           if (analysisError.sourceRange.intersects(
             node.sourceRange,
           )) {
-            final String? typeName = node.type?.getDisplayString(
-              withNullability: false,
-            );
             final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-              message: "Delete '$typeName'",
+              message: "Delete 'new'",
               priority: 0,
             );
             changeBuilder.addDartFileEdit(
@@ -114,10 +88,7 @@ class _Fix extends DartFix {
                 DartFileEditBuilder builder,
               ) =>
                   builder.addDeletion(
-                SourceRange(
-                  node.offset,
-                  node.length,
-                ),
+                analysisError.sourceRange,
               ),
             );
           }

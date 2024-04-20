@@ -1,3 +1,4 @@
+import 'package:pedant/src/core/black_list/black_list_item.dart';
 import 'package:pedant/src/core/config/match_count_config.dart';
 import 'package:pedant/src/core/config/match_name_config.dart';
 
@@ -32,6 +33,7 @@ class Config {
     this.deleteNew = true,
     this.deletePrint = true,
     this.deleteImplementationSuffix = true,
+    this.deleteModelSuffix = true,
     //
     this.maxLengthList = const [],
   });
@@ -57,14 +59,15 @@ class Config {
   final List<MatchNameConfig> suffixList;
   //
   final bool deletePackage; //
-  final List<String> packageBlackList; //
+  final List<BlackListItem> packageBlackList; //
   //
   final bool deleteType; //
-  final List<String> typeBlackList; //
+  final List<BlackListItem> typeBlackList; //
   //
-  final bool deleteNew;
+  final bool deleteNew; //
+  final bool deletePrint; //
   final bool deleteImplementationSuffix; //
-  final bool deletePrint;
+  final bool deleteModelSuffix; //
   //
   final List<MatchLengthConfig> maxLengthList;
 }
