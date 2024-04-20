@@ -2,16 +2,39 @@ import 'dart:io';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+import 'package:pedant/src/core/black_list/package_black_list.dart';
+import 'package:pedant/src/core/black_list/black_list_item.dart';
+import 'package:pedant/src/core/config/config.dart';
 
-class UsingUnrecommendedPackageRule extends DartLintRule {
-  UsingUnrecommendedPackageRule({
+class DeletePackageRule extends DartLintRule {
+  static void combine({
+    required Config config,
+    required List<LintRule> ruleList,
+  }) {
+    if (!config.deletePackage) {
+      return;
+    }
+
+    if (config.packageBlackList.isEmpty) {
+      for (final BlackListItem item in packageBlackList) {
+        ruleList.add(
+          DeletePackageRule(
+            packageName: item.name,
+            description: item.description,
+          ),
+        );
+      }
+    }
+  }
+
+  DeletePackageRule({
     required this.packageName,
     this.description,
   }) : super(
           code: LintCode(
-            name: "using_unrecommended_package",
+            name: "delete_package",
             problemMessage: "Dont use unrecommended package: $packageName.\n"
-                "Please remove this package from pubspec.yaml",
+                "Please delete this package from pubspec.yaml",
             correctionMessage: description,
             errorSeverity: ErrorSeverity.ERROR,
           ),
@@ -68,8 +91,14 @@ class _Fix extends DartFix {
   ) {
     final File file = File(resolver.path);
     final List<String> lines = file.readAsLinesSync();
-    final int indexOf =
-        lines.indexWhere((value) => value.contains(packageName));
+    final int indexOf = lines.indexWhere(
+      (
+        String value,
+      ) =>
+          value.contains(
+        packageName,
+      ),
+    );
     lines.removeAt(indexOf);
     file.writeAsStringSync(lines.join('\n'));
   }
