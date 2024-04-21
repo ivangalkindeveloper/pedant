@@ -1,11 +1,11 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/rule/delete_implementation_suffix_rule.dart';
-import 'package:pedant/src/rule/delete_model_suffix_rule.dart';
-import 'package:pedant/src/rule/delete_new_rule.dart';
-import 'package:pedant/src/rule/delete_package_rule.dart';
-import 'package:pedant/src/rule/delete_print_rule.dart';
-import 'package:pedant/src/rule/delete_type_rule.dart.dart';
+import 'package:pedant/src/rule/delete/delete_implementation_suffix_rule.dart';
+import 'package:pedant/src/rule/delete/delete_model_suffix_rule.dart';
+import 'package:pedant/src/rule/delete/delete_new_rule.dart';
+import 'package:pedant/src/rule/delete/delete_package_rule.dart';
+import 'package:pedant/src/rule/delete/delete_print_rule.dart';
+import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
 
 PluginBase createPlugin() => _PedantBase();
 
