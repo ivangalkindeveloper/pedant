@@ -25,14 +25,6 @@ const List<DeleteListItem> _commonDeletePackageList = [
   ),
   DeleteListItem(
     nameList: [
-      "hydrated_bloc",
-    ],
-    description:
-        "Globally stored BLoC states result in unexpected errors and incompatible states.\n"
-        "Please manage and design the the BLoCs yourself and control the change of his states.",
-  ),
-  DeleteListItem(
-    nameList: [
       "flutter_hooks",
       "flutter_hooks_bloc",
     ],
@@ -113,9 +105,15 @@ const List<DeleteListItem> _databaseDeletePackageList = [
   ),
 ];
 
-const _riverpodDescription =
-    "Management of states using global variables, as a result - not the best control using global resources.";
 const List<DeleteListItem> _stateManagementDeletePackageList = [
+  DeleteListItem(
+    nameList: [
+      "hydrated_bloc",
+    ],
+    description:
+        "Globally stored BLoC states result in unexpected errors and incompatible states.\n"
+        "Please manage and design the the BLoCs yourself and control the change of his states.",
+  ),
   DeleteListItem(
     nameList: [
       "get",
@@ -174,6 +172,7 @@ const List<DeleteListItem> _stateManagementDeletePackageList = [
       "utopia_hooks_riverpod",
       "rdev_riverpod_versioning",
     ],
-    description: _riverpodDescription,
+    description:
+        "Management of states using global variables, as a result - not the best control using global resources.",
   ),
 ];
