@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
@@ -49,27 +48,51 @@ class DeleteFunctionRule extends DartLintRule {
     CustomLintResolver resolver,
     ErrorReporter reporter,
     CustomLintContext context,
-  ) =>
-      context.registry.addFunctionExpression(
-        (
-          FunctionExpression node,
-        ) {
-          final ExecutableElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
+  ) {
+    context.registry.addMethodInvocation(
+      (
+        MethodInvocation node,
+      ) {
+        final String name = node.methodName.name;
+        _checkAndReport(
+          reporter: reporter,
+          name: name,
+          offset: node.offset,
+          length: node.length + 1,
+        );
+      },
+    );
+    context.registry.addFunctionExpressionInvocation(
+      (
+        FunctionExpressionInvocation node,
+      ) {
+        final String function = node.function.toString();
+        _checkAndReport(
+          reporter: reporter,
+          name: function,
+          offset: node.offset,
+          length: node.length + 1,
+        );
+      },
+    );
+  }
 
-          final String? displayName = declaredElement.displayName;
-          if (!deleteListItem.nameList.contains(displayName)) {
-            return;
-          }
+  void _checkAndReport({
+    required ErrorReporter reporter,
+    required String name,
+    required int offset,
+    required int length,
+  }) {
+    if (!deleteListItem.nameList.contains(name)) {
+      return;
+    }
 
-          reporter.reportErrorForNode(
-            this.code,
-            node,
-          );
-        },
-      );
+    reporter.reportErrorForOffset(
+      this.code,
+      offset,
+      length,
+    );
+  }
 
   @override
   List<Fix> getFixes() => [
@@ -85,27 +108,56 @@ class _Fix extends DartFix {
     CustomLintContext context,
     AnalysisError analysisError,
     List<AnalysisError> others,
-  ) =>
-      context.registry.addCommentReference(
-        (
-          CommentReference node,
-        ) {
-          if (analysisError.sourceRange.intersects(
-            node.sourceRange,
-          )) {
-            final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-              message: "Delete 'new'",
-              priority: 0,
-            );
-            changeBuilder.addDartFileEdit(
-              (
-                DartFileEditBuilder builder,
-              ) =>
-                  builder.addDeletion(
-                analysisError.sourceRange,
-              ),
-            );
-          }
-        },
-      );
+  ) {
+    context.registry.addMethodInvocation(
+      (
+        MethodInvocation node,
+      ) {
+        if (analysisError.sourceRange.intersects(
+          node.sourceRange,
+        )) {
+          return;
+        }
+
+        final String name = node.methodName.name;
+        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+          message: "Delete '$name'",
+          priority: 0,
+        );
+        changeBuilder.addDartFileEdit(
+          (
+            DartFileEditBuilder builder,
+          ) =>
+              builder.addDeletion(
+            analysisError.sourceRange,
+          ),
+        );
+      },
+    );
+    context.registry.addFunctionExpressionInvocation(
+      (
+        FunctionExpressionInvocation node,
+      ) {
+        if (analysisError.sourceRange.intersects(
+          node.sourceRange,
+        )) {
+          return;
+        }
+
+        final String function = node.function.toString();
+        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+          message: "Delete '$function'",
+          priority: 0,
+        );
+        changeBuilder.addDartFileEdit(
+          (
+            DartFileEditBuilder builder,
+          ) =>
+              builder.addDeletion(
+            analysisError.sourceRange,
+          ),
+        );
+      },
+    );
+  }
 }

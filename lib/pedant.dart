@@ -23,22 +23,22 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    DeleteNewRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
-    DeletePackageRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
-    DeleteSuffixRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
-    DeleteTypeRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
+    // DeleteNewRule.combine(
+    //   config: config,
+    //   ruleList: ruleList,
+    // );
+    // DeletePackageRule.combine(
+    //   config: config,
+    //   ruleList: ruleList,
+    // );
+    // DeleteSuffixRule.combine(
+    //   config: config,
+    //   ruleList: ruleList,
+    // );
+    // DeleteTypeRule.combine(
+    //   config: config,
+    //   ruleList: ruleList,
+    // );
     TestRule.combine(
       config: config,
       ruleList: ruleList,

@@ -4,6 +4,7 @@ const List<DeleteListItem> defaultDeleteFunctionList = [
   DeleteListItem(
     nameList: [
       "print",
+      "debugPrintThrottled",
       "debugPrint",
     ],
   ),

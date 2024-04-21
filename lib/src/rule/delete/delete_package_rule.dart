@@ -53,25 +53,32 @@ class DeletePackageRule extends LintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    final File file = File(resolver.path);
+    final File file = File(
+      resolver.path,
+    );
     final String fileContent = file.readAsStringSync();
     final List<(int, String)> indexList = [];
 
     for (final String packageName in deleteListItem.nameList) {
-      final int indexOf = fileContent.lastIndexOf("  $packageName:");
+      final int indexOf = fileContent.lastIndexOf(
+        "  $packageName:",
+      );
       if (indexOf == -1) {
-        return;
+        continue;
       }
       indexList.add(
-        (indexOf, packageName),
+        (
+          indexOf,
+          packageName,
+        ),
       );
     }
 
     for (final (int, String) packageLine in indexList) {
       reporter.reportErrorForOffset(
         code,
-        packageLine.$1,
-        packageLine.$2.length,
+        packageLine.$1 + 2,
+        packageLine.$2.length + 1,
       );
     }
   }
