@@ -1,5 +1,5 @@
-class NameListConfig {
-  const NameListConfig({
+class NameListItem {
+  const NameListItem({
     this.path,
     required this.nameList,
   });

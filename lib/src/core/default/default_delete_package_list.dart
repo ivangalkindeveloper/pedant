@@ -1,12 +1,12 @@
-import 'package:pedant/src/core/delete/delete_list_item.dart';
+import 'package:pedant/src/core/data/delete_list_item.dart';
 
-const List<DeleteListItem> deletePackageList = [
-  ..._commonDeletePackageList,
-  ..._databaseDeletePackageList,
-  ..._stateManagementDeletePackageList,
+const List<DeleteListItem> defaultDeletePackageList = [
+  ..._commonList,
+  ..._databaseList,
+  ..._stateManagementList,
 ];
 
-const List<DeleteListItem> _commonDeletePackageList = [
+const List<DeleteListItem> _commonList = [
   DeleteListItem(
     nameList: [
       "get_it",
@@ -57,7 +57,7 @@ const List<DeleteListItem> _commonDeletePackageList = [
 const String _databaseDescription =
     "All noSQL packages are not a reliable and scalability way to store data.\n"
     "Please use SQL database packages - sqflite, drift.";
-const List<DeleteListItem> _databaseDeletePackageList = [
+const List<DeleteListItem> _databaseList = [
   DeleteListItem(
     nameList: [
       "hive",
@@ -105,7 +105,7 @@ const List<DeleteListItem> _databaseDeletePackageList = [
   ),
 ];
 
-const List<DeleteListItem> _stateManagementDeletePackageList = [
+const List<DeleteListItem> _stateManagementList = [
   DeleteListItem(
     nameList: [
       "hydrated_bloc",

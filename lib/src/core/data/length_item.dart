@@ -1,5 +1,5 @@
-class LengthConfig {
-  const LengthConfig({
+class LengthItem {
+  const LengthItem({
     this.path,
     required this.length,
   });

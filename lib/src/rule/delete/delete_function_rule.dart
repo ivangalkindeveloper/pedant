@@ -1,39 +1,48 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/core/data/delete_list_item.dart';
+import 'package:pedant/src/core/default/default_delete_function_list.dart';
 
-class DeletePrintRule extends DartLintRule {
+class DeleteFunctionRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deletePrint) {
+    if (!config.deleteFunction) {
       return;
     }
 
-    ruleList.add(
-      DeletePrintRule(),
-    );
+    final List<DeleteListItem> list = config.deletePackageList.isNotEmpty
+        ? config.deletePackageList
+        : defaultDeleteFunctionList;
+    for (final DeleteListItem deleteListItem in list) {
+      ruleList.add(
+        DeleteFunctionRule(
+          deleteListItem: deleteListItem,
+        ),
+      );
+    }
   }
 
-  DeletePrintRule()
-      : super(
+  DeleteFunctionRule({
+    required this.deleteListItem,
+  }) : super(
           code: LintCode(
-            name: "delete_print",
+            name: "delete_function",
             problemMessage:
-                "Don't use 'print' / 'debugPrint' function in code snippet.",
-            correctionMessage: "Please delete 'print' / 'debugPrint' function.",
+                "Delete function: ${deleteListItem.nameList.join("/")}.",
+            correctionMessage:
+                "Please delete this function from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
 
-  @override
-  List<String> get filesToAnalyze => const [
-        "**.dart",
-      ];
+  final DeleteListItem deleteListItem;
 
   @override
   void run(
@@ -41,12 +50,17 @@ class DeletePrintRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addFunctionReference(
+      context.registry.addFunctionExpression(
         (
-          node,
+          FunctionExpression node,
         ) {
-          final String? name = node.staticType?.alias?.element.name;
-          if (name != "print" && name != "debugPrint") {
+          final ExecutableElement? declaredElement = node.declaredElement;
+          if (declaredElement == null) {
+            return;
+          }
+
+          final String? displayName = declaredElement.displayName;
+          if (!deleteListItem.nameList.contains(displayName)) {
             return;
           }
 

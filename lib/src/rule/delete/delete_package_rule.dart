@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:pedant/src/core/delete/delete_list_item.dart';
-import 'package:pedant/src/core/delete/delete_package_list.dart';
+import 'package:pedant/src/core/data/delete_list_item.dart';
+import 'package:pedant/src/core/default/default_delete_package_list.dart';
 import 'package:pedant/src/core/config/config.dart';
 
-class DeletePackageRule extends DartLintRule {
+class DeletePackageRule extends LintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
@@ -15,36 +15,32 @@ class DeletePackageRule extends DartLintRule {
       return;
     }
 
-    final List<DeleteListItem> deleteList = config.deletePackageList.isNotEmpty
+    final List<DeleteListItem> list = config.deletePackageList.isNotEmpty
         ? config.deletePackageList
-        : deletePackageList;
-    for (final DeleteListItem item in deleteList) {
-      for (final String name in item.nameList) {
-        ruleList.add(
-          DeletePackageRule(
-            packageName: name,
-            description: item.description,
-          ),
-        );
-      }
+        : defaultDeletePackageList;
+    for (final DeleteListItem deleteListItem in list) {
+      ruleList.add(
+        DeletePackageRule(
+          deleteListItem: deleteListItem,
+        ),
+      );
     }
   }
 
   DeletePackageRule({
-    required this.packageName,
-    this.description,
+    required this.deleteListItem,
   }) : super(
           code: LintCode(
             name: "delete_package",
-            problemMessage: "Don't use unrecommended package: $packageName.",
+            problemMessage:
+                "Delete package and its dependencies: ${deleteListItem.nameList.first}.",
             correctionMessage:
-                "Please delete this package from pubspec.yaml.${description != null ? "\n$description" : ""}",
+                "Please delete this package from pubspec.yaml.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
 
-  final String packageName;
-  final String? description;
+  final DeleteListItem deleteListItem;
 
   @override
   List<String> get filesToAnalyze => const [
@@ -59,32 +55,41 @@ class DeletePackageRule extends DartLintRule {
   ) {
     final File file = File(resolver.path);
     final String fileContent = file.readAsStringSync();
-    final int indexOf = fileContent.lastIndexOf("  $packageName:");
-    if (indexOf == -1) {
-      return;
+    final List<(int, String)> indexList = [];
+
+    for (final String packageName in deleteListItem.nameList) {
+      final int indexOf = fileContent.lastIndexOf("  $packageName:");
+      if (indexOf == -1) {
+        return;
+      }
+      indexList.add(
+        (indexOf, packageName),
+      );
     }
 
-    reporter.reportErrorForOffset(
-      code,
-      indexOf,
-      packageName.length,
-    );
+    for (final (int, String) packageLine in indexList) {
+      reporter.reportErrorForOffset(
+        code,
+        packageLine.$1,
+        packageLine.$2.length,
+      );
+    }
   }
 
   @override
   List<Fix> getFixes() => [
         _Fix(
-          packageName: packageName,
+          packageList: deleteListItem.nameList,
         ),
       ];
 }
 
 class _Fix extends DartFix {
   _Fix({
-    required this.packageName,
+    required this.packageList,
   });
 
-  final String packageName;
+  final List<String> packageList;
 
   @override
   void run(
@@ -96,15 +101,15 @@ class _Fix extends DartFix {
   ) {
     final File file = File(resolver.path);
     final List<String> lines = file.readAsLinesSync();
-    final int indexOf = lines.indexWhere(
-      (
-        String value,
-      ) =>
-          value.contains(
-        packageName,
-      ),
-    );
-    lines.removeAt(indexOf);
+
+    for (final String packageName in packageList) {
+      final int indexOf = lines.lastIndexOf("  $packageName:");
+      if (indexOf == -1) {
+        return;
+      }
+      lines.remove(indexOf);
+    }
+
     file.writeAsStringSync(
       lines.join(
         '\n',

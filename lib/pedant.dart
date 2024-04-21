@@ -1,11 +1,11 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/rule/delete/delete_implementation_suffix_rule.dart';
-import 'package:pedant/src/rule/delete/delete_model_suffix_rule.dart';
+import 'package:pedant/src/rule/delete/delete_suffix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
-import 'package:pedant/src/rule/delete/delete_print_rule.dart';
+import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
+import 'package:pedant/src/rule/test_rule.dart';
 
 PluginBase createPlugin() => _PedantBase();
 
@@ -19,11 +19,7 @@ class _PedantBase extends PluginBase {
     final Config config = Config();
     final List<LintRule> ruleList = [];
 
-    DeleteImplementationSuffixRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
-    DeleteModelSuffixRule.combine(
+    DeleteFunctionRule.combine(
       config: config,
       ruleList: ruleList,
     );
@@ -35,11 +31,15 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    DeletePrintRule.combine(
+    DeleteSuffixRule.combine(
       config: config,
       ruleList: ruleList,
     );
     DeleteTypeRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    TestRule.combine(
       config: config,
       ruleList: ruleList,
     );

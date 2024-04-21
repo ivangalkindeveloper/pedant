@@ -5,8 +5,8 @@ import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:pedant/src/core/delete/delete_item.dart';
-import 'package:pedant/src/core/delete/delete_type_list.dart';
+import 'package:pedant/src/core/data/delete_list_item.dart';
+import 'package:pedant/src/core/default/default_delete_type_list.dart';
 import 'package:pedant/src/core/config/config.dart';
 
 class DeleteTypeRule extends DartLintRule {
@@ -18,39 +18,32 @@ class DeleteTypeRule extends DartLintRule {
       return;
     }
 
-    final List<DeleteItem> deleteList = config.deleteTypeList.isNotEmpty
+    final List<DeleteListItem> deleteList = config.deleteTypeList.isNotEmpty
         ? config.deleteTypeList
-        : deleteTypeList;
-    for (final DeleteItem item in deleteList) {
+        : defaultDeleteTypeList;
+    for (final DeleteListItem deleteListItem in deleteList) {
       ruleList.add(
         DeleteTypeRule(
-          typeName: item.name,
-          description: item.description,
+          deleteListItem: deleteListItem,
         ),
       );
     }
   }
 
   DeleteTypeRule({
-    required this.typeName,
-    this.description,
+    required this.deleteListItem,
   }) : super(
           code: LintCode(
             name: "delete_type",
-            problemMessage: "Don't use unrecommended type: $typeName.",
+            problemMessage:
+                "Delete type: ${deleteListItem.nameList.join("/")}.",
             correctionMessage:
-                "Please delete this type from code snippet.${description != null ? "\n$description" : ""}",
+                "Please delete this type from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
 
-  final String typeName;
-  final String? description;
-
-  @override
-  List<String> get filesToAnalyze => const [
-        "**.dart",
-      ];
+  final DeleteListItem deleteListItem;
 
   @override
   void run(
@@ -67,17 +60,22 @@ class DeleteTypeRule extends DartLintRule {
             return;
           }
 
-          final String typeDisplay = type.getDisplayString(
+          final String displayString = type.getDisplayString(
             withNullability: false,
           );
-          if (typeDisplay != this.typeName) {
-            return;
+          bool isMatch = false;
+          for (final String typeName in deleteListItem.nameList) {
+            if (typeName == displayString) {
+              isMatch = true;
+            }
           }
 
-          reporter.reportErrorForNode(
-            this.code,
-            node,
-          );
+          if (isMatch) {
+            reporter.reportErrorForNode(
+              this.code,
+              node,
+            );
+          }
         },
       );
 

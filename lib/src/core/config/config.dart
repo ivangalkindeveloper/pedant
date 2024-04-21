@@ -1,30 +1,29 @@
-import 'package:pedant/src/core/delete/delete_item.dart';
-import 'package:pedant/src/core/config/length_config.dart';
-import 'package:pedant/src/core/config/name_list_config.dart';
-import 'package:pedant/src/core/delete/delete_list_item.dart';
+import 'package:pedant/src/core/data/length_item.dart';
+import 'package:pedant/src/core/data/name_list_item.dart';
+import 'package:pedant/src/core/data/delete_list_item.dart';
 
 class Config {
   const Config({
-    this.indicateAbsoluteImport = true,
-    this.indicateAbstractIPrefix = true,
-    this.indicateConstructor = true,
-    this.indicateConst = true,
-    this.indicateType = true,
-    this.indicateOverride = true,
-    this.indicateFinal = true,
-    this.indicateThis = true,
-    this.indicateArrowFunctions = true,
-    this.indicateRequiredProperties = true,
-    this.indicateIfBracets = true,
-    this.indicateIfIndent = true,
-    this.indicateReturnIndent = true,
+    this.addAbsoluteImport = true,
+    this.addAbstractIPrefix = true,
+    this.addConstructor = true,
+    this.addConst = true,
+    this.addType = true,
+    this.addOverride = true,
+    this.addFinal = true,
+    this.addThis = true,
+    this.addArrowFunctions = true,
+    this.addRequiredProperties = true,
+    this.addIfBracets = true,
+    this.addIfIndent = true,
+    this.addReturnIndent = true,
     //
-    this.indicatePrefixList = const [],
-    this.indicateSuffixList = const [],
+    this.addPrefixList = const [],
+    this.addSuffixList = const [],
     //
-    this.indicateBlocPart = true,
-    this.indicateBlocSealedEvent = true,
-    this.indicateBlocSealedState = true,
+    this.addBlocPart = true,
+    this.addBlocSealedEvent = true,
+    this.addBlocSealedState = true,
     //
     this.deletePackage = true,
     this.deletePackageList = const [],
@@ -32,49 +31,61 @@ class Config {
     this.deleteType = true,
     this.deleteTypeList = const [],
     //
+    this.deleteFunction = true,
+    this.deleteFunctionList = const [],
+    //
+    this.deletePrefix = true,
+    this.deletePrefixList = const [],
+    //
+    this.deleteSuffix = true,
+    this.deleteSuffixList = const [],
+    //
     this.deleteNew = true,
-    this.deletePrint = true,
     this.deletePrivateInsideFunction = true,
-    this.deleteImplementationSuffix = true,
-    this.deleteModelSuffix = true,
     //
     this.lengthList = const [],
   });
 
-  final bool indicateAbsoluteImport;
-  final bool indicateAbstractIPrefix;
-  final bool indicateConstructor;
-  final bool indicateConst;
-  final bool indicateType;
-  final bool indicateOverride;
-  final bool indicateFinal;
-  final bool indicateThis;
-  final bool indicateArrowFunctions;
-  final bool indicateRequiredProperties;
-  final bool indicateIfBracets;
-  final bool indicateIfIndent;
-  final bool indicateReturnIndent;
+  final bool addAbsoluteImport;
+  final bool addAbstractIPrefix;
+  final bool addConstructor;
+  final bool addConst;
+  final bool addType;
+  final bool addOverride;
+  final bool addFinal;
+  final bool addThis;
+  final bool addArrowFunctions;
+  final bool addRequiredProperties;
+  final bool addIfBracets;
+  final bool addIfIndent;
+  final bool addReturnIndent;
   //
-  final List<NameListConfig> indicatePrefixList;
-  final List<NameListConfig> indicateSuffixList;
+  final List<NameListItem> addPrefixList;
+  final List<NameListItem> addSuffixList;
   //
-  final bool indicateBlocPart;
-  final bool indicateBlocSealedEvent;
-  final bool indicateBlocSealedState;
+  final bool addBlocPart;
+  final bool addBlocSealedEvent;
+  final bool addBlocSealedState;
   //
-  final bool deletePackage; //
-  final List<DeleteListItem> deletePackageList; //
+  final bool deletePackage;
+  final List<DeleteListItem> deletePackageList;
   //
-  final bool deleteType; //
-  final List<DeleteItem> deleteTypeList; //
+  final bool deleteType;
+  final List<DeleteListItem> deleteTypeList;
   //
-  final bool deleteNew; //
-  final bool deletePrint; //
+  final bool deleteFunction;
+  final List<DeleteListItem> deleteFunctionList;
+  //
+  final bool deletePrefix;
+  final List<DeleteListItem> deletePrefixList;
+  //
+  final bool deleteSuffix;
+  final List<DeleteListItem> deleteSuffixList;
+  //
+  final bool deleteNew;
   final bool deletePrivateInsideFunction;
-  final bool deleteImplementationSuffix; //
-  final bool deleteModelSuffix; //
   //
-  final List<LengthConfig> lengthList;
+  final List<LengthItem> lengthList;
 }
 
 // Script

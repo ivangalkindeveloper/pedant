@@ -31,11 +31,6 @@ class DeleteNewRule extends DartLintRule {
         );
 
   @override
-  List<String> get filesToAnalyze => const [
-        "**.dart",
-      ];
-
-  @override
   void run(
     CustomLintResolver resolver,
     ErrorReporter reporter,
