@@ -113,6 +113,8 @@ const List<DeleteListItem> _databaseDeletePackageList = [
   ),
 ];
 
+const _riverpodDescription =
+    "Management of states using global variables, as a result - not the best control using global resources.";
 const List<DeleteListItem> _stateManagementDeletePackageList = [
   DeleteListItem(
     nameList: [
@@ -125,8 +127,53 @@ const List<DeleteListItem> _stateManagementDeletePackageList = [
   DeleteListItem(
     nameList: [
       "riverpod",
+      "flutter_riverpod",
+      "hooks_riverpod",
+      "riverpod_generator",
+      "flame_riverpod",
+      "riverpod_context",
+      "riverpod_lint",
+      "shared_preferences_riverpod",
+      "riverpod_test",
+      "riverpod_infinite_scroll",
+      "riverpod_annotation",
+      "riverpod_repo",
+      "riverpod_navigator",
+      "riverpod_mutations",
+      "hydrated_riverpod",
+      "riverpod_infinite_scroll_pagination",
+      "riverpod_navigator_core",
+      "riverpod_mutations_generator",
+      "flutter_riverpod_restorable",
+      "jaspr_riverpod",
+      "riverpod_analyzer_utils",
+      "mvvm_riverpod",
+      "riverpod_extension",
+      "riverpod_messages",
+      "riverpod_persistent_state",
+      "riverpod_testing_library",
+      "riverpod_state",
+      "riverpod_builder",
+      "riverpod_navigation",
+      "riverpod_mutations_annotation",
+      "replay_riverpod",
+      "bloc_riverpod",
+      "riverpod_mvvm",
+      "notified_preferences_riverpod",
+      "offset_iterator_riverpod",
+      "args_riverpod",
+      "maac_mvvm_with_riverpod",
+      "rdev_riverpod_firebase_auth_user",
+      "riverpod_async_value_widget",
+      "riverpod_tachyon_plugin",
+      "bond_form_riverpod",
+      "riverpod_hover_consumer",
+      "flutter_riverform",
+      "rdev_riverpod_firebase_user",
+      "riverpod_feature_generator",
+      "utopia_hooks_riverpod",
+      "rdev_riverpod_versioning",
     ],
-    description:
-        "Management of states using global variables, as a result - not the best control using global resources.",
+    description: _riverpodDescription,
   ),
 ];
