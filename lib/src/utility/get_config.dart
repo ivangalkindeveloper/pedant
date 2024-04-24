@@ -17,7 +17,7 @@ Config getConfig() {
     final dynamic pedantJson = jsonDecode(pedantString);
 
     return Config.fromJson(
-      json: pedantJson,
+      json: pedantJson["pedant"],
     );
   }
 

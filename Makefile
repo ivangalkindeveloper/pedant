@@ -6,3 +6,6 @@ watch:
 	
 fix:
 	cd example && dart run custom_lint --fix
+
+pedant:
+	cd example && dart run pedant --fix
