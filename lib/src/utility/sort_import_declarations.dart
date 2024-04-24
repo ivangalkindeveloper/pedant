@@ -124,8 +124,7 @@ File? _sortFile({
     }
   }
 
-  if (isImportEmpty() ||
-      linesBeforeImports.isEmpty ||
+  if (isImportEmpty() && linesBeforeImports.isEmpty ||
       linesAfterImports.isEmpty) {
     return null;
   }
@@ -165,6 +164,10 @@ File? _sortFile({
   );
   combineImportLines(
     importList: importsPart,
+  );
+
+  linesSorted.addAll(
+    linesAfterImports,
   );
 
   final File sortedFile = File(
