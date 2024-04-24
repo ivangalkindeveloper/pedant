@@ -107,6 +107,11 @@ File? _sortFile({
       continue;
     }
 
+    if (line.contains("../")) {
+      //TODO Relative
+      continue;
+    }
+
     if (line.startsWith(prefixPart)) {
       importsPart.add(line);
       continue;
