@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
 void sortImportDeclarations() {
@@ -65,7 +66,6 @@ File? _sortFile({
   const String prefixDart = "import 'dart:";
   const String prefixFlutter = "import 'package:flutter/";
   final String prefixProject = "import 'package:$projectName";
-  const String prefixRelative = "import 'package:../";
   const String prefixPackage = "import 'package:";
   const String prefixPart = "part";
 
@@ -87,7 +87,17 @@ File? _sortFile({
 
   final List<String> lines = file.readAsLinesSync();
 
-  for (final String line in lines) {
+  for (String line in lines) {
+    if (_isRelativeImport(
+      line: line,
+    )) {
+      line = _convertImport(
+        path: file.path,
+        projectName: projectName,
+        line: line,
+      );
+    }
+
     if (line.startsWith(prefixDart)) {
       importsDart.add(line);
       continue;
@@ -105,11 +115,6 @@ File? _sortFile({
 
     if (line.startsWith(prefixPackage)) {
       importsPackage.add(line);
-      continue;
-    }
-
-    if (line.startsWith(prefixRelative)) {
-      //TODO Relative
       continue;
     }
 
@@ -188,4 +193,38 @@ File? _sortFile({
   );
 
   return sortedFile;
+}
+
+bool _isRelativeImport({
+  required String line,
+}) =>
+    line.startsWith("import package:") &&
+    (line.contains("../") || line.contains("./"));
+
+String _convertImport({
+  required String path,
+  required String projectName,
+  required String line,
+}) {
+  String importPath = line.split(RegExp(r"\'*\'"))[1];
+
+  final String fileDirectory = dirname(path);
+  final String libDirecotory = "${Directory.current.path}/lib/";
+
+  final String packagePrefix = "package:$projectName/";
+
+  if (!importPath.contains(":")) {
+    importPath = normalize("$fileDirectory/$importPath/");
+    importPath = importPath.replaceAll(
+      libDirecotory,
+      packagePrefix,
+    );
+  } else {
+    return line;
+  }
+
+  final List<String> splittedPath = line.split(RegExp(r"\'*\'"));
+  splittedPath[1] = "'$importPath'";
+
+  return splittedPath.join();
 }
