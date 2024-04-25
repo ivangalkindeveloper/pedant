@@ -1,8 +1,9 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:yaml/yaml.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:yaml/yaml.dart';
 
 Config getConfig() {
   final String currentPath = Directory.current.path;

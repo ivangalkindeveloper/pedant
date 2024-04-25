@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+
 import 'package:pedant/src/utility/sort_import_declarations.dart';
 
 void main(
@@ -14,9 +15,9 @@ void main(
     );
     final List<String> argumentsResult = parser.parse(arguments).arguments;
 
-    // if (argumentsResult.contains('--fix')) {
-    sortImportDeclarations();
-    // }
+    if (argumentsResult.contains('--fix')) {
+      sortImportDeclarations();
+    }
   } catch (error, stackTrace) {
     stdout.write(error);
     stdout.write(stackTrace);

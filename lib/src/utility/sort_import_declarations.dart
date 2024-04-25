@@ -65,6 +65,7 @@ File? _sortFile({
   const String prefixDart = "import 'dart:";
   const String prefixFlutter = "import 'package:flutter/";
   final String prefixProject = "import 'package:$projectName";
+  const String prefixRelative = "import 'package:../";
   const String prefixPackage = "import 'package:";
   const String prefixPart = "part";
 
@@ -107,7 +108,7 @@ File? _sortFile({
       continue;
     }
 
-    if (line.contains("../")) {
+    if (line.startsWith(prefixRelative)) {
       //TODO Relative
       continue;
     }
@@ -135,7 +136,9 @@ File? _sortFile({
     linesSorted.addAll(
       linesBeforeImports,
     );
-    linesSorted.add('');
+    if (linesBeforeImports.last.isNotEmpty) {
+      linesSorted.add("");
+    }
   }
 
   void combineImportLines({
@@ -143,10 +146,10 @@ File? _sortFile({
   }) {
     if (importList.isNotEmpty) {
       importList.sort();
-      lines.addAll(
+      linesSorted.addAll(
         importList,
       );
-      lines.add('');
+      linesSorted.add("");
     }
   }
 
@@ -169,6 +172,13 @@ File? _sortFile({
   linesSorted.addAll(
     linesAfterImports,
   );
+  linesSorted.add("");
+
+  for (int i = linesSorted.length - 1; i > 0; i--) {
+    if (linesSorted[i] == "" && linesSorted[i - 1] == "") {
+      linesSorted.removeAt(i);
+    }
+  }
 
   final File sortedFile = File(
     file.path,

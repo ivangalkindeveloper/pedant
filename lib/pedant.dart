@@ -1,9 +1,10 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/rule/delete/delete_suffix_rule.dart';
+import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
-import 'package:pedant/src/rule/delete/delete_function_rule.dart';
+import 'package:pedant/src/rule/delete/delete_suffix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
 import 'package:pedant/src/rule/test_rule.dart';
 
