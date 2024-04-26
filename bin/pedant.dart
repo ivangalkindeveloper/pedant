@@ -15,7 +15,7 @@ void main(
     );
     final List<String> argumentsResult = parser.parse(arguments).arguments;
 
-    if (argumentsResult.contains('--fix')) {
+    if (!argumentsResult.contains('--no-sort-import')) {
       sortImportDeclarations();
     }
   } catch (error, stackTrace) {

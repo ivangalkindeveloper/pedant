@@ -114,7 +114,7 @@ class _Fix extends DartFix {
       (
         MethodInvocation node,
       ) {
-        if (analysisError.sourceRange.intersects(
+        if (!analysisError.sourceRange.intersects(
           node.sourceRange,
         )) {
           return;
@@ -139,7 +139,7 @@ class _Fix extends DartFix {
       (
         FunctionExpressionInvocation node,
       ) {
-        if (analysisError.sourceRange.intersects(
+        if (!analysisError.sourceRange.intersects(
           node.sourceRange,
         )) {
           return;

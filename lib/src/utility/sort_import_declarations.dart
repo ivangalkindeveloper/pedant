@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
@@ -69,6 +70,14 @@ File? _sortFile({
   const String prefixPackage = "import 'package:";
   const String prefixPart = "part";
 
+  final List<String> lines = file.readAsLinesSync();
+  if (lines.isEmpty) {
+    return null;
+  }
+  if (lines.length == 1 && lines.first == "") {
+    return null;
+  }
+
   final List<String> importsDart = [];
   final List<String> importsFlutter = [];
   final List<String> importsProject = [];
@@ -84,8 +93,6 @@ File? _sortFile({
       importsProject.isEmpty &&
       importsPackage.isEmpty &&
       importsPart.isEmpty;
-
-  final List<String> lines = file.readAsLinesSync();
 
   for (String line in lines) {
     if (_isRelativeImport(
@@ -130,8 +137,7 @@ File? _sortFile({
     }
   }
 
-  if (isImportEmpty() && linesBeforeImports.isEmpty ||
-      linesAfterImports.isEmpty) {
+  if (isImportEmpty()) {
     return null;
   }
 
@@ -177,12 +183,18 @@ File? _sortFile({
   linesSorted.addAll(
     linesAfterImports,
   );
-  linesSorted.add("");
 
   for (int i = linesSorted.length - 1; i > 0; i--) {
     if (linesSorted[i] == "" && linesSorted[i - 1] == "") {
       linesSorted.removeAt(i);
     }
+  }
+
+  if (ListEquality().equals(
+    lines,
+    linesSorted,
+  )) {
+    return null;
   }
 
   final File sortedFile = File(
@@ -198,7 +210,7 @@ File? _sortFile({
 bool _isRelativeImport({
   required String line,
 }) =>
-    line.startsWith("import package:") &&
+    line.startsWith("import '") &&
     (line.contains("../") || line.contains("./"));
 
 String _convertImport({
@@ -213,15 +225,15 @@ String _convertImport({
 
   final String packagePrefix = "package:$projectName/";
 
-  if (!importPath.contains(":")) {
-    importPath = normalize("$fileDirectory/$importPath/");
-    importPath = importPath.replaceAll(
-      libDirecotory,
-      packagePrefix,
-    );
-  } else {
+  if (importPath.contains(":")) {
     return line;
   }
+
+  importPath = normalize("$fileDirectory/$importPath/");
+  importPath = importPath.replaceAll(
+    libDirecotory,
+    packagePrefix,
+  );
 
   final List<String> splittedPath = line.split(RegExp(r"\'*\'"));
   splittedPath[1] = "'$importPath'";
