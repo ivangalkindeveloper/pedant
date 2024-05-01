@@ -13,14 +13,9 @@ class DeleteFunctionRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deleteFunction) {
-      return;
-    }
-
-    final List<DeleteListItem> list = config.deletePackageList.isNotEmpty
-        ? config.deletePackageList
-        : defaultDeleteFunctionList;
-    for (final DeleteListItem deleteListItem in list) {
+    final List<DeleteListItem> deleteFunctionList =
+        config.deleteFunctionList ?? defaultDeleteFunctionList;
+    for (final DeleteListItem deleteListItem in deleteFunctionList) {
       ruleList.add(
         DeleteFunctionRule(
           deleteListItem: deleteListItem,
@@ -35,7 +30,7 @@ class DeleteFunctionRule extends DartLintRule {
           code: LintCode(
             name: "delete_function",
             problemMessage:
-                "Delete function: ${deleteListItem.nameList.join("/")}.",
+                "Delete function: ${deleteListItem.nameList.join(", ")}.",
             correctionMessage:
                 "Please delete this function from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
             errorSeverity: ErrorSeverity.ERROR,

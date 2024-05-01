@@ -7,38 +7,33 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
-import 'package:pedant/src/core/default/default_delete_suffix_list.dart';
+import 'package:pedant/src/core/default/default_delete_postfix_list.dart';
 
-class DeleteSuffixRule extends DartLintRule {
+class DeletePostfixRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deleteSuffix) {
-      return;
-    }
-
-    final List<DeleteListItem> deleteList = config.deleteTypeList.isNotEmpty
-        ? config.deleteSuffixList
-        : defaultDeleteSuffixList;
-    for (final DeleteListItem deleteListItem in deleteList) {
+    final List<DeleteListItem> deletePostfixList =
+        config.deletePostfixList ?? defaultDeletePostfixList;
+    for (final DeleteListItem deleteListItem in deletePostfixList) {
       ruleList.add(
-        DeleteSuffixRule(
+        DeletePostfixRule(
           deleteListItem: deleteListItem,
         ),
       );
     }
   }
 
-  DeleteSuffixRule({
+  DeletePostfixRule({
     required this.deleteListItem,
   }) : super(
           code: LintCode(
-            name: "delete_suffix",
+            name: "delete_postfix",
             problemMessage:
-                "Сlass or variable name must not contain an ${deleteListItem.nameList.join("/")} suffix.",
+                "Сlass or variable name must not contain an ${deleteListItem.nameList.join(", ")} postfix.",
             correctionMessage:
-                "Please delete ${deleteListItem.nameList.join("/ ")} suffix in class or variable.",
+                "Please delete ${deleteListItem.nameList.join("/ ")} postfix in class or variable.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

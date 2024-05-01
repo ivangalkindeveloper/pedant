@@ -18,35 +18,24 @@ class Config {
     this.addIfIndent = true,
     this.addReturnIndent = true,
     //
-    this.addTypePrefixList = const [],
-    this.addTypeSuffixList = const [],
-    //
-    this.addPathPrefixList = const [],
-    this.addPathSuffixList = const [],
+    this.addTypePrefixList,
+    this.addTypePostfixList,
+    this.addPathPrefixList,
+    this.addPathPostfixList,
     //
     this.addBlocPart = true,
     this.addBlocSealedEvent = true,
     this.addBlocSealedState = true,
     //
-    this.deletePackage = true,
-    this.deletePackageList = const [],
-    //
-    this.deleteType = true,
-    this.deleteTypeList = const [],
-    //
-    this.deleteFunction = true,
-    this.deleteFunctionList = const [],
-    //
-    this.deletePrefix = true,
-    this.deletePrefixList = const [],
-    //
-    this.deleteSuffix = true,
-    this.deleteSuffixList = const [],
-    //
+    this.deleteFunctionList,
     this.deleteNew = true,
+    this.deletePackageList,
+    this.deletePostfixList,
+    this.deletePrefixList,
     this.deletePrivateInFunction = true,
+    this.deleteTypeList,
     //
-    this.lengthList = const [],
+    this.lengthList,
   });
 
   final bool addAbsoluteImport;
@@ -62,35 +51,24 @@ class Config {
   final bool addIfIndent;
   final bool addReturnIndent;
   //
-  final List<TypeListNameItem> addTypePrefixList;
-  final List<TypeListNameItem> addTypeSuffixList;
-  //
-  final List<PathNameListItem> addPathPrefixList;
-  final List<PathNameListItem> addPathSuffixList;
+  final List<TypeListNameItem>? addTypePrefixList;
+  final List<TypeListNameItem>? addTypePostfixList;
+  final List<PathNameListItem>? addPathPrefixList;
+  final List<PathNameListItem>? addPathPostfixList;
   //
   final bool addBlocPart;
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //
-  final bool deletePackage;
-  final List<DeleteListItem> deletePackageList;
-  //
-  final bool deleteType;
-  final List<DeleteListItem> deleteTypeList;
-  //
-  final bool deleteFunction;
-  final List<DeleteListItem> deleteFunctionList;
-  //
-  final bool deletePrefix;
-  final List<DeleteListItem> deletePrefixList;
-  //
-  final bool deleteSuffix;
-  final List<DeleteListItem> deleteSuffixList;
-  //
+  final List<DeleteListItem>? deleteFunctionList; //
   final bool deleteNew;
+  final List<DeleteListItem>? deletePackageList;
+  final List<DeleteListItem>? deletePostfixList;
+  final List<DeleteListItem>? deletePrefixList;
   final bool deletePrivateInFunction;
+  final List<DeleteListItem>? deleteTypeList;
   //
-  final List<LengthItem> lengthList;
+  final List<LengthItem>? lengthList;
 
   factory Config.fromJson({
     required Map<String, dynamic>? json,
@@ -109,34 +87,23 @@ class Config {
         addIfIndent: json?["add_if_indent"] ?? true,
         addReturnIndent: json?["add_return_indent"] ?? true,
         //
-        addTypePrefixList: json?["add_type_prefix_list"] ?? const [],
-        addTypeSuffixList: json?["add_type_suffix_list"] ?? const [],
-        //
-        addPathPrefixList: json?["add_path_prefix_list"] ?? const [],
-        addPathSuffixList: json?["add_path_suffix_list"] ?? const [],
+        addTypePrefixList: json?["add_type_prefix_list"],
+        addTypePostfixList: json?["add_type_postfix_list"],
+        addPathPrefixList: json?["add_path_prefix_list"],
+        addPathPostfixList: json?["add_path_postfix_list"],
         //
         addBlocPart: json?["add_bloc_part"] ?? true,
         addBlocSealedEvent: json?["add_bloc_sealed_event"] ?? true,
         addBlocSealedState: json?["add_bloc_sealed_state"] ?? true,
         //
-        deletePackage: json?["delete_package"] ?? true,
-        deletePackageList: json?["delete_package_list"] ?? const [],
-        //
-        deleteType: json?["delete_type"] ?? true,
-        deleteTypeList: json?["delete_type_list"] ?? const [],
-        //
-        deleteFunction: json?["delete_function"] ?? true,
-        deleteFunctionList: json?["delete_function_list"] ?? const [],
-        //
-        deletePrefix: json?["delete_prefix"] ?? true,
-        deletePrefixList: json?["delete_prefix_list"] ?? const [],
-        //
-        deleteSuffix: json?["delete_suffix"] ?? true,
-        deleteSuffixList: json?["delete_suffix_list"] ?? const [],
-        //
+        deleteFunctionList: json?["delete_function_list"],
         deleteNew: json?["delete_new"] ?? true,
+        deletePackageList: json?["delete_package_list"],
+        deletePostfixList: json?["delete_postfix_list"],
+        deletePrefixList: json?["delete_prefix_list"],
         deletePrivateInFunction: json?["delete_private_in_function"] ?? true,
+        deleteTypeList: json?["delete_type_list"],
         //
-        lengthList: json?["length_list"] ?? const [],
+        lengthList: json?["length_list"],
       );
 }

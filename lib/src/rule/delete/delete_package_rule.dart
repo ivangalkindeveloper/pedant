@@ -13,14 +13,9 @@ class DeletePackageRule extends LintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deletePackage) {
-      return;
-    }
-
-    final List<DeleteListItem> list = config.deletePackageList.isNotEmpty
-        ? config.deletePackageList
-        : defaultDeletePackageList;
-    for (final DeleteListItem deleteListItem in list) {
+    final List<DeleteListItem> deletePackageList =
+        config.deletePackageList ?? defaultDeletePackageList;
+    for (final DeleteListItem deleteListItem in deletePackageList) {
       ruleList.add(
         DeletePackageRule(
           deleteListItem: deleteListItem,

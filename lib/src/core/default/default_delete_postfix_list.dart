@@ -1,6 +1,6 @@
 import 'package:pedant/src/core/data/delete_list_item.dart';
 
-const List<DeleteListItem> defaultDeleteSuffixList = [
+const List<DeleteListItem> defaultDeletePostfixList = [
   DeleteListItem(
     nameList: [
       "Impl",

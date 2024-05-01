@@ -12,7 +12,7 @@ class DeleteNewRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deleteNew) {
+    if (config.deleteNew == false) {
       return;
     }
 

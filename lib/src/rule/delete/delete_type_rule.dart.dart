@@ -15,14 +15,9 @@ class DeleteTypeRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (!config.deleteType) {
-      return;
-    }
-
-    final List<DeleteListItem> deleteList = config.deleteTypeList.isNotEmpty
-        ? config.deleteTypeList
-        : defaultDeleteTypeList;
-    for (final DeleteListItem deleteListItem in deleteList) {
+    final List<DeleteListItem> deleteTypeList =
+        config.deleteTypeList ?? defaultDeleteTypeList;
+    for (final DeleteListItem deleteListItem in deleteTypeList) {
       ruleList.add(
         DeleteTypeRule(
           deleteListItem: deleteListItem,
@@ -37,7 +32,7 @@ class DeleteTypeRule extends DartLintRule {
           code: LintCode(
             name: "delete_type",
             problemMessage:
-                "Delete type: ${deleteListItem.nameList.join("/")}.",
+                "Delete type: ${deleteListItem.nameList.join(", ")}.",
             correctionMessage:
                 "Please delete this type from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
             errorSeverity: ErrorSeverity.ERROR,
