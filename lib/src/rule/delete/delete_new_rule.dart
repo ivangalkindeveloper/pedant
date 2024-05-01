@@ -2,6 +2,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
@@ -23,7 +24,7 @@ class DeleteNewRule extends DartLintRule {
 
   DeleteNewRule()
       : super(
-          code: LintCode(
+          code: const LintCode(
             name: "delete_new",
             problemMessage: "Operator 'new' is useless in last version of SDK.",
             correctionMessage: "Please delete 'new' operator.",
@@ -37,18 +38,23 @@ class DeleteNewRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addCommentReference(
+      context.registry.addInstanceCreationExpression(
         (
-          CommentReference node,
+          InstanceCreationExpression node,
         ) {
-          final Token? newKeyword = node.newKeyword;
-          if (newKeyword == null) {
+          final Token? keyword = node.keyword;
+          if (keyword == null) {
             return;
           }
 
-          reporter.reportErrorForNode(
+          final String keywordName = keyword.toString();
+          if (keywordName != "new") {
+            return;
+          }
+
+          reporter.reportErrorForToken(
             this.code,
-            node,
+            node.keyword!,
           );
         },
       );
@@ -60,6 +66,8 @@ class DeleteNewRule extends DartLintRule {
 }
 
 class _Fix extends DartFix {
+  _Fix();
+
   @override
   void run(
     CustomLintResolver resolver,
@@ -68,26 +76,31 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addCommentReference(
+      context.registry.addInstanceCreationExpression(
         (
-          CommentReference node,
+          InstanceCreationExpression node,
         ) {
-          if (analysisError.sourceRange.intersects(
+          if (!analysisError.sourceRange.intersects(
             node.sourceRange,
           )) {
-            final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-              message: "Delete 'new'",
-              priority: 0,
-            );
-            changeBuilder.addDartFileEdit(
-              (
-                DartFileEditBuilder builder,
-              ) =>
-                  builder.addDeletion(
-                analysisError.sourceRange,
-              ),
-            );
+            return;
           }
+
+          final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+            message: "Delete 'new'",
+            priority: 0,
+          );
+          changeBuilder.addDartFileEdit(
+            (
+              DartFileEditBuilder builder,
+            ) =>
+                builder.addDeletion(
+              SourceRange(
+                analysisError.sourceRange.offset,
+                analysisError.sourceRange.length + 1,
+              ),
+            ),
+          );
         },
       );
 }

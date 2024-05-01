@@ -97,6 +97,8 @@ class DeleteFunctionRule extends DartLintRule {
 }
 
 class _Fix extends DartFix {
+  _Fix();
+
   @override
   void run(
     CustomLintResolver resolver,

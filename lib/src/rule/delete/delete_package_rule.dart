@@ -109,7 +109,7 @@ class _Fix extends DartFix {
     for (final String packageName in packageList) {
       final int indexOf = lines.lastIndexOf("  $packageName:");
       if (indexOf == -1) {
-        return;
+        continue;
       }
       lines.remove(indexOf);
     }
