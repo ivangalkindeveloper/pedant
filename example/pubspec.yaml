@@ -30,17 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get_it:
-  provider:
-  hydrated_bloc:
-  flutter_hooks:
-  freezed:
-  fpdart:
-  hive:
-  isar:
-  objectbox:
-  get:
-  riverpod:
   
 dev_dependencies:
   custom_lint: ^0.6.4

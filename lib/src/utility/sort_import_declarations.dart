@@ -4,8 +4,9 @@ import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
-void sortImportDeclarations() {
-  final String currentPath = Directory.current.path;
+void sortImportDeclarations({
+  required String currentPath,
+}) {
   final File pubspecYamlFile = File(
     "$currentPath/pubspec.yaml",
   );

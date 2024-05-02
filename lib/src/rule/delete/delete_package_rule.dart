@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
+import 'package:collection/collection.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
@@ -53,16 +54,17 @@ class DeletePackageRule extends LintRule {
     final File file = File(
       resolver.path,
     );
-    final String fileContent = file.readAsStringSync();
+    final String fileString = file.readAsStringSync();
     final List<(int, String)> indexList = [];
 
-    for (final String packageName in deleteListItem.nameList) {
-      final int indexOf = fileContent.lastIndexOf(
-        "  $packageName:",
+    for (final String packageName in this.deleteListItem.nameList) {
+      final int indexOf = fileString.lastIndexOf(
+        "$packageName:",
       );
       if (indexOf == -1) {
         continue;
       }
+
       indexList.add(
         (
           indexOf,
@@ -74,26 +76,20 @@ class DeletePackageRule extends LintRule {
     for (final (int, String) packageLine in indexList) {
       reporter.reportErrorForOffset(
         code,
-        packageLine.$1 + 2,
-        packageLine.$2.length + 1,
+        packageLine.$1,
+        packageLine.$2.length,
       );
     }
   }
 
   @override
   List<Fix> getFixes() => [
-        _Fix(
-          packageList: deleteListItem.nameList,
-        ),
+        _Fix(),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix({
-    required this.packageList,
-  });
-
-  final List<String> packageList;
+  _Fix();
 
   @override
   void run(
@@ -103,20 +99,31 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    final File file = File(resolver.path);
+    final File file = File(
+      resolver.path,
+    );
     final List<String> lines = file.readAsLinesSync();
-
-    for (final String packageName in packageList) {
-      final int indexOf = lines.lastIndexOf("  $packageName:");
-      if (indexOf == -1) {
-        continue;
-      }
-      lines.remove(indexOf);
+    final String? line = lines.firstWhereOrNull(
+      (
+        String currentLine,
+      ) =>
+          currentLine.contains(
+        analysisError.message.split(":")[1].replaceAll(
+              ".",
+              "",
+            ),
+      ),
+    );
+    if (line == null) {
+      return;
     }
 
+    lines.remove(
+      line,
+    );
     file.writeAsStringSync(
       lines.join(
-        '\n',
+        "\n",
       ),
     );
   }

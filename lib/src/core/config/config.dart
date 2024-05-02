@@ -61,8 +61,8 @@ class Config {
   final bool addBlocSealedState;
   //
   final List<DeleteListItem>? deleteFunctionList; //
-  final bool deleteNew;
-  final List<DeleteListItem>? deletePackageList;
+  final bool deleteNew; //
+  final List<DeleteListItem>? deletePackageList; //
   final List<DeleteListItem>? deletePostfixList;
   final List<DeleteListItem>? deletePrefixList;
   final bool deletePrivateInFunction;

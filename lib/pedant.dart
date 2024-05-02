@@ -3,10 +3,11 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
-// import 'package:pedant/src/rule/delete/delete_package_rule.dart';
+import 'package:pedant/src/rule/delete/delete_package_rule.dart';
+import 'package:pedant/src/rule/test_rule.dart';
+
 // import 'package:pedant/src/rule/delete/delete_postfix_rule.dart';
 // import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
-import 'package:pedant/src/rule/test_rule.dart';
 
 PluginBase createPlugin() => _PedantBase();
 
@@ -17,7 +18,7 @@ class _PedantBase extends PluginBase {
   List<LintRule> getLintRules(
     CustomLintConfigs configs,
   ) {
-    final Config config = Config();
+    const Config config = Config();
     final List<LintRule> ruleList = [];
 
     DeleteFunctionRule.combine(
@@ -28,10 +29,10 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    // DeletePackageRule.combine(
-    //   config: config,
-    //   ruleList: ruleList,
-    // );
+    DeletePackageRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
     // DeletePostfixRule.combine(
     //   config: config,
     //   ruleList: ruleList,
@@ -40,10 +41,10 @@ class _PedantBase extends PluginBase {
     //   config: config,
     //   ruleList: ruleList,
     // );
-    TestRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
+    // TestRule.combine(
+    //   config: config,
+    //   ruleList: ruleList,
+    // );
 
     return ruleList;
   }
