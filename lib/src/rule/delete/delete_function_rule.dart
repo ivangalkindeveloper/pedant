@@ -79,7 +79,7 @@ class DeleteFunctionRule extends DartLintRule {
     required int offset,
     required int length,
   }) {
-    if (!deleteListItem.nameList.contains(name)) {
+    if (deleteListItem.nameList.contains(name) == false) {
       return;
     }
 
@@ -111,9 +111,10 @@ class _Fix extends DartFix {
       (
         MethodInvocation node,
       ) {
-        if (!analysisError.sourceRange.intersects(
-          node.sourceRange,
-        )) {
+        if (analysisError.sourceRange.intersects(
+              node.sourceRange,
+            ) ==
+            false) {
           return;
         }
 
@@ -136,9 +137,10 @@ class _Fix extends DartFix {
       (
         FunctionExpressionInvocation node,
       ) {
-        if (!analysisError.sourceRange.intersects(
-          node.sourceRange,
-        )) {
+        if (analysisError.sourceRange.intersects(
+              node.sourceRange,
+            ) ==
+            false) {
           return;
         }
 

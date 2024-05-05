@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
@@ -55,18 +56,22 @@ class DeletePostfixRule extends DartLintRule {
           return;
         }
 
-        _checkAndReport(
-          reporter: reporter,
+        _check(
           name: declaredElement.displayName,
-          element: declaredElement,
+          onSuccess: () => reporter.reportErrorForElement(
+            this.code,
+            declaredElement,
+          ),
         );
 
         for (final ConstructorElement constructorElement
             in declaredElement.constructors) {
-          _checkAndReport(
-            reporter: reporter,
+          _check(
             name: constructorElement.displayName,
-            element: constructorElement,
+            onSuccess: () => reporter.reportErrorForElement(
+              this.code,
+              constructorElement,
+            ),
           );
         }
       },
@@ -80,19 +85,41 @@ class DeletePostfixRule extends DartLintRule {
           return;
         }
 
-        _checkAndReport(
-          reporter: reporter,
+        _check(
           name: declaredElement.displayName,
-          element: declaredElement,
+          onSuccess: () => reporter.reportErrorForElement(
+            this.code,
+            declaredElement,
+          ),
+        );
+      },
+    );
+    context.registry.addInstanceCreationExpression(
+      (
+        InstanceCreationExpression node,
+      ) {
+        final String? displayString = node.staticType?.getDisplayString(
+          withNullability: false,
+        );
+        if (displayString == null) {
+          return;
+        }
+
+        _check(
+          name: displayString,
+          onSuccess: () => reporter.reportErrorForOffset(
+            this.code,
+            node.offset,
+            displayString.length,
+          ),
         );
       },
     );
   }
 
-  void _checkAndReport({
-    required ErrorReporter reporter,
+  void _check({
     required String name,
-    required Element element,
+    required void Function() onSuccess,
   }) {
     bool isMatch = false;
     for (final String suffix in deleteListItem.nameList) {
@@ -102,10 +129,7 @@ class DeletePostfixRule extends DartLintRule {
     }
 
     if (isMatch) {
-      reporter.reportErrorForElement(
-        this.code,
-        element,
-      );
+      onSuccess();
     }
   }
 
@@ -116,6 +140,8 @@ class DeletePostfixRule extends DartLintRule {
 }
 
 class _Fix extends DartFix {
+  _Fix();
+
   @override
   void run(
     CustomLintResolver resolver,
@@ -128,11 +154,13 @@ class _Fix extends DartFix {
       (
         ClassDeclaration node,
       ) {
-        if (!analysisError.sourceRange.intersects(
-          node.sourceRange,
-        )) {
+        if (analysisError.sourceRange.intersects(
+              node.sourceRange,
+            ) ==
+            false) {
           return;
         }
+
         final ClassElement? declaredElement = node.declaredElement;
         if (declaredElement == null) {
           return;
@@ -149,13 +177,18 @@ class _Fix extends DartFix {
       (
         VariableDeclaration node,
       ) {
-        if (!analysisError.sourceRange.intersects(
-          node.sourceRange,
-        )) {
+        if (analysisError.sourceRange.intersects(
+              node.sourceRange,
+            ) ==
+            false) {
           return;
         }
+
         final VariableElement? declaredElement = node.declaredElement;
         if (declaredElement == null) {
+          return;
+        }
+        if (declaredElement.nameOffset != analysisError.sourceRange.offset) {
           return;
         }
 
@@ -163,6 +196,31 @@ class _Fix extends DartFix {
           reporter: reporter,
           analysisError: analysisError,
           name: declaredElement.displayName,
+        );
+      },
+    );
+    context.registry.addInstanceCreationExpression(
+      (
+        InstanceCreationExpression node,
+      ) {
+        if (analysisError.sourceRange.intersects(
+              node.sourceRange,
+            ) ==
+            false) {
+          return;
+        }
+
+        final DartType? staticType = node.staticType;
+        if (staticType == null) {
+          return;
+        }
+
+        this._createChangeBuilder(
+          reporter: reporter,
+          analysisError: analysisError,
+          name: staticType.getDisplayString(
+            withNullability: false,
+          ),
         );
       },
     );

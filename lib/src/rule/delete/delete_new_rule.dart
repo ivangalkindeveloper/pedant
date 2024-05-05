@@ -80,9 +80,10 @@ class _Fix extends DartFix {
         (
           InstanceCreationExpression node,
         ) {
-          if (!analysisError.sourceRange.intersects(
-            node.sourceRange,
-          )) {
+          if (analysisError.sourceRange.intersects(
+                node.sourceRange,
+              ) ==
+              false) {
             return;
           }
 

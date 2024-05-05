@@ -10,7 +10,7 @@ class TestThreeModel {
   const TestThreeModel();
 }
 
-final TestOneImpl testOneImpl = TestOneImpl();
+final TestOneImpl testOne = TestOneImpl();
 final TestTwoImplementation testTwoImplementation = TestTwoImplementation();
 final TestThreeModel testThreeModel = TestThreeModel();
 
