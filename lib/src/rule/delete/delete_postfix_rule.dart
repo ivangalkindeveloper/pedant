@@ -31,9 +31,9 @@ class DeletePostfixRule extends DartLintRule {
           code: LintCode(
             name: "delete_postfix",
             problemMessage:
-                "Сlass or variable name must not contain an ${deleteListItem.nameList.join(", ")} postfix.",
+                "Сlass, constructor or variable name must not contain an postfix: ${deleteListItem.nameList.join(", ")}.",
             correctionMessage:
-                "Please delete ${deleteListItem.nameList.join("/ ")} postfix in class or variable.",
+                "Please delete postfix in class, constructor or variable.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -60,22 +60,15 @@ class DeletePostfixRule extends DartLintRule {
           name: declaredElement.displayName,
           element: declaredElement,
         );
-      },
-    );
-    context.registry.addConstructorDeclaration(
-      (
-        ConstructorDeclaration node,
-      ) {
-        final ConstructorElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
 
-        _checkAndReport(
-          reporter: reporter,
-          name: declaredElement.displayName,
-          element: declaredElement,
-        );
+        for (final ConstructorElement constructorElement
+            in declaredElement.constructors) {
+          _checkAndReport(
+            reporter: reporter,
+            name: constructorElement.displayName,
+            element: constructorElement,
+          );
+        }
       },
     );
     context.registry.addVariableDeclaration(
@@ -94,20 +87,6 @@ class DeletePostfixRule extends DartLintRule {
         );
       },
     );
-    context.registry.addConstructorName((
-      ConstructorName node,
-    ) {
-      final ConstructorElement? staticElement = node.staticElement;
-      if (staticElement == null) {
-        return;
-      }
-
-      _checkAndReport(
-        reporter: reporter,
-        name: staticElement.displayName,
-        element: staticElement,
-      );
-    });
   }
 
   void _checkAndReport({
@@ -144,31 +123,104 @@ class _Fix extends DartFix {
     CustomLintContext context,
     AnalysisError analysisError,
     List<AnalysisError> others,
-  ) =>
-      context.registry.addClassDeclaration(
-        (
-          ClassDeclaration node,
-        ) {
-          if (analysisError.sourceRange.intersects(
-            node.sourceRange,
-          )) {
-            final String validName = node.name.lexeme
-                .replaceAll("Impl", "")
-                .replaceAll("Implementation", "");
-            final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-              message: "Raname to '$validName'",
-              priority: 0,
-            );
-            changeBuilder.addDartFileEdit(
-              (
-                DartFileEditBuilder builder,
-              ) =>
-                  builder.addSimpleReplacement(
-                analysisError.sourceRange,
-                validName,
-              ),
-            );
-          }
-        },
+  ) {
+    context.registry.addClassDeclaration(
+      (
+        ClassDeclaration node,
+      ) {
+        if (!analysisError.sourceRange.intersects(
+          node.sourceRange,
+        )) {
+          return;
+        }
+        final ClassElement? declaredElement = node.declaredElement;
+        if (declaredElement == null) {
+          return;
+        }
+
+        this._createChangeBuilder(
+          reporter: reporter,
+          analysisError: analysisError,
+          name: declaredElement.displayName,
+        );
+      },
+    );
+    context.registry.addVariableDeclaration(
+      (
+        VariableDeclaration node,
+      ) {
+        if (!analysisError.sourceRange.intersects(
+          node.sourceRange,
+        )) {
+          return;
+        }
+        final VariableElement? declaredElement = node.declaredElement;
+        if (declaredElement == null) {
+          return;
+        }
+
+        this._createChangeBuilder(
+          reporter: reporter,
+          analysisError: analysisError,
+          name: declaredElement.displayName,
+        );
+      },
+    );
+  }
+
+  String _getValidName({
+    required AnalysisError analysisError,
+    required String name,
+  }) {
+    final List<String> postfixList = analysisError.message
+        .split(":")[1]
+        .trim()
+        .replaceAll(
+          ".",
+          "",
+        )
+        .split(", ");
+    postfixList.sort(
+      (
+        String a,
+        String b,
+      ) =>
+          b.length.compareTo(
+        a.length,
+      ),
+    );
+    String validName = name;
+    for (final String postfix in postfixList) {
+      validName = validName.replaceAll(
+        postfix,
+        "",
       );
+    }
+
+    return validName;
+  }
+
+  void _createChangeBuilder({
+    required ChangeReporter reporter,
+    required AnalysisError analysisError,
+    required String name,
+  }) {
+    final String validName = this._getValidName(
+      analysisError: analysisError,
+      name: name,
+    );
+    final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+      message: "Rename to '$validName'",
+      priority: 0,
+    );
+    changeBuilder.addDartFileEdit(
+      (
+        DartFileEditBuilder builder,
+      ) =>
+          builder.addSimpleReplacement(
+        analysisError.sourceRange,
+        validName,
+      ),
+    );
+  }
 }

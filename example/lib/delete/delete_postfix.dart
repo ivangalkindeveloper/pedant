@@ -1,19 +1,19 @@
-// class TestImpl {
-//   TestImpl();
-// }
+class TestOneImpl {
+  const TestOneImpl();
+}
 
-// class TestImplementation {
-//   TestImplementation();
-// }
+class TestTwoImplementation {
+  const TestTwoImplementation();
+}
 
-// class TestModel {
-//   TestModel();
-// }
+class TestThreeModel {
+  const TestThreeModel();
+}
 
-// final TestImpl testImpl = TestImpl();
-// final TestImplementation testImplementation = TestImplementation();
-// final TestModel testModel = TestModel();
+final TestOneImpl testOneImpl = TestOneImpl();
+final TestTwoImplementation testTwoImplementation = TestTwoImplementation();
+final TestThreeModel testThreeModel = TestThreeModel();
 
-// final a = TestImpl();
-// final b = TestImplementation();
-// final c = TestModel();
+final a = TestOneImpl();
+final b = TestTwoImplementation();
+final c = TestThreeModel();

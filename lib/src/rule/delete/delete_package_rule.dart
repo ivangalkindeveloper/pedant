@@ -58,16 +58,19 @@ class DeletePackageRule extends LintRule {
     final List<(int, String)> indexList = [];
 
     for (final String packageName in this.deleteListItem.nameList) {
-      final int indexOf = fileString.lastIndexOf(
-        "$packageName:",
+      final int index = fileString.lastIndexOf(
+        "  $packageName:",
       );
-      if (indexOf == -1) {
+      if (index == -1) {
+        continue;
+      }
+      if (fileString[index - 1] == "#") {
         continue;
       }
 
       indexList.add(
         (
-          indexOf,
+          index,
           packageName,
         ),
       );
@@ -108,7 +111,7 @@ class _Fix extends DartFix {
         String currentLine,
       ) =>
           currentLine.contains(
-        analysisError.message.split(":")[1].replaceAll(
+        analysisError.message.split(":")[1].trim().replaceAll(
               ".",
               "",
             ),

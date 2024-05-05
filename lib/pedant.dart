@@ -4,10 +4,8 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
-import 'package:pedant/src/rule/test_rule.dart';
-
-// import 'package:pedant/src/rule/delete/delete_postfix_rule.dart';
-// import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
+import 'package:pedant/src/rule/delete/delete_postfix_rule.dart';
+// import 'package:pedant/src/rule/test_rule.dart';
 
 PluginBase createPlugin() => _PedantBase();
 
@@ -33,10 +31,10 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    // DeletePostfixRule.combine(
-    //   config: config,
-    //   ruleList: ruleList,
-    // );
+    DeletePostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
     // DeleteTypeRule.combine(
     //   config: config,
     //   ruleList: ruleList,
