@@ -10,25 +10,42 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_postfix_list.dart';
 
-class DeletePostfixRule extends DartLintRule {
+class DeletePrefixPostfixRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
+    final List<DeleteListItem>? deletePrefixList = defaultDeletePostfixList;
+    if (deletePrefixList != null) {
+      for (final DeleteListItem deleteListItem in deletePrefixList) {
+        ruleList.add(
+          DeletePrefixPostfixRule(
+            code: LintCode(
+              name: "delete_prefix",
+              problemMessage:
+                  "Сlass, constructor or variable name must not contain an prefix: ${deleteListItem.nameList.join(", ")}.",
+              correctionMessage:
+                  "Please delete prefix in class, constructor or variable.",
+              errorSeverity: ErrorSeverity.ERROR,
+            ),
+            deleteListItem: deleteListItem,
+            validaton: (
+              final String name,
+              final String prefix,
+            ) =>
+                name.startsWith(
+              prefix,
+            ),
+          ),
+        );
+      }
+    }
+
     final List<DeleteListItem> deletePostfixList =
         config.deletePostfixList ?? defaultDeletePostfixList;
     for (final DeleteListItem deleteListItem in deletePostfixList) {
       ruleList.add(
-        DeletePostfixRule(
-          deleteListItem: deleteListItem,
-        ),
-      );
-    }
-  }
-
-  DeletePostfixRule({
-    required this.deleteListItem,
-  }) : super(
+        DeletePrefixPostfixRule(
           code: LintCode(
             name: "delete_postfix",
             problemMessage:
@@ -37,9 +54,27 @@ class DeletePostfixRule extends DartLintRule {
                 "Please delete postfix in class, constructor or variable.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
-        );
+          deleteListItem: deleteListItem,
+          validaton: (
+            final String name,
+            final String postfix,
+          ) =>
+              name.endsWith(
+            postfix,
+          ),
+        ),
+      );
+    }
+  }
+
+  const DeletePrefixPostfixRule({
+    required super.code,
+    required this.deleteListItem,
+    required this.validaton,
+  });
 
   final DeleteListItem deleteListItem;
+  final bool Function(String, String) validaton;
 
   @override
   void run(
@@ -56,7 +91,7 @@ class DeletePostfixRule extends DartLintRule {
           return;
         }
 
-        _check(
+        _validate(
           name: declaredElement.displayName,
           onSuccess: () => reporter.reportErrorForElement(
             this.code,
@@ -66,7 +101,7 @@ class DeletePostfixRule extends DartLintRule {
 
         for (final ConstructorElement constructorElement
             in declaredElement.constructors) {
-          _check(
+          _validate(
             name: constructorElement.displayName,
             onSuccess: () => reporter.reportErrorForElement(
               this.code,
@@ -85,7 +120,7 @@ class DeletePostfixRule extends DartLintRule {
           return;
         }
 
-        _check(
+        _validate(
           name: declaredElement.displayName,
           onSuccess: () => reporter.reportErrorForElement(
             this.code,
@@ -105,7 +140,7 @@ class DeletePostfixRule extends DartLintRule {
           return;
         }
 
-        _check(
+        _validate(
           name: displayString,
           onSuccess: () => reporter.reportErrorForOffset(
             this.code,
@@ -117,13 +152,16 @@ class DeletePostfixRule extends DartLintRule {
     );
   }
 
-  void _check({
+  void _validate({
     required String name,
     required void Function() onSuccess,
   }) {
     bool isMatch = false;
-    for (final String suffix in deleteListItem.nameList) {
-      if (name.endsWith(suffix)) {
+    for (final String mathName in deleteListItem.nameList) {
+      if (this.validaton(
+        name,
+        mathName,
+      )) {
         isMatch = true;
       }
     }
@@ -188,6 +226,7 @@ class _Fix extends DartFix {
         if (declaredElement == null) {
           return;
         }
+
         if (declaredElement.nameOffset != analysisError.sourceRange.offset) {
           return;
         }

@@ -63,8 +63,8 @@ class Config {
   final List<DeleteListItem>? deleteFunctionList; //
   final bool deleteNew; //
   final List<DeleteListItem>? deletePackageList; //
-  final List<DeleteListItem>? deletePostfixList;
-  final List<DeleteListItem>? deletePrefixList;
+  final List<DeleteListItem>? deletePostfixList; //
+  final List<DeleteListItem>? deletePrefixList; //
   final bool deletePrivateInFunction;
   final List<DeleteListItem>? deleteTypeList;
   //
