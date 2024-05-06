@@ -15,7 +15,7 @@ class DeletePrefixPostfixRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    final List<DeleteListItem>? deletePrefixList = defaultDeletePostfixList;
+    final List<DeleteListItem>? deletePrefixList = config.deletePrefixList;
     if (deletePrefixList != null) {
       for (final DeleteListItem deleteListItem in deletePrefixList) {
         ruleList.add(
