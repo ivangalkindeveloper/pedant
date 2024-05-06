@@ -51,6 +51,11 @@ class DeletePackageRule extends LintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    final List<String> allDependencies = [
+      ...context.pubspec.dependencies.keys,
+      ...context.pubspec.devDependencies.keys,
+      ...context.pubspec.dependencyOverrides.keys,
+    ];
     final File file = File(
       resolver.path,
     );
@@ -58,15 +63,13 @@ class DeletePackageRule extends LintRule {
     final List<(int, String)> indexList = [];
 
     for (final String packageName in this.deleteListItem.nameList) {
+      if (allDependencies.contains(packageName) == false) {
+        continue;
+      }
+
       final int index = fileString.lastIndexOf(
-        "  $packageName:",
+        packageName,
       );
-      if (index == -1) {
-        continue;
-      }
-      if (fileString[index - 1] == "#") {
-        continue;
-      }
 
       indexList.add(
         (
