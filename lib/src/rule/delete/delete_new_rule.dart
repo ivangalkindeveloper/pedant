@@ -18,11 +18,11 @@ class DeleteNewRule extends DartLintRule {
     }
 
     ruleList.add(
-      DeleteNewRule(),
+      const DeleteNewRule(),
     );
   }
 
-  DeleteNewRule()
+  const DeleteNewRule()
       : super(
           code: const LintCode(
             name: "delete_new",

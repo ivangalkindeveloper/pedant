@@ -28,8 +28,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  bloc:
   flutter:
     sdk: flutter
+  flutter_bloc:
 
 dev_dependencies:
   custom_lint: ^0.6.4

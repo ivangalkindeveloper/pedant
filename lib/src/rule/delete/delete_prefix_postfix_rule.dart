@@ -10,6 +10,7 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_postfix_list.dart';
 
+//TODO Fix together specific type before variable name declaration
 class DeletePrefixPostfixRule extends DartLintRule {
   static void combine({
     required Config config,

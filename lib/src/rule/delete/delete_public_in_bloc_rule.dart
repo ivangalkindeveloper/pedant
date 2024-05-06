@@ -5,30 +5,31 @@ import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/bloc_type_checker.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-class DeletePrivateInFunctionRule extends DartLintRule {
+//TODO Fix together Bloc constructor
+class DeletePublicInBlocRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deletePrivateInFunction == false) {
+    if (config.deletePublicInBloc == false) {
       return;
     }
 
     ruleList.add(
-      DeletePrivateInFunctionRule(),
+      const DeletePublicInBlocRule(),
     );
   }
 
-  const DeletePrivateInFunctionRule()
+  const DeletePublicInBlocRule()
       : super(
           code: const LintCode(
-            name: "delete_private_in_function",
-            problemMessage:
-                "Delete declaration of private variable inside function.",
+            name: "delete_public_in_bloc",
+            problemMessage: "Delete public properties in Bloc.",
             correctionMessage:
-                "Please change this variable on public inside function.",
+                "Please change access to public preperties of Bloc or delete it.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -39,31 +40,44 @@ class DeletePrivateInFunctionRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addFunctionBody(
+      context.registry.addClassDeclaration(
         (
-          FunctionBody node,
-        ) =>
-            node.visitChildren(
-          TreeVisitor(
-            onVariableDeclaration: (
-              VariableDeclaration node,
-            ) {
-              final VariableElement? declaredElement = node.declaredElement;
-              if (declaredElement == null) {
-                return;
-              }
+          ClassDeclaration node,
+        ) {
+          final ClassElement? declaredElement = node.declaredElement;
+          if (declaredElement == null) {
+            return;
+          }
 
-              if (declaredElement.isPrivate == false) {
-                return;
-              }
+          if (blocTypeChecker.isAssignableFromType(
+                declaredElement.thisType,
+              ) ==
+              false) {
+            return;
+          }
 
-              reporter.reportErrorForElement(
-                this.code,
-                declaredElement,
-              );
-            },
-          ),
-        ),
+          node.visitChildren(
+            TreeVisitor(
+              onVariableDeclaration: (
+                VariableDeclaration node,
+              ) {
+                final VariableElement? declaredElement = node.declaredElement;
+                if (declaredElement == null) {
+                  return;
+                }
+
+                if (declaredElement.isPrivate) {
+                  return;
+                }
+
+                reporter.reportErrorForElement(
+                  this.code,
+                  declaredElement,
+                );
+              },
+            ),
+          );
+        },
       );
 
   @override
@@ -99,10 +113,7 @@ class _Fix extends DartFix {
             return;
           }
 
-          final String validName = declaredElement.displayName.replaceFirst(
-            "_",
-            "",
-          );
+          final String validName = "_${declaredElement.displayName}";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Rename to '$validName'",
             priority: 0,

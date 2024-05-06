@@ -27,6 +27,7 @@ class Config {
     this.addBlocSealedEvent = true,
     this.addBlocSealedState = true,
     //
+    this.deleteBlocDependencyInBloc = true,
     this.deleteFunctionList,
     this.deleteNew = true,
     this.deletePackageList,
@@ -61,13 +62,14 @@ class Config {
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //
+  final bool deleteBlocDependencyInBloc;
   final List<DeleteListItem>? deleteFunctionList; //
   final bool deleteNew; //
   final List<DeleteListItem>? deletePackageList; //
   final List<DeleteListItem>? deletePostfixList; //
   final List<DeleteListItem>? deletePrefixList; //
-  final bool deletePrivateInFunction;
-  final bool deletePublicInBloc;
+  final bool deletePrivateInFunction; //
+  final bool deletePublicInBloc; //
   final List<DeleteListItem>? deleteTypeList;
   //
   final List<LengthItem>? lengthList;
@@ -98,6 +100,8 @@ class Config {
         addBlocSealedEvent: json?["add_bloc_sealed_event"] ?? true,
         addBlocSealedState: json?["add_bloc_sealed_state"] ?? true,
         //
+        deleteBlocDependencyInBloc:
+            json?["delete_bloc_dependency_in_bloc"] ?? true,
         deleteFunctionList: json?["delete_function_list"],
         deleteNew: json?["delete_new"] ?? true,
         deletePackageList: json?["delete_package_list"],
