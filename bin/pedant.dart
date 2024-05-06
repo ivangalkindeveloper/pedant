@@ -17,7 +17,8 @@ void main(
     final String currentPath = Directory.current.path;
 
     if (argumentsResult.contains('--no-fix') == false) {
-      print("Fix current lint problems");
+      print("");
+      print("Fix current lint problems...");
       Process.runSync(
         "dart",
         const [
@@ -30,13 +31,15 @@ void main(
     }
 
     if (argumentsResult.contains('--no-sort-import') == false) {
-      print("Sorting import and part declarations");
+      print("");
+      print("Sorting import and part declarations...");
       sortImportDeclarations(
         currentPath: currentPath,
       );
     }
 
     if (argumentsResult.contains('--no-dart-format') == false) {
+      print("");
       print("Formatting Dart code");
       Process.runSync(
         "dart",
@@ -48,7 +51,8 @@ void main(
       );
     }
 
-    print("Updating lint problems");
+    print("");
+    print("Updating lint problems...");
     Process.runSync(
       "dart",
       const [
@@ -58,7 +62,8 @@ void main(
       ],
       workingDirectory: currentPath,
     );
-    print("Done");
+    print("");
+    print("Done.");
   } catch (error, stackTrace) {
     stdout.write(error);
     stdout.write(stackTrace);

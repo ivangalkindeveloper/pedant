@@ -50,7 +50,7 @@ class DeleteFunctionRule extends DartLintRule {
         MethodInvocation node,
       ) {
         final String name = node.methodName.name;
-        _checkAndReport(
+        _validateAndReport(
           reporter: reporter,
           name: name,
           offset: node.offset,
@@ -63,7 +63,7 @@ class DeleteFunctionRule extends DartLintRule {
         FunctionExpressionInvocation node,
       ) {
         final String function = node.function.toString();
-        _checkAndReport(
+        _validateAndReport(
           reporter: reporter,
           name: function,
           offset: node.offset,
@@ -73,7 +73,7 @@ class DeleteFunctionRule extends DartLintRule {
     );
   }
 
-  void _checkAndReport({
+  void _validateAndReport({
     required ErrorReporter reporter,
     required String name,
     required int offset,

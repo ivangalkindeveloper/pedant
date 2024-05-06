@@ -5,6 +5,7 @@ import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
 import 'package:pedant/src/rule/delete/delete_prefix_postfix_rule.dart';
+import 'package:pedant/src/rule/delete/delete_private_in_function.dart';
 // import 'package:pedant/src/rule/test_rule.dart';
 
 PluginBase createPlugin() => _PedantBase();
@@ -32,6 +33,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     DeletePrefixPostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    DeletePrivateInFunctionRule.combine(
       config: config,
       ruleList: ruleList,
     );

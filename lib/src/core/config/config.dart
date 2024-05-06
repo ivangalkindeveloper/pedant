@@ -33,6 +33,7 @@ class Config {
     this.deletePostfixList,
     this.deletePrefixList,
     this.deletePrivateInFunction = true,
+    this.deletePublicInBloc = true,
     this.deleteTypeList,
     //
     this.lengthList,
@@ -66,6 +67,7 @@ class Config {
   final List<DeleteListItem>? deletePostfixList; //
   final List<DeleteListItem>? deletePrefixList; //
   final bool deletePrivateInFunction;
+  final bool deletePublicInBloc;
   final List<DeleteListItem>? deleteTypeList;
   //
   final List<LengthItem>? lengthList;
@@ -102,6 +104,7 @@ class Config {
         deletePostfixList: json?["delete_postfix_list"],
         deletePrefixList: json?["delete_prefix_list"],
         deletePrivateInFunction: json?["delete_private_in_function"] ?? true,
+        deletePublicInBloc: json?["delete_public_in_bloc"] ?? true,
         deleteTypeList: json?["delete_type_list"],
         //
         lengthList: json?["length_list"],
