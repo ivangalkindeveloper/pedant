@@ -3,18 +3,30 @@ import 'package:analyzer/dart/ast/visitor.dart';
 
 class TreeVisitor extends RecursiveAstVisitor<void> {
   const TreeVisitor({
-    required this.onVariableDeclaration,
+    this.onFieldFormalParameter,
+    this.onVariableDeclaration,
   });
 
   final void Function(
+    FieldFormalParameter node,
+  )? onFieldFormalParameter;
+  final void Function(
     VariableDeclaration node,
-  ) onVariableDeclaration;
+  )? onVariableDeclaration;
+
+  @override
+  void visitFieldFormalParameter(
+    FieldFormalParameter node,
+  ) =>
+      this.onFieldFormalParameter?.call(
+            node,
+          );
 
   @override
   void visitVariableDeclaration(
     VariableDeclaration node,
   ) =>
-      this.onVariableDeclaration(
-        node,
-      );
+      this.onVariableDeclaration?.call(
+            node,
+          );
 }

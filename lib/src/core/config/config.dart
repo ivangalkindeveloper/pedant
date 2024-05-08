@@ -74,6 +74,8 @@ class Config {
   //
   final List<LengthItem>? lengthList;
 
+  // delete multiplevariabledeclarations;
+
   factory Config.fromJson({
     required Map<String, dynamic>? json,
   }) =>
