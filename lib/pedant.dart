@@ -2,6 +2,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/rule/delete/delete_function_rule.dart';
+import 'package:pedant/src/rule/delete/delete_multiple_variable.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
 import 'package:pedant/src/rule/delete/delete_prefix_postfix_rule.dart';
@@ -22,6 +23,10 @@ class _PedantBase extends PluginBase {
     final List<LintRule> ruleList = [];
 
     DeleteFunctionRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    DeleteMultipleVariableRule.combine(
       config: config,
       ruleList: ruleList,
     );

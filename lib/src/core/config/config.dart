@@ -29,6 +29,7 @@ class Config {
     //
     this.deleteBlocDependencyInBloc = true,
     this.deleteFunctionList,
+    this.deleteMultipleVariable = true,
     this.deleteNew = true,
     this.deletePackageList,
     this.deletePostfixList,
@@ -64,6 +65,7 @@ class Config {
   //
   final bool deleteBlocDependencyInBloc;
   final List<DeleteListItem>? deleteFunctionList; //
+  final bool deleteMultipleVariable;
   final bool deleteNew; //
   final List<DeleteListItem>? deletePackageList; //
   final List<DeleteListItem>? deletePostfixList; //
@@ -73,8 +75,6 @@ class Config {
   final List<DeleteListItem>? deleteTypeList;
   //
   final List<LengthItem>? lengthList;
-
-  // delete multiplevariabledeclarations;
 
   factory Config.fromJson({
     required Map<String, dynamic>? json,
@@ -105,6 +105,7 @@ class Config {
         deleteBlocDependencyInBloc:
             json?["delete_bloc_dependency_in_bloc"] ?? true,
         deleteFunctionList: json?["delete_function_list"],
+        deleteMultipleVariable: json?["delete_multiple_variable"] ?? true,
         deleteNew: json?["delete_new"] ?? true,
         deletePackageList: json?["delete_package_list"],
         deletePostfixList: json?["delete_postfix_list"],
