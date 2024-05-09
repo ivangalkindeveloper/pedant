@@ -28,6 +28,8 @@ class Config {
     this.addBlocSealedState = true,
     //
     this.deleteBlocDependencyInBloc = true,
+    this.deleteBlocPublicProperty = true,
+    //
     this.deleteFunctionList,
     this.deleteMultipleVariable = true,
     this.deleteNew = true,
@@ -35,7 +37,6 @@ class Config {
     this.deletePostfixList,
     this.deletePrefixList,
     this.deletePrivateInFunction = true,
-    this.deletePublicInBloc = true,
     this.deleteTypeList,
     //
     this.lengthList,
@@ -64,6 +65,8 @@ class Config {
   final bool addBlocSealedState;
   //
   final bool deleteBlocDependencyInBloc;
+  final bool deleteBlocPublicProperty; //
+  //
   final List<DeleteListItem>? deleteFunctionList; //
   final bool deleteMultipleVariable;
   final bool deleteNew; //
@@ -71,7 +74,6 @@ class Config {
   final List<DeleteListItem>? deletePostfixList; //
   final List<DeleteListItem>? deletePrefixList; //
   final bool deletePrivateInFunction; //
-  final bool deletePublicInBloc; //
   final List<DeleteListItem>? deleteTypeList; //
   //
   final List<LengthItem>? lengthList;
@@ -104,6 +106,8 @@ class Config {
         //
         deleteBlocDependencyInBloc:
             json?["delete_bloc_dependency_in_bloc"] ?? true,
+        deleteBlocPublicProperty: json?["delete_bloc_public_property"] ?? true,
+        //
         deleteFunctionList: json?["delete_function_list"],
         deleteMultipleVariable: json?["delete_multiple_variable"] ?? true,
         deleteNew: json?["delete_new"] ?? true,
@@ -111,7 +115,6 @@ class Config {
         deletePostfixList: json?["delete_postfix_list"],
         deletePrefixList: json?["delete_prefix_list"],
         deletePrivateInFunction: json?["delete_private_in_function"] ?? true,
-        deletePublicInBloc: json?["delete_public_in_bloc"] ?? true,
         deleteTypeList: json?["delete_type_list"],
         //
         lengthList: json?["length_list"],

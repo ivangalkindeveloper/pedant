@@ -8,24 +8,24 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/bloc_type_checker.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-class DeletePublicInBlocRule extends DartLintRule {
+class DeleteBlocPublicPropertyRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deletePublicInBloc == false) {
+    if (config.deleteBlocPublicProperty == false) {
       return;
     }
 
     ruleList.add(
-      const DeletePublicInBlocRule(),
+      const DeleteBlocPublicPropertyRule(),
     );
   }
 
-  const DeletePublicInBlocRule()
+  const DeleteBlocPublicPropertyRule()
       : super(
           code: const LintCode(
-            name: "delete_public_in_bloc",
+            name: "delete_bloc_public_property",
             problemMessage: "Delete public properties in Bloc.",
             correctionMessage:
                 "Please change access to public preperties of Bloc or delete it.",
