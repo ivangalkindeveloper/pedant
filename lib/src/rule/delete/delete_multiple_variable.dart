@@ -28,7 +28,7 @@ class DeleteMultipleVariableRule extends DartLintRule {
             name: "delete_multiple_variable",
             problemMessage: "Delete multiple variable declarations.",
             correctionMessage: "Please delete multiple variable declarations.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: ErrorSeverity.WARNING,
           ),
         );
 
