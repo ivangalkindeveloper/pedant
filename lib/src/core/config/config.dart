@@ -72,7 +72,7 @@ class Config {
   final List<DeleteListItem>? deletePrefixList; //
   final bool deletePrivateInFunction; //
   final bool deletePublicInBloc; //
-  final List<DeleteListItem>? deleteTypeList;
+  final List<DeleteListItem>? deleteTypeList; //
   //
   final List<LengthItem>? lengthList;
 

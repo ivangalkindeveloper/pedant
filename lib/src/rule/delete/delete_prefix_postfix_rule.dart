@@ -158,10 +158,10 @@ class DeletePrefixPostfixRule extends DartLintRule {
     required void Function() onSuccess,
   }) {
     bool isMatch = false;
-    for (final String mathName in deleteListItem.nameList) {
+    for (final String matchName in deleteListItem.nameList) {
       if (this.validaton(
         name,
-        mathName,
+        matchName,
       )) {
         isMatch = true;
       }
