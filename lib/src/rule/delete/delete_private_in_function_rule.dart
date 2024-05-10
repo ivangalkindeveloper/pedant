@@ -104,8 +104,8 @@ class _Fix extends DartFix {
             "",
           );
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Rename to '$validName'",
-            priority: 0,
+            message: "pedant: Rename to '$validName'",
+            priority: 1000,
           );
           changeBuilder.addDartFileEdit(
             (

@@ -122,8 +122,8 @@ class _Fix extends DartFix {
             withNullability: false,
           );
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Delete '$displayString'",
-            priority: 0,
+            message: "pedant: Delete '$displayString'",
+            priority: 1000,
           );
           changeBuilder.addDartFileEdit(
             (

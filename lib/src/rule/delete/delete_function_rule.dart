@@ -120,8 +120,8 @@ class _Fix extends DartFix {
 
         final String name = node.methodName.name;
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Delete '$name'",
-          priority: 0,
+          message: "pedant: Delete '$name'",
+          priority: 1000,
         );
         changeBuilder.addDartFileEdit(
           (
@@ -146,8 +146,8 @@ class _Fix extends DartFix {
 
         final String function = node.function.toString();
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Delete '$function'",
-          priority: 0,
+          message: "pedant: Delete '$function'",
+          priority: 1000,
         );
         changeBuilder.addDartFileEdit(
           (

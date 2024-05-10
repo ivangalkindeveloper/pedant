@@ -2,6 +2,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -57,40 +58,50 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
 
           node.visitChildren(
             TreeVisitor(
-              onFieldFormalParameter: (
-                FieldFormalParameter node,
+              onConstructorDeclaration: (
+                ConstructorDeclaration node,
               ) {
-                final ParameterElement? declaredElement = node.declaredElement;
+                final ConstructorElement? declaredElement =
+                    node.declaredElement;
                 if (declaredElement == null) {
                   return;
                 }
 
-                if (declaredElement.isPrivate) {
-                  return;
-                }
+                for (final ParameterElement parameter
+                    in declaredElement.parameters) {
+                  if (parameter.isPrivate) {
+                    continue;
+                  }
 
-                reporter.reportErrorForOffset(
-                  this.code,
-                  declaredElement.nameOffset - 5,
-                  declaredElement.nameLength + 5,
-                );
+                  if (parameter.isInitializingFormal == false) {
+                    continue;
+                  }
+
+                  reporter.reportErrorForElement(
+                    this.code,
+                    parameter,
+                  );
+                }
               },
-              onVariableDeclaration: (
-                VariableDeclaration node,
+              onFieldDeclaration: (
+                FieldDeclaration node,
               ) {
-                final VariableElement? declaredElement = node.declaredElement;
-                if (declaredElement == null) {
-                  return;
-                }
+                for (final VariableDeclaration variable
+                    in node.fields.variables) {
+                  final declaredElement = variable.declaredElement;
+                  if (declaredElement == null) {
+                    continue;
+                  }
 
-                if (declaredElement.isPrivate) {
-                  return;
-                }
+                  if (declaredElement.isPrivate) {
+                    continue;
+                  }
 
-                reporter.reportErrorForElement(
-                  this.code,
-                  declaredElement,
-                );
+                  reporter.reportErrorForElement(
+                    this.code,
+                    declaredElement,
+                  );
+                }
               },
             ),
           );
@@ -133,15 +144,18 @@ class _Fix extends DartFix {
         final String validName =
             "${declaredElement.type.getDisplayString(withNullability: true)} ${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Rename to '$validName'",
-          priority: 0,
+          message: "pedant: Rename to '$validName'",
+          priority: 1000,
         );
         changeBuilder.addDartFileEdit(
           (
             DartFileEditBuilder builder,
           ) =>
               builder.addSimpleReplacement(
-            analysisError.sourceRange,
+            SourceRange(
+              analysisError.offset - 5,
+              analysisError.sourceRange.length + 5,
+            ),
             validName,
           ),
         );
@@ -165,8 +179,8 @@ class _Fix extends DartFix {
 
         final String validName = "_${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Rename to '$validName'",
-          priority: 0,
+          message: "pedant: Rename to '$validName'",
+          priority: 1000,
         );
         changeBuilder.addDartFileEdit(
           (

@@ -88,8 +88,8 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Delete 'new'",
-            priority: 0,
+            message: "pedant: Delete 'new'",
+            priority: 1000,
           );
           changeBuilder.addDartFileEdit(
             (

@@ -1,33 +1,16 @@
 // import 'package:bloc/bloc.dart';
 
-// class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
-//   ExampleBloc({
-//     required String publicOneProperty,
-//     required this.publicTwoProperty,
-//   })  : this._publicOneProperty = publicOneProperty,
+// class ExampleBloc extends Bloc<String, String> {
+//   ExampleBloc(
+//     this.property2, {
+//     required String property1,
+//     required this.property3,
+//   })  : this._property1 = property1,
 //         super(
-//           const ExampleInitial(),
-//         ) {
-//     on<ExampleEvent>(
-//       (
-//         event,
-//         emit,
-//       ) {},
-//     );
-//   }
+//           "",
+//         ) {}
 
-//   final String _publicOneProperty;
-//   final String publicTwoProperty;
-// }
-
-// sealed class ExampleEvent {
-//   const ExampleEvent();
-// }
-
-// sealed class ExampleState {
-//   const ExampleState();
-// }
-
-// final class ExampleInitial extends ExampleState {
-//   const ExampleInitial();
+//   final String _property1;
+//   final String property2;
+//   final String property3;
 // }

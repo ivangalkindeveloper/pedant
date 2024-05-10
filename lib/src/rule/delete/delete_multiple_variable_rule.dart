@@ -83,8 +83,8 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Split variable declarations",
-            priority: 0,
+            message: "pedant: Split variable declarations",
+            priority: 1000,
           );
           changeBuilder.addDartFileEdit(
             (
