@@ -15,8 +15,6 @@ class Config {
     this.addArrowFunctions = true,
     this.addRequiredProperties = true,
     this.addIfBracets = true,
-    this.addIfIndent = true,
-    this.addReturnIndent = true,
     //
     this.addTypePrefixList,
     this.addTypePostfixList,
@@ -27,7 +25,8 @@ class Config {
     this.addBlocSealedEvent = true,
     this.addBlocSealedState = true,
     //
-    this.deleteBlocDependencyInBloc = true,
+    this.deleteBlocDependentBloc = true,
+    this.deleteBlocDependentFlutter = true,
     this.deleteBlocPublicProperty = true,
     //
     this.deleteFunctionList,
@@ -42,18 +41,16 @@ class Config {
     this.lengthList,
   });
 
-  final bool addAbsoluteImport;
-  final bool addConstructor;
+  final bool addAbsoluteImport; // +
+  final bool addConstructor; // +
   final bool addConst;
-  final bool addType;
-  final bool addOverride;
+  final bool addType; // +
+  final bool addOverride; // +
   final bool addFinal;
   final bool addThis;
   final bool addArrowFunctions;
-  final bool addRequiredProperties;
+  final bool addRequiredProperties; // +
   final bool addIfBracets;
-  final bool addIfIndent;
-  final bool addReturnIndent;
   //
   final List<TypeListNameItem>? addTypePrefixList;
   final List<TypeListNameItem>? addTypePostfixList;
@@ -64,11 +61,12 @@ class Config {
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //
-  final bool deleteBlocDependencyInBloc;
+  final bool deleteBlocDependentBloc;
+  final bool deleteBlocDependentFlutter;
   final bool deleteBlocPublicProperty; //
   //
   final List<DeleteListItem>? deleteFunctionList; //
-  final bool deleteMultipleVariable;
+  final bool deleteMultipleVariable; //
   final bool deleteNew; //
   final List<DeleteListItem>? deletePackageList; //
   final List<DeleteListItem>? deletePostfixList; //
@@ -92,8 +90,6 @@ class Config {
         addArrowFunctions: json?["add_arrow_functions"] ?? true,
         addRequiredProperties: json?["add_required_properties"] ?? true,
         addIfBracets: json?["add_if_bracets"] ?? true,
-        addIfIndent: json?["add_if_indent"] ?? true,
-        addReturnIndent: json?["add_return_indent"] ?? true,
         //
         addTypePrefixList: json?["add_type_prefix_list"],
         addTypePostfixList: json?["add_type_postfix_list"],
@@ -104,8 +100,9 @@ class Config {
         addBlocSealedEvent: json?["add_bloc_sealed_event"] ?? true,
         addBlocSealedState: json?["add_bloc_sealed_state"] ?? true,
         //
-        deleteBlocDependencyInBloc:
-            json?["delete_bloc_dependency_in_bloc"] ?? true,
+        deleteBlocDependentBloc: json?["delete_bloc_dependent_bloc"] ?? true,
+        deleteBlocDependentFlutter:
+            json?["delete_bloc_dependent_flutter"] ?? true,
         deleteBlocPublicProperty: json?["delete_bloc_public_property"] ?? true,
         //
         deleteFunctionList: json?["delete_function_list"],
