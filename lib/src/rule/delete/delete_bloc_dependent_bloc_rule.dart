@@ -10,6 +10,7 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/bloc_type_checker.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
+//TODO Fix initializer fields in Bloc constructor too
 class DeleteBlocDependentBlocRule extends DartLintRule {
   static void combine({
     required Config config,
