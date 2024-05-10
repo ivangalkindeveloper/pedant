@@ -149,7 +149,6 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
           );
 }
 
-
 // node.visitChildren(
 //     TreeVisitor(
 //       onClassDeclaration: (node) => print(

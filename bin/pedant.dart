@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:tint/tint.dart';
 
 import 'package:pedant/src/utility/sort_import_declarations.dart';
 
@@ -17,8 +18,9 @@ void main(
     final String currentPath = Directory.current.path;
 
     if (argumentsResult.contains('--no-fix') == false) {
-      print("");
-      print("Fix current lint problems...");
+      print(
+        "Fix current lint problems...".yellow(),
+      );
       Process.runSync(
         "dart",
         const [
@@ -31,16 +33,18 @@ void main(
     }
 
     if (argumentsResult.contains('--no-sort-import') == false) {
-      print("");
-      print("Sorting import and part declarations...");
+      print(
+        "Sorting import and part declarations...".yellow(),
+      );
       sortImportDeclarations(
         currentPath: currentPath,
       );
     }
 
     if (argumentsResult.contains('--no-dart-format') == false) {
-      print("");
-      print("Formatting Dart code");
+      print(
+        "Formatting Dart code".yellow(),
+      );
       Process.runSync(
         "dart",
         const [
@@ -51,8 +55,9 @@ void main(
       );
     }
 
-    print("");
-    print("Updating lint problems...");
+    print(
+      "Updating lint problems...".yellow(),
+    );
     Process.runSync(
       "dart",
       const [
@@ -62,8 +67,9 @@ void main(
       ],
       workingDirectory: currentPath,
     );
-    print("");
-    print("Done.");
+    print(
+      "Done.".green(),
+    );
   } catch (error, stackTrace) {
     stdout.write(error);
     stdout.write(stackTrace);
