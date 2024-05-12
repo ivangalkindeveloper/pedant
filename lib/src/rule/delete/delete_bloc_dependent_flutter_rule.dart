@@ -20,12 +20,15 @@ class DeleteBlocDependentFlutterRule extends DartLintRule {
     }
 
     ruleList.add(
-      const DeleteBlocDependentFlutterRule(),
+      DeleteBlocDependentFlutterRule(
+        priority: config.priority,
+      ),
     );
   }
 
-  const DeleteBlocDependentFlutterRule()
-      : super(
+  const DeleteBlocDependentFlutterRule({
+    required this.priority,
+  }) : super(
           code: const LintCode(
             name: "delete_bloc_dependent_flutter",
             problemMessage:
@@ -35,6 +38,8 @@ class DeleteBlocDependentFlutterRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
+
+  final int priority;
 
   @override
   void run(
@@ -122,12 +127,18 @@ class DeleteBlocDependentFlutterRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -163,7 +174,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "pedant: Delete '${declaredElement.displayName}'",
-            priority: 1000,
+            priority: priority,
           );
           changeBuilder.addDartFileEdit(
             (
@@ -213,7 +224,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "pedant: Delete '${declaredElement.displayName}'",
-            priority: 1000,
+            priority: priority,
           );
           changeBuilder.addDartFileEdit(
             (

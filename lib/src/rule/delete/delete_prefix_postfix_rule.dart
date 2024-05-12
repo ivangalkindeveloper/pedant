@@ -37,6 +37,7 @@ class DeletePrefixPostfixRule extends DartLintRule {
                 name.startsWith(
               prefix,
             ),
+            priority: config.priority,
           ),
         );
       }
@@ -63,6 +64,7 @@ class DeletePrefixPostfixRule extends DartLintRule {
               name.endsWith(
             postfix,
           ),
+          priority: config.priority,
         ),
       );
     }
@@ -72,10 +74,12 @@ class DeletePrefixPostfixRule extends DartLintRule {
     required super.code,
     required this.deleteListItem,
     required this.validaton,
+    required this.priority,
   });
 
   final DeleteListItem deleteListItem;
   final bool Function(String, String) validaton;
+  final int priority;
 
   @override
   void run(
@@ -174,12 +178,18 @@ class DeletePrefixPostfixRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -309,7 +319,7 @@ class _Fix extends DartFix {
     );
     final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
       message: "pedant: Rename to '$validName'",
-      priority: 1000,
+      priority: priority,
     );
     changeBuilder.addDartFileEdit(
       (

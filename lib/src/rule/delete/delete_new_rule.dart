@@ -18,12 +18,15 @@ class DeleteNewRule extends DartLintRule {
     }
 
     ruleList.add(
-      const DeleteNewRule(),
+      DeleteNewRule(
+        priority: config.priority,
+      ),
     );
   }
 
-  const DeleteNewRule()
-      : super(
+  const DeleteNewRule({
+    required this.priority,
+  }) : super(
           code: const LintCode(
             name: "delete_new",
             problemMessage: "Operator 'new' is useless in last version of SDK.",
@@ -31,6 +34,8 @@ class DeleteNewRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
+
+  final int priority;
 
   @override
   void run(
@@ -61,12 +66,18 @@ class DeleteNewRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -89,7 +100,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "pedant: Delete 'new'",
-            priority: 1000,
+            priority: priority,
           );
           changeBuilder.addDartFileEdit(
             (

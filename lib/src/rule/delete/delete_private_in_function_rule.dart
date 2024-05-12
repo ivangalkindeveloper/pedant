@@ -18,12 +18,15 @@ class DeletePrivateInFunctionRule extends DartLintRule {
     }
 
     ruleList.add(
-      const DeletePrivateInFunctionRule(),
+      DeletePrivateInFunctionRule(
+        priority: config.priority,
+      ),
     );
   }
 
-  const DeletePrivateInFunctionRule()
-      : super(
+  const DeletePrivateInFunctionRule({
+    required this.priority,
+  }) : super(
           code: const LintCode(
             name: "delete_private_in_function",
             problemMessage:
@@ -33,6 +36,8 @@ class DeletePrivateInFunctionRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
+
+  final int priority;
 
   @override
   void run(
@@ -69,12 +74,18 @@ class DeletePrivateInFunctionRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -106,7 +117,7 @@ class _Fix extends DartFix {
           );
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "pedant: Rename to '$validName'",
-            priority: 1000,
+            priority: priority,
           );
           changeBuilder.addDartFileEdit(
             (

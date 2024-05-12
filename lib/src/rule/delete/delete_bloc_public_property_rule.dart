@@ -20,12 +20,15 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
     }
 
     ruleList.add(
-      const DeleteBlocPublicPropertyRule(),
+      DeleteBlocPublicPropertyRule(
+        priority: config.priority,
+      ),
     );
   }
 
-  const DeleteBlocPublicPropertyRule()
-      : super(
+  const DeleteBlocPublicPropertyRule({
+    required this.priority,
+  }) : super(
           code: const LintCode(
             name: "delete_bloc_public_property",
             problemMessage: "Delete public properties in Bloc.",
@@ -34,6 +37,8 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
+
+  final int priority;
 
   @override
   void run(
@@ -111,12 +116,18 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -146,7 +157,7 @@ class _Fix extends DartFix {
             "${declaredElement.type.getDisplayString(withNullability: true)} ${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "pedant: Rename to '$validName'",
-          priority: 1000,
+          priority: priority,
         );
         changeBuilder.addDartFileEdit(
           (
@@ -181,7 +192,7 @@ class _Fix extends DartFix {
         final String validName = "_${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "pedant: Rename to '$validName'",
-          priority: 1000,
+          priority: priority,
         );
         changeBuilder.addDartFileEdit(
           (

@@ -18,12 +18,15 @@ class DeleteMultipleVariableRule extends DartLintRule {
     }
 
     ruleList.add(
-      const DeleteMultipleVariableRule(),
+      DeleteMultipleVariableRule(
+        priority: config.priority,
+      ),
     );
   }
 
-  const DeleteMultipleVariableRule()
-      : super(
+  const DeleteMultipleVariableRule({
+    required this.priority,
+  }) : super(
           code: const LintCode(
             name: "delete_multiple_variable",
             problemMessage: "Delete multiple variable declarations.",
@@ -31,6 +34,8 @@ class DeleteMultipleVariableRule extends DartLintRule {
             errorSeverity: ErrorSeverity.WARNING,
           ),
         );
+
+  final int priority;
 
   @override
   void run(
@@ -56,12 +61,18 @@ class DeleteMultipleVariableRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -84,7 +95,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "pedant: Split variable declarations",
-            priority: 1000,
+            priority: priority,
           );
           changeBuilder.addDartFileEdit(
             (

@@ -19,6 +19,7 @@ class DeleteFunctionRule extends DartLintRule {
       ruleList.add(
         DeleteFunctionRule(
           deleteListItem: deleteListItem,
+          priority: config.priority,
         ),
       );
     }
@@ -26,6 +27,7 @@ class DeleteFunctionRule extends DartLintRule {
 
   DeleteFunctionRule({
     required this.deleteListItem,
+    required this.priority,
   }) : super(
           code: LintCode(
             name: "delete_function",
@@ -38,6 +40,7 @@ class DeleteFunctionRule extends DartLintRule {
         );
 
   final DeleteListItem deleteListItem;
+  final int priority;
 
   @override
   void run(
@@ -92,12 +95,18 @@ class DeleteFunctionRule extends DartLintRule {
 
   @override
   List<Fix> getFixes() => [
-        _Fix(),
+        _Fix(
+          priority: priority,
+        ),
       ];
 }
 
 class _Fix extends DartFix {
-  _Fix();
+  _Fix({
+    required this.priority,
+  });
+
+  final int priority;
 
   @override
   void run(
@@ -121,7 +130,7 @@ class _Fix extends DartFix {
         final String name = node.methodName.name;
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "pedant: Delete '$name'",
-          priority: 1000,
+          priority: priority,
         );
         changeBuilder.addDartFileEdit(
           (
@@ -147,7 +156,7 @@ class _Fix extends DartFix {
         final String function = node.function.toString();
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "pedant: Delete '$function'",
-          priority: 1000,
+          priority: priority,
         );
         changeBuilder.addDartFileEdit(
           (
