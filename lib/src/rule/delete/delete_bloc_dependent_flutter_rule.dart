@@ -1,6 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
@@ -11,28 +10,28 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/bloc_type_checker.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-//TODO Fix initializer fields in Bloc constructor too
-class DeleteBlocDependentBlocRule extends DartLintRule {
+class DeleteBlocDependentFlutterRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteBlocDependentBloc == false) {
+    if (config.deleteBlocDependentFlutter == false) {
       return;
     }
 
     ruleList.add(
-      const DeleteBlocDependentBlocRule(),
+      const DeleteBlocDependentFlutterRule(),
     );
   }
 
-  const DeleteBlocDependentBlocRule()
+  const DeleteBlocDependentFlutterRule()
       : super(
           code: const LintCode(
-            name: "delete_bloc_dependent_bloc",
-            problemMessage: "Delete Bloc dependency in current Bloc.",
+            name: "delete_bloc_dependent_flutter",
+            problemMessage:
+                "Delete Flutter resource dependency in current Bloc.",
             correctionMessage:
-                "Please delete this Bloc dependency.\nCommunication between Bloc's should occur only through widgets.",
+                "Please delete this Flutter resource dependency.\n",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -73,7 +72,7 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
                   }
 
                   this._validateAndReport(
-                    type: declaredElement.type,
+                    name: declaredElement.type.element?.library?.identifier,
                     onSuccess: () => reporter.reportErrorForElement(
                       this.code,
                       declaredElement,
@@ -93,7 +92,7 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
                   }
 
                   this._validateAndReport(
-                    type: declaredElement.type,
+                    name: declaredElement.type.element?.library?.identifier,
                     onSuccess: () => reporter.reportErrorForNode(
                       this.code,
                       node,
@@ -107,13 +106,14 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
       );
 
   void _validateAndReport({
-    required DartType type,
+    required String? name,
     required void Function() onSuccess,
   }) {
-    if (blocTypeChecker.isAssignableFromType(
-          type,
-        ) ==
-        false) {
+    if (name == null) {
+      return;
+    }
+
+    if (name.contains("package:flutter/") == false) {
       return;
     }
 

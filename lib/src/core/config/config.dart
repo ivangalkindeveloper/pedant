@@ -39,6 +39,7 @@ class Config {
     this.deleteTypeList,
     //
     this.lengthList,
+    this.priority = 1000,
   });
 
   final bool addAbsoluteImport; // +
@@ -52,16 +53,16 @@ class Config {
   final bool addRequiredProperties; // +
   final bool addIfBracets;
   //
-  final List<TypeListNameItem>? addTypePrefixList;
-  final List<TypeListNameItem>? addTypePostfixList;
-  final List<PathNameListItem>? addPathPrefixList;
-  final List<PathNameListItem>? addPathPostfixList;
+  final List<TypeListNameItem>? addTypePrefixList; // +
+  final List<TypeListNameItem>? addTypePostfixList; // +
+  final List<PathNameListItem>? addPathPrefixList; // +
+  final List<PathNameListItem>? addPathPostfixList; // +
   //
   final bool addBlocPart;
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //
-  final bool deleteBlocDependentBloc;
+  final bool deleteBlocDependentBloc; //
   final bool deleteBlocDependentFlutter;
   final bool deleteBlocPublicProperty; //
   //
@@ -74,7 +75,8 @@ class Config {
   final bool deletePrivateInFunction; //
   final List<DeleteListItem>? deleteTypeList; //
   //
-  final List<LengthItem>? lengthList;
+  final List<LengthItem>? lengthList; // +
+  final int priority;
 
   factory Config.fromJson({
     required Map<String, dynamic>? json,
@@ -115,5 +117,6 @@ class Config {
         deleteTypeList: json?["delete_type_list"],
         //
         lengthList: json?["length_list"],
+        priority: json?["priority"] ?? 1000,
       );
 }

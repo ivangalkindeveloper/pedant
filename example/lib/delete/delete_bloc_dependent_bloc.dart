@@ -4,7 +4,7 @@
 //   Example1Bloc()
 //       : super(
 //           "",
-//         ) {}
+//         );
 // }
 
 // class Example2Bloc extends Bloc<String, String> {
@@ -16,7 +16,7 @@
 //         this._example1bloc2 = example1bloc2,
 //         super(
 //           "",
-//         ) {}
+//         );
 
 //   final Example1Bloc _example1bloc1;
 //   final String _property1;
