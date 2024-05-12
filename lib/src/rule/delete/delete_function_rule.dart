@@ -35,7 +35,7 @@ class DeleteFunctionRule extends DartLintRule {
                 "Delete function: ${deleteListItem.nameList.join(", ")}.",
             correctionMessage:
                 "Please delete this function from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: ErrorSeverity.WARNING,
           ),
         );
 

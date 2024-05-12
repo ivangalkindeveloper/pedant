@@ -63,7 +63,7 @@ class Config {
   final bool addBlocSealedState;
   //
   final bool deleteBlocDependentBloc; //
-  final bool deleteBlocDependentFlutter;
+  final bool deleteBlocDependentFlutter; //
   final bool deleteBlocPublicProperty; //
   //
   final List<DeleteListItem>? deleteFunctionList; //

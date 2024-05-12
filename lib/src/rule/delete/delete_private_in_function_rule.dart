@@ -33,7 +33,7 @@ class DeletePrivateInFunctionRule extends DartLintRule {
                 "Delete declaration of private variable inside function.",
             correctionMessage:
                 "Please change this variable on public inside function.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: ErrorSeverity.WARNING,
           ),
         );
 

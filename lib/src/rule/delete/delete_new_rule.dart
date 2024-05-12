@@ -31,7 +31,7 @@ class DeleteNewRule extends DartLintRule {
             name: "delete_new",
             problemMessage: "Operator 'new' is useless in last version of SDK.",
             correctionMessage: "Please delete 'new' operator.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: ErrorSeverity.WARNING,
           ),
         );
 
