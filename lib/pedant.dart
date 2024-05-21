@@ -30,10 +30,10 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    // DeleteBlocDependentBlocRule.combine(
-    //   config: config,
-    //   ruleList: ruleList,
-    // );
+    DeleteBlocDependentBlocRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
     DeleteBlocPublicPropertyRule.combine(
       config: config,
       ruleList: ruleList,
