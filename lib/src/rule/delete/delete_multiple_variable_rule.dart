@@ -52,9 +52,9 @@ class DeleteMultipleVariableRule extends DartLintRule {
             return;
           }
 
-          reporter.reportErrorForNode(
-            this.code,
+          reporter.atNode(
             node,
+            this.code,
           );
         },
       );
@@ -94,7 +94,7 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Split variable declarations",
+            message: "Pedant: Split variable declarations",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(

@@ -80,10 +80,10 @@ class DeletePackageRule extends LintRule {
     }
 
     for (final (int, String) packageLine in indexList) {
-      reporter.reportErrorForOffset(
-        code,
-        packageLine.$1,
-        packageLine.$2.length,
+      reporter.atOffset(
+        offset: packageLine.$1,
+        length: packageLine.$2.length,
+        errorCode: this.code,
       );
     }
   }

@@ -59,14 +59,12 @@ class DeleteTypeRule extends DartLintRule {
             return;
           }
 
-          final String displayString = type.getDisplayString(
-            withNullability: false,
-          );
+          final String displayString = type.getDisplayString();
           _validate(
             name: displayString,
-            onSuccess: () => reporter.reportErrorForNode(
-              this.code,
+            onSuccess: () => reporter.atNode(
               node,
+              this.code,
             ),
           );
         },
@@ -127,11 +125,9 @@ class _Fix extends DartFix {
             return;
           }
 
-          final String displayString = type.getDisplayString(
-            withNullability: false,
-          );
+          final String displayString = type.getDisplayString();
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Delete '$displayString'",
+            message: "Pedant: Delete '$displayString'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(

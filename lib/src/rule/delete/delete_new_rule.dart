@@ -57,9 +57,9 @@ class DeleteNewRule extends DartLintRule {
             return;
           }
 
-          reporter.reportErrorForToken(
-            this.code,
+          reporter.atToken(
             node.keyword!,
+            this.code,
           );
         },
       );
@@ -99,7 +99,7 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Delete 'new'",
+            message: "Pedant: Delete 'new'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(

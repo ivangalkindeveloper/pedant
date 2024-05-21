@@ -79,9 +79,9 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
 
                   this._validateAndReport(
                     type: declaredElement.type,
-                    onSuccess: () => reporter.reportErrorForElement(
-                      this.code,
+                    onSuccess: () => reporter.atElement(
                       declaredElement,
+                      this.code,
                     ),
                   );
                 }
@@ -99,9 +99,9 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
 
                   this._validateAndReport(
                     type: declaredElement.type,
-                    onSuccess: () => reporter.reportErrorForNode(
-                      this.code,
+                    onSuccess: () => reporter.atNode(
                       node,
+                      this.code,
                     ),
                   );
                 }
@@ -173,7 +173,7 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Delete '${declaredElement.displayName}'",
+            message: "Pedant: Delete '${declaredElement.displayName}'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(
@@ -223,7 +223,7 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Delete '${declaredElement.displayName}'",
+            message: "Pedant: Delete '${declaredElement.displayName}'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(

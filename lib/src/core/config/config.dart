@@ -39,7 +39,7 @@ class Config {
     this.deleteTypeList,
     //
     this.lengthList,
-    this.priority = 10,
+    this.priority = 100,
   });
 
   final bool addAbsoluteImport; // +

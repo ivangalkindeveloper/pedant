@@ -83,9 +83,9 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
                     continue;
                   }
 
-                  reporter.reportErrorForElement(
-                    this.code,
+                  reporter.atElement(
                     parameter,
+                    this.code,
                   );
                 }
               },
@@ -103,9 +103,9 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
                     continue;
                   }
 
-                  reporter.reportErrorForElement(
-                    this.code,
+                  reporter.atElement(
                     declaredElement,
+                    this.code,
                   );
                 }
               },
@@ -154,9 +154,9 @@ class _Fix extends DartFix {
         }
 
         final String validName =
-            "${declaredElement.type.getDisplayString(withNullability: true)} ${declaredElement.displayName}";
+            "${declaredElement.type.getDisplayString()} ${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "pedant: Rename to '$validName'",
+          message: "Pedant: Rename to '$validName'",
           priority: priority,
         );
         changeBuilder.addDartFileEdit(
@@ -191,7 +191,7 @@ class _Fix extends DartFix {
 
         final String validName = "_${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "pedant: Rename to '$validName'",
+          message: "Pedant: Rename to '$validName'",
           priority: priority,
         );
         changeBuilder.addDartFileEdit(

@@ -10,6 +10,7 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/bloc_type_checker.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
+// Bug: In example not all flutter properties will be deleted
 class DeleteBlocDependentFlutterRule extends DartLintRule {
   static void combine({
     required Config config,
@@ -78,9 +79,9 @@ class DeleteBlocDependentFlutterRule extends DartLintRule {
 
                   this._validateAndReport(
                     name: declaredElement.type.element?.library?.identifier,
-                    onSuccess: () => reporter.reportErrorForElement(
-                      this.code,
+                    onSuccess: () => reporter.atElement(
                       declaredElement,
+                      this.code,
                     ),
                   );
                 }
@@ -98,9 +99,9 @@ class DeleteBlocDependentFlutterRule extends DartLintRule {
 
                   this._validateAndReport(
                     name: declaredElement.type.element?.library?.identifier,
-                    onSuccess: () => reporter.reportErrorForNode(
-                      this.code,
+                    onSuccess: () => reporter.atNode(
                       node,
+                      this.code,
                     ),
                   );
                 }
@@ -173,7 +174,7 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Delete '${declaredElement.displayName}'",
+            message: "Pedant: Delete '${declaredElement.displayName}'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(
@@ -223,7 +224,7 @@ class _Fix extends DartFix {
           }
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Delete '${declaredElement.displayName}'",
+            message: "Pedant: Delete '${declaredElement.displayName}'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(

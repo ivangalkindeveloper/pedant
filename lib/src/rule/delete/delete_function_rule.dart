@@ -86,10 +86,10 @@ class DeleteFunctionRule extends DartLintRule {
       return;
     }
 
-    reporter.reportErrorForOffset(
-      this.code,
-      offset,
-      length,
+    reporter.atOffset(
+      offset: offset,
+      length: length,
+      errorCode: this.code,
     );
   }
 
@@ -129,7 +129,7 @@ class _Fix extends DartFix {
 
         final String name = node.methodName.name;
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "pedant: Delete '$name'",
+          message: "Pedant: Delete '$name'",
           priority: priority,
         );
         changeBuilder.addDartFileEdit(
@@ -155,7 +155,7 @@ class _Fix extends DartFix {
 
         final String function = node.function.toString();
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "pedant: Delete '$function'",
+          message: "Pedant: Delete '$function'",
           priority: priority,
         );
         changeBuilder.addDartFileEdit(

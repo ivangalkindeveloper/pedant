@@ -98,9 +98,9 @@ class DeletePrefixPostfixRule extends DartLintRule {
 
         _validate(
           name: declaredElement.displayName,
-          onSuccess: () => reporter.reportErrorForElement(
-            this.code,
+          onSuccess: () => reporter.atElement(
             declaredElement,
+            this.code,
           ),
         );
 
@@ -108,9 +108,9 @@ class DeletePrefixPostfixRule extends DartLintRule {
             in declaredElement.constructors) {
           _validate(
             name: constructorElement.displayName,
-            onSuccess: () => reporter.reportErrorForElement(
-              this.code,
+            onSuccess: () => reporter.atElement(
               constructorElement,
+              this.code,
             ),
           );
         }
@@ -127,9 +127,9 @@ class DeletePrefixPostfixRule extends DartLintRule {
 
         _validate(
           name: declaredElement.displayName,
-          onSuccess: () => reporter.reportErrorForElement(
-            this.code,
+          onSuccess: () => reporter.atElement(
             declaredElement,
+            this.code,
           ),
         );
       },
@@ -138,19 +138,17 @@ class DeletePrefixPostfixRule extends DartLintRule {
       (
         InstanceCreationExpression node,
       ) {
-        final String? displayString = node.staticType?.getDisplayString(
-          withNullability: false,
-        );
+        final String? displayString = node.staticType?.getDisplayString();
         if (displayString == null) {
           return;
         }
 
         _validate(
           name: displayString,
-          onSuccess: () => reporter.reportErrorForOffset(
-            this.code,
-            node.offset,
-            displayString.length,
+          onSuccess: () => reporter.atOffset(
+            offset: node.offset,
+            length: displayString.length,
+            errorCode: this.code,
           ),
         );
       },
@@ -268,9 +266,7 @@ class _Fix extends DartFix {
         this._createChangeBuilder(
           reporter: reporter,
           analysisError: analysisError,
-          name: staticType.getDisplayString(
-            withNullability: false,
-          ),
+          name: staticType.getDisplayString(),
         );
       },
     );
@@ -318,7 +314,7 @@ class _Fix extends DartFix {
       name: name,
     );
     final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-      message: "pedant: Rename to '$validName'",
+      message: "Pedant: Rename to '$validName'",
       priority: priority,
     );
     changeBuilder.addDartFileEdit(

@@ -63,9 +63,9 @@ class DeletePrivateInFunctionRule extends DartLintRule {
                 return;
               }
 
-              reporter.reportErrorForElement(
-                this.code,
+              reporter.atElement(
                 declaredElement,
+                this.code,
               );
             },
           ),
@@ -116,7 +116,7 @@ class _Fix extends DartFix {
             "",
           );
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "pedant: Rename to '$validName'",
+            message: "Pedant: Rename to '$validName'",
             priority: priority,
           );
           changeBuilder.addDartFileEdit(
