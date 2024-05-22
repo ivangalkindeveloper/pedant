@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:path/path.dart';
+import 'package:pedant/src/utility/convert_import.dart';
 import 'package:yaml/yaml.dart';
 
 void sortImportDeclarations({
@@ -37,8 +37,13 @@ void sortImportDeclarations({
   }
 
   stdout.write(
-    "Sorted import for files: ${sortedDartFiles.length}",
+    "Sorted or converted import for files: ${sortedDartFiles.length}\n",
   );
+  for (final file in sortedDartFiles) {
+    stdout.write(
+      "${file.path.replaceAll("${Directory.current.path}/lib/", "")}\n",
+    );
+  }
 }
 
 List<File> _getFiles({
@@ -99,9 +104,10 @@ File? _sortFile({
     if (_isRelativeImport(
       line: line,
     )) {
-      line = _convertImport(
-        path: file.path,
+      line = convertImport(
         projectName: projectName,
+        libPath: "${Directory.current.path}/lib/",
+        filePath: file.path,
         line: line,
       );
     }
@@ -213,31 +219,3 @@ bool _isRelativeImport({
 }) =>
     line.startsWith("import '") &&
     (line.contains("../") || line.contains("./"));
-
-String _convertImport({
-  required String path,
-  required String projectName,
-  required String line,
-}) {
-  String importPath = line.split(RegExp(r"\'*\'"))[1];
-
-  final String fileDirectory = dirname(path);
-  final String libDirecotory = "${Directory.current.path}/lib/";
-
-  final String packagePrefix = "package:$projectName/";
-
-  if (importPath.contains(":")) {
-    return line;
-  }
-
-  importPath = normalize("$fileDirectory/$importPath/");
-  importPath = importPath.replaceAll(
-    libDirecotory,
-    packagePrefix,
-  );
-
-  final List<String> splittedPath = line.split(RegExp(r"\'*\'"));
-  splittedPath[1] = "'$importPath'";
-
-  return splittedPath.join();
-}

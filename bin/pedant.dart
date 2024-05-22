@@ -17,8 +17,8 @@ void main(
         .arguments;
     final String currentPath = Directory.current.path;
 
-    print(
-      "Watching lint problems...".yellow(),
+    stdout.write(
+      "Watching lint problems...\n".yellow(),
     );
     Process.runSync(
       "dart",
@@ -34,8 +34,8 @@ void main(
           "--no-fix",
         ) ==
         false) {
-      print(
-        "Fix current lint problems...".yellow(),
+      stdout.write(
+        "Fix current lint problems...\n".yellow(),
       );
       Process.runSync(
         "dart",
@@ -52,8 +52,8 @@ void main(
           "--no-sort-import",
         ) ==
         false) {
-      print(
-        "Sorting import and part declarations...".yellow(),
+      stdout.write(
+        "Sorting import and part declarations...\n".yellow(),
       );
       sortImportDeclarations(
         currentPath: currentPath,
@@ -64,8 +64,8 @@ void main(
           "--no-dart-format",
         ) ==
         false) {
-      print(
-        "Formatting Dart code".yellow(),
+      stdout.write(
+        "Formatting Dart code\n".yellow(),
       );
       Process.runSync(
         "dart",
@@ -77,8 +77,8 @@ void main(
       );
     }
 
-    print(
-      "Updating lint problems...".yellow(),
+    stdout.write(
+      "Updating lint problems...\n".yellow(),
     );
     Process.runSync(
       "dart",
@@ -90,8 +90,8 @@ void main(
       workingDirectory: currentPath,
     );
 
-    print(
-      "Done.".green(),
+    stdout.write(
+      "Done.\n".green(),
     );
   } catch (error, stackTrace) {
     stdout.write(error);

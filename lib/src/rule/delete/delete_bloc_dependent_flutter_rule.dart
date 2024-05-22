@@ -35,7 +35,7 @@ class DeleteBlocDependentFlutterRule extends DartLintRule {
             problemMessage:
                 "Delete Flutter resource dependency in current Bloc.",
             correctionMessage:
-                "Please delete this Flutter resource dependency.\n",
+                "Please delete this Flutter resource dependency.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

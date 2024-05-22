@@ -1,11 +1,11 @@
-// import 'package:bloc/bloc.dart';
+import 'package:bloc/bloc.dart';
 
-// class Example1Bloc extends Bloc<String, String> {
-//   Example1Bloc()
-//       : super(
-//           "",
-//         );
-// }
+class Example1Bloc extends Bloc<String, String> {
+  Example1Bloc()
+      : super(
+          "",
+        );
+}
 
 // class Example2Bloc extends Bloc<String, String> {
 //   Example2Bloc(

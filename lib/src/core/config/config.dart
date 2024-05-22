@@ -5,7 +5,6 @@ import 'package:pedant/src/core/data/type_list_name_item.dart';
 
 class Config {
   const Config({
-    this.addAbsoluteImport = true,
     this.addConstructor = true,
     this.addConst = true,
     this.addType = true,
@@ -36,13 +35,13 @@ class Config {
     this.deletePostfixList,
     this.deletePrefixList,
     this.deletePrivateInFunction = true,
+    this.deleteRelativeImport = true,
     this.deleteTypeList,
     //
     this.lengthList,
     this.priority = 100,
   });
 
-  final bool addAbsoluteImport; // +
   final bool addConstructor; // +
   final bool addConst;
   final bool addType; // +
@@ -73,6 +72,7 @@ class Config {
   final List<DeleteListItem>? deletePostfixList; //
   final List<DeleteListItem>? deletePrefixList; //
   final bool deletePrivateInFunction; //
+  final bool deleteRelativeImport; //
   final List<DeleteListItem>? deleteTypeList; //
   //
   final List<LengthItem>? lengthList; // +
@@ -82,7 +82,6 @@ class Config {
     required Map<String, dynamic>? json,
   }) =>
       Config(
-        addAbsoluteImport: json?["add_absolute_import"] ?? true,
         addConstructor: json?["add_constructor"] ?? true,
         addConst: json?["add_const"] ?? true,
         addType: json?["add_type"] ?? true,
@@ -114,6 +113,7 @@ class Config {
         deletePostfixList: json?["delete_postfix_list"],
         deletePrefixList: json?["delete_prefix_list"],
         deletePrivateInFunction: json?["delete_private_in_function"] ?? true,
+        deleteRelativeImport: json?["delete_relative_import"] ?? true,
         deleteTypeList: json?["delete_type_list"],
         //
         lengthList: json?["length_list"],
