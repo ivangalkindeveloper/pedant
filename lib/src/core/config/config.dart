@@ -117,6 +117,6 @@ class Config {
         deleteTypeList: json?["delete_type_list"],
         //
         lengthList: json?["length_list"],
-        priority: json?["priority"] ?? 1000,
+        priority: json?["priority"] ?? 100,
       );
 }
