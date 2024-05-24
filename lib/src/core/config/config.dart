@@ -5,40 +5,39 @@ import 'package:pedant/src/core/data/type_list_name_item.dart';
 
 class Config {
   const Config({
-    this.addConstructor = true,
-    this.addConst = true,
-    this.addType = true,
-    this.addOverride = true,
-    this.addFinal = true,
-    this.addThis = true,
-    this.editArrowFunctions = true,
-    this.editRequiredProperties = true,
-    this.addIfBracets = true,
-    //
-    this.addTypePrefixList,
-    this.addTypePostfixList,
-    this.addPathPrefixList,
-    this.addPathPostfixList,
-    //
     this.addBlocPart = true,
     this.addBlocSealedEvent = true,
     this.addBlocSealedState = true,
     //
+    this.addConst = true,
+    this.addConstructor = true,
+    this.addFinal = true,
+    this.addIfBracets = true,
+    this.addOverride = true,
+    this.addPathPostfixList,
+    this.addPathPrefixList,
+    this.addThis = true,
+    this.addType = true,
+    this.addTypePostfixList,
+    this.addTypePrefixList,
+    //
     this.deleteBlocDependentBloc = true,
     this.deleteBlocDependentFlutter = true,
     this.deleteBlocPublicProperty = true,
-    //
     this.deleteFunctionList,
-    this.editMultipleVariable = true,
     this.deleteNew = true,
     this.deletePackageList,
     this.deletePostfixList,
     this.deletePrefixList,
-    this.editPrivateInFunction = true,
-    this.editRelativeImport = true,
     this.deleteTypeList,
     //
-    this.lengthList,
+    this.editArrowFunctions = true,
+    this.editMultipleVariable = true,
+    this.editPrivateInFunction = true,
+    this.editRelativeImport = true,
+    this.editRequiredProperties = true,
+    this.editLengthFile,
+    //
     this.priority = 100,
   });
 
@@ -73,8 +72,7 @@ class Config {
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
   final bool editRequiredProperties; // +
-  //
-  final List<LengthItem>? lengthList; // +
+  final List<LengthItem>? editLengthFile; // +
   //
   final int priority;
 
@@ -114,8 +112,7 @@ class Config {
         editPrivateInFunction: json?["edit_private_in_function"] ?? true,
         editRelativeImport: json?["edit_relative_import"] ?? true,
         editRequiredProperties: json?["edit_required_properties"] ?? true,
-        //
-        lengthList: json?["length_list"],
+        editLengthFile: json?["edit_length_file"],
         //
         priority: json?["priority"] ?? 100,
       );
