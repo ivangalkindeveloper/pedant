@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:pedant/src/utility/convert_import.dart';
 import 'package:yaml/yaml.dart';
+
+import 'package:pedant/src/utility/convert_import.dart';
 
 void sortImportDeclarations({
   required String currentPath,

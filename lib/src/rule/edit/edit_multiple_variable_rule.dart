@@ -8,29 +8,30 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 
-class DeleteMultipleVariableRule extends DartLintRule {
+class EditMultipleVariableRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteMultipleVariable == false) {
+    if (config.editMultipleVariable == false) {
       return;
     }
 
     ruleList.add(
-      DeleteMultipleVariableRule(
+      EditMultipleVariableRule(
         priority: config.priority,
       ),
     );
   }
 
-  const DeleteMultipleVariableRule({
+  const EditMultipleVariableRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "delete_multiple_variable",
-            problemMessage: "Delete multiple variable declarations.",
-            correctionMessage: "Please delete multiple variable declarations.",
+            name: "edit_multiple_variable",
+            problemMessage: "Edit multiple variable declarations.",
+            correctionMessage:
+                "Please edit multiple variable declarations to separate variable declaration.",
             errorSeverity: ErrorSeverity.WARNING,
           ),
         );

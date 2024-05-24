@@ -8,29 +8,29 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-class DeletePrivateInFunctionRule extends DartLintRule {
+class EditPrivateInFunctionRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deletePrivateInFunction == false) {
+    if (config.editPrivateInFunction == false) {
       return;
     }
 
     ruleList.add(
-      DeletePrivateInFunctionRule(
+      EditPrivateInFunctionRule(
         priority: config.priority,
       ),
     );
   }
 
-  const DeletePrivateInFunctionRule({
+  const EditPrivateInFunctionRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "delete_private_in_function",
+            name: "edit_private_in_function",
             problemMessage:
-                "Delete declaration of private variable inside function.",
+                "Edit declaration of private variable inside function.",
             correctionMessage:
                 "Please change this variable on public inside function.",
             errorSeverity: ErrorSeverity.WARNING,

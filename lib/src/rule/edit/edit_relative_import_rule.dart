@@ -3,33 +3,34 @@ import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/convert_import.dart';
 
-class DeleteRelativeImportRule extends DartLintRule {
+class EditRelativeImportRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteRelativeImport == false) {
+    if (config.editRelativeImport == false) {
       return;
     }
 
     ruleList.add(
-      DeleteRelativeImportRule(
+      EditRelativeImportRule(
         priority: config.priority,
       ),
     );
   }
 
-  DeleteRelativeImportRule({
+  EditRelativeImportRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "delete_relative_import",
-            problemMessage: "Delete relative resource import.",
+            name: "edit_relative_import",
+            problemMessage: "Edit relative resource import.",
             correctionMessage:
-                "Please delete for this resource relative import.",
+                "Please edit for this resource relative import to absolute.",
             errorSeverity: ErrorSeverity.WARNING,
           ),
         );
