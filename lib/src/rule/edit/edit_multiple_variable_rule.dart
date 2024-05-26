@@ -63,7 +63,7 @@ class EditMultipleVariableRule extends DartLintRule {
   @override
   List<Fix> getFixes() => [
         _Fix(
-          priority: priority,
+          priority: this.priority,
         ),
       ];
 }
@@ -96,7 +96,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Split variable declarations",
-            priority: priority,
+            priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
             (

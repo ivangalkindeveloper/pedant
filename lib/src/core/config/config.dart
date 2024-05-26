@@ -14,12 +14,12 @@ class Config {
     this.addFinal = true,
     this.addIfBracets = true,
     this.addOverride = true,
-    this.addPathPostfixList,
-    this.addPathPrefixList,
+    this.addPostfixByPathList,
+    this.addPostfixByTypeList,
+    this.addPrefixByPathList,
+    this.addPrefixByTypeList,
     this.addThis = true,
     this.addType = true,
-    this.addTypePostfixList,
-    this.addTypePrefixList,
     //
     this.deleteBlocDependentBloc = true,
     this.deleteBlocDependentFlutter = true,
@@ -50,12 +50,12 @@ class Config {
   final bool addFinal;
   final bool addIfBracets;
   final bool addOverride; // +
-  final List<PathNameListItem>? addPathPostfixList; // +
-  final List<PathNameListItem>? addPathPrefixList; // +
+  final List<PathNameListItem>? addPostfixByPathList; // +
+  final List<TypeListNameItem>? addPostfixByTypeList; // +
+  final List<PathNameListItem>? addPrefixByPathList; // +
+  final List<TypeListNameItem>? addPrefixByTypeList; // +
   final bool addThis;
   final bool addType; // +
-  final List<TypeListNameItem>? addTypePostfixList; // +
-  final List<TypeListNameItem>? addTypePrefixList; // +
   //
   final bool deleteBlocDependentBloc; //
   final bool deleteBlocDependentFlutter; //
@@ -89,12 +89,12 @@ class Config {
         addFinal: json?["add_final"] ?? true,
         addIfBracets: json?["add_if_bracets"] ?? true,
         addOverride: json?["add_override"] ?? true,
-        addPathPostfixList: json?["add_path_postfix_list"],
-        addPathPrefixList: json?["add_path_prefix_list"],
+        addPostfixByPathList: json?["add_postfix_by_path_list"],
+        addPostfixByTypeList: json?["add_postfix_by_type_list"],
+        addPrefixByPathList: json?["add_prefix_by_path_list"],
+        addPrefixByTypeList: json?["add_prefix_by_type_list"],
         addThis: json?["add_this"] ?? true,
         addType: json?["add_type"] ?? true,
-        addTypePostfixList: json?["add_type_postfix_list"],
-        addTypePrefixList: json?["add_type_prefix_list"],
         //
         deleteBlocDependentBloc: json?["delete_bloc_dependent_bloc"] ?? true,
         deleteBlocDependentFlutter:

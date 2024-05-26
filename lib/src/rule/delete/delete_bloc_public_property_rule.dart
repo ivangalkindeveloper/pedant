@@ -117,7 +117,7 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
   @override
   List<Fix> getFixes() => [
         _Fix(
-          priority: priority,
+          priority: this.priority,
         ),
       ];
 }
@@ -157,7 +157,7 @@ class _Fix extends DartFix {
             "${declaredElement.type.getDisplayString()} ${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Rename to '$validName'",
-          priority: priority,
+          priority: this.priority,
         );
         changeBuilder.addDartFileEdit(
           (
@@ -192,7 +192,7 @@ class _Fix extends DartFix {
         final String validName = "_${declaredElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Rename to '$validName'",
-          priority: priority,
+          priority: this.priority,
         );
         changeBuilder.addDartFileEdit(
           (

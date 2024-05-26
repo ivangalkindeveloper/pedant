@@ -128,7 +128,7 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
   @override
   List<Fix> getFixes() => [
         _Fix(
-          priority: priority,
+          priority: this.priority,
         ),
       ];
 }
@@ -174,7 +174,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Delete '${declaredElement.displayName}'",
-            priority: priority,
+            priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
             (
@@ -224,7 +224,7 @@ class _Fix extends DartFix {
 
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Delete '${declaredElement.displayName}'",
-            priority: priority,
+            priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
             (

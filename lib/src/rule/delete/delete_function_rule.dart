@@ -96,7 +96,7 @@ class DeleteFunctionRule extends DartLintRule {
   @override
   List<Fix> getFixes() => [
         _Fix(
-          priority: priority,
+          priority: this.priority,
         ),
       ];
 }
@@ -130,7 +130,7 @@ class _Fix extends DartFix {
         final String name = node.methodName.name;
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Delete '$name'",
-          priority: priority,
+          priority: this.priority,
         );
         changeBuilder.addDartFileEdit(
           (
@@ -156,7 +156,7 @@ class _Fix extends DartFix {
         final String function = node.function.toString();
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Delete '$function'",
-          priority: priority,
+          priority: this.priority,
         );
         changeBuilder.addDartFileEdit(
           (
