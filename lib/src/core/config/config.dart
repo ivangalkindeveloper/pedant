@@ -46,7 +46,7 @@ class Config {
   final bool addBlocSealedState;
   //
   final bool addConst;
-  final bool addConstructor; // +
+  final bool addConstructor; //
   final bool addFinal;
   final bool addIfBracets;
   final bool addOverride; // +
