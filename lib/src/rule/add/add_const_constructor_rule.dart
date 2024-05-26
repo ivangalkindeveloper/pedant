@@ -6,32 +6,31 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
 
-class AddConstructorRule extends DartLintRule {
+class AddConstConstructorRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addConstructor == false) {
+    if (config.addConstConstructor == false) {
       return;
     }
 
     ruleList.add(
-      AddConstructorRule(
+      AddConstConstructorRule(
         priority: config.priority,
       ),
     );
   }
 
-  const AddConstructorRule({
+  const AddConstConstructorRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_constructor",
-            problemMessage: "Add class constructor",
+            name: "add_const_constructor",
+            problemMessage: "Add const constructor",
             correctionMessage:
-                "Please add default constructor declaration to this class.",
+                "Please add const keyword to default constructor of this class.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -44,46 +43,27 @@ class AddConstructorRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.registry.addConstructorDeclaration(
         (
-          ClassDeclaration classDeclaration,
+          ConstructorDeclaration node,
         ) {
-          final ClassElement? classElement = classDeclaration.declaredElement;
-          if (classElement == null) {
+          final ConstructorElement? declaredElement = node.declaredElement;
+          if (declaredElement == null) {
             return;
           }
 
-          final List<ConstructorElement> constructors =
-              classElement.constructors;
-          if (constructors.isEmpty) {
+          if (declaredElement.isConst == true) {
             return;
           }
 
-          bool hasDefaultConstructorDeclaration = false;
-
-          classDeclaration.visitChildren(
-            TreeVisitor(
-              onConstructorDeclaration: (
-                ConstructorDeclaration constructorDeclaration,
-              ) {
-                final ConstructorElement? constructorElement =
-                    constructorDeclaration.declaredElement;
-                if (constructorElement == null) {
-                  return;
-                }
-
-                hasDefaultConstructorDeclaration =
-                    constructors.first == constructorElement;
-              },
-            ),
-          );
-
-          if (hasDefaultConstructorDeclaration == true) {
-            return;
+          for (final parameter in declaredElement.parameters) {
+            if (parameter.isFinal == false) {
+              return;
+            }
           }
 
-          reporter.atNode(
-            classDeclaration,
+          reporter.atElement(
+            declaredElement,
             this.code,
           );
         },
@@ -112,9 +92,9 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addClassDeclaration(
+    context.registry.addConstructorDeclaration(
       (
-        ClassDeclaration node,
+        ConstructorDeclaration node,
       ) {
         if (analysisError.sourceRange.intersects(
               node.sourceRange,
@@ -123,13 +103,14 @@ class _Fix extends DartFix {
           return;
         }
 
-        final ClassElement? declaredElement = node.declaredElement;
+        final ConstructorElement? declaredElement = node.declaredElement;
         if (declaredElement == null) {
           return;
         }
 
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Pedant: Add '${declaredElement.displayName}' constructor",
+          message:
+              "Pedant: Add const to '${declaredElement.displayName}' constructor",
           priority: this.priority,
         );
         changeBuilder.addDartFileEdit(
@@ -137,13 +118,12 @@ class _Fix extends DartFix {
             DartFileEditBuilder builder,
           ) =>
               builder.addInsertion(
-            node.leftBracket.offset + 1,
+            node.offset,
             (
               DartEditBuilder builder,
             ) =>
-                builder.writeConstructorDeclaration(
-              declaredElement.name,
-              isConst: true,
+                builder.write(
+              "const ",
             ),
           ),
         );

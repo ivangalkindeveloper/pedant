@@ -10,6 +10,7 @@ class Config {
     this.addBlocSealedState = true,
     //
     this.addConst = true,
+    this.addConstConstructor = true,
     this.addConstructor = true,
     this.addFinal = true,
     this.addIfBracets = true,
@@ -46,6 +47,7 @@ class Config {
   final bool addBlocSealedState;
   //
   final bool addConst;
+  final bool addConstConstructor;
   final bool addConstructor; //
   final bool addFinal;
   final bool addIfBracets;
@@ -85,6 +87,7 @@ class Config {
         addBlocSealedState: json?["add_bloc_sealed_state"] ?? true,
         //
         addConst: json?["add_const"] ?? true,
+        addConstConstructor: json?["add_const_constructor"] ?? true,
         addConstructor: json?["add_constructor"] ?? true,
         addFinal: json?["add_final"] ?? true,
         addIfBracets: json?["add_if_bracets"] ?? true,

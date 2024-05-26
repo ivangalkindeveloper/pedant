@@ -1,3 +1,1 @@
-// class ExampleClass {
-//   const ExampleClass();
-// }
+// class ExampleClass {}
