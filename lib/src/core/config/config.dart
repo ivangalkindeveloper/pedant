@@ -1,7 +1,7 @@
 import 'package:pedant/src/core/data/delete_list_item.dart';
+import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
-import 'package:pedant/src/core/data/type_list_name_item.dart';
 
 class Config {
   const Config({
@@ -9,27 +9,27 @@ class Config {
     this.addBlocSealedEvent = true,
     this.addBlocSealedState = true,
     //
+    this.addClassPostfixByKeywordList,
+    this.addClassPostfixByPathList,
+    this.addClassPrefixByKeywordList,
+    this.addClassPrefixByPathList,
     this.addConstConstructor = true,
     this.addConstVariable = true,
     this.addConstructor = true,
     this.addFinal = true,
     this.addIfBracets = true,
     this.addOverride = true,
-    this.addPostfixByPathList,
-    this.addPostfixByTypeList,
-    this.addPrefixByPathList,
-    this.addPrefixByTypeList,
     this.addThis = true,
     this.addType = true,
     //
     this.deleteBlocDependentBloc = true,
     this.deleteBlocDependentFlutter = true,
     this.deleteBlocPublicProperty = true,
+    this.deleteClassPostfixList,
+    this.deleteClassPrefixList,
     this.deleteFunctionList,
     this.deleteNew = true,
     this.deletePackageList,
-    this.deletePostfixList,
-    this.deletePrefixList,
     this.deleteTypeList,
     //
     this.editArrowFunctions = true,
@@ -46,27 +46,27 @@ class Config {
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //
+  final List<KeywordListNameItem>? addClassPostfixByKeywordList; //
+  final List<PathNameListItem>? addClassPostfixByPathList; //
+  final List<KeywordListNameItem>? addClassPrefixByKeywordList; //
+  final List<PathNameListItem>? addClassPrefixByPathList; //
   final bool addConstConstructor; //
   final bool addConstVariable;
   final bool addConstructor; //
   final bool addFinal;
   final bool addIfBracets;
   final bool addOverride; // +
-  final List<PathNameListItem>? addPostfixByPathList; // +
-  final List<TypeListNameItem>? addPostfixByTypeList; // +
-  final List<PathNameListItem>? addPrefixByPathList; // +
-  final List<TypeListNameItem>? addPrefixByTypeList; // +
   final bool addThis;
   final bool addType; // +
   //
   final bool deleteBlocDependentBloc; //
   final bool deleteBlocDependentFlutter; //
   final bool deleteBlocPublicProperty; //
+  final List<DeleteListItem>? deleteClassPostfixList; //
+  final List<DeleteListItem>? deleteClassPrefixList; //
   final List<DeleteListItem>? deleteFunctionList; //
   final bool deleteNew; //
   final List<DeleteListItem>? deletePackageList; //
-  final List<DeleteListItem>? deletePostfixList; //
-  final List<DeleteListItem>? deletePrefixList; //
   final List<DeleteListItem>? deleteTypeList; //
   //
   final bool editArrowFunctions;
@@ -86,16 +86,17 @@ class Config {
         addBlocSealedEvent: json?["add_bloc_sealed_event"] ?? true,
         addBlocSealedState: json?["add_bloc_sealed_state"] ?? true,
         //
+        addClassPostfixByKeywordList:
+            json?["add_class_postfix_by_keyword_list"],
+        addClassPostfixByPathList: json?["add_class_postfix_by_path_list"],
+        addClassPrefixByKeywordList: json?["add_class_prefix_by_keyword_list"],
+        addClassPrefixByPathList: json?["add_class_prefix_by_path_list"],
         addConstConstructor: json?["add_const_constructor"] ?? true,
         addConstVariable: json?["add_const_variable"] ?? true,
         addConstructor: json?["add_constructor"] ?? true,
         addFinal: json?["add_final"] ?? true,
         addIfBracets: json?["add_if_bracets"] ?? true,
         addOverride: json?["add_override"] ?? true,
-        addPostfixByPathList: json?["add_postfix_by_path_list"],
-        addPostfixByTypeList: json?["add_postfix_by_type_list"],
-        addPrefixByPathList: json?["add_prefix_by_path_list"],
-        addPrefixByTypeList: json?["add_prefix_by_type_list"],
         addThis: json?["add_this"] ?? true,
         addType: json?["add_type"] ?? true,
         //
@@ -103,11 +104,11 @@ class Config {
         deleteBlocDependentFlutter:
             json?["delete_bloc_dependent_flutter"] ?? true,
         deleteBlocPublicProperty: json?["delete_bloc_public_property"] ?? true,
+        deleteClassPostfixList: json?["delete_class_postfix_list"],
+        deleteClassPrefixList: json?["delete_class_prefix_list"],
         deleteFunctionList: json?["delete_function_list"],
         deleteNew: json?["delete_new"] ?? true,
         deletePackageList: json?["delete_package_list"],
-        deletePostfixList: json?["delete_postfix_list"],
-        deletePrefixList: json?["delete_prefix_list"],
         deleteTypeList: json?["delete_type_list"],
         //
         editArrowFunctions: json?["edit_arrow_functions"] ?? true,

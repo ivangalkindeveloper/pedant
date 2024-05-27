@@ -1,16 +1,18 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_keyword_rule.dart';
+import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_path_rule.dart';
 import 'package:pedant/src/rule/add/add_const_constructor_rule.dart';
 import 'package:pedant/src/rule/add/add_const_variable_rule.dart';
 import 'package:pedant/src/rule/add/add_constructor_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_bloc_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_flutter_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_public_property_rule.dart';
+import 'package:pedant/src/rule/delete/delete_class_prefix_postfix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
-import 'package:pedant/src/rule/delete/delete_prefix_postfix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
 import 'package:pedant/src/rule/edit/edit_multiple_variable_rule.dart';
 import 'package:pedant/src/rule/edit/edit_private_in_function_rule.dart';
@@ -30,6 +32,14 @@ class _PedantBase extends PluginBase {
     const Config config = Config();
     final List<LintRule> ruleList = [];
 
+    AddClassPrefixPostfixByKeywordRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddClassPrefixPostfixByPathRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
     AddConstConstructorRule.combine(
       config: config,
       ruleList: ruleList,
@@ -54,6 +64,10 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
+    DeleteClassPrefixPostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
     DeleteFunctionRule.combine(
       config: config,
       ruleList: ruleList,
@@ -63,10 +77,6 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     DeletePackageRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
-    DeletePrefixPostfixRule.combine(
       config: config,
       ruleList: ruleList,
     );

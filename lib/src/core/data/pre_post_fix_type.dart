@@ -1,0 +1,4 @@
+enum PrePostFixType {
+  prefix,
+  postfix;
+}
