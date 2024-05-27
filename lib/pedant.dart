@@ -2,6 +2,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/rule/add/add_const_constructor_rule.dart';
+import 'package:pedant/src/rule/add/add_const_variable_rule.dart';
 import 'package:pedant/src/rule/add/add_constructor_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_bloc_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_flutter_rule.dart';
@@ -30,6 +31,10 @@ class _PedantBase extends PluginBase {
     final List<LintRule> ruleList = [];
 
     AddConstConstructorRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddConstVariableRule.combine(
       config: config,
       ruleList: ruleList,
     );
