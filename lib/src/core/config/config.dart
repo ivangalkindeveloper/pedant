@@ -123,19 +123,43 @@ class Config {
         deleteBlocDependentFlutter:
             map["delete_bloc_dependent_flutter"] ?? true,
         deleteBlocPublicProperty: map["delete_bloc_public_property"] ?? true,
-        deleteClassPostfixList: map["delete_class_postfix_list"],
-        deleteClassPrefixList: map["delete_class_prefix_list"],
-        deleteFunctionList: map["delete_function_list"],
+        deleteClassPostfixList: (map["delete_class_postfix_list"] as List?)
+            ?.map(
+              (e) => DeleteListItem.fromYaml(e),
+            )
+            .toList(),
+        deleteClassPrefixList: (map["delete_class_prefix_list"] as List?)
+            ?.map(
+              (e) => DeleteListItem.fromYaml(e),
+            )
+            .toList(),
+        deleteFunctionList: (map["delete_function_list"] as List?)
+            ?.map(
+              (e) => DeleteListItem.fromYaml(e),
+            )
+            .toList(),
         deleteNew: map["delete_new"] ?? true,
-        deletePackageList: map["delete_package_list"],
-        deleteTypeList: map["delete_type_list"],
+        deletePackageList: (map["delete_package_list"] as List?)
+            ?.map(
+              (e) => DeleteListItem.fromYaml(e),
+            )
+            .toList(),
+        deleteTypeList: (map["delete_type_list"] as List?)
+            ?.map(
+              (e) => DeleteListItem.fromYaml(e),
+            )
+            .toList(),
         //
         editArrowFunctions: map["edit_arrow_functions"] ?? true,
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,
         editRequiredProperties: map["edit_required_properties"] ?? true,
-        editLengthFile: map["edit_length_file"],
+        editLengthFile: (map["edit_length_file"] as List?)
+            ?.map(
+              (e) => LengthItem.fromYaml(e),
+            )
+            .toList(),
         //
         priority: map["priority"] ?? 100,
       );

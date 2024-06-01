@@ -10,12 +10,11 @@ custom_lint:
       add_class_postfix_by_keyword_list:
         -
           keywordList:
-            - final
             - base
-          name: Class
+          name: Base
       add_class_postfix_by_path_list:
         -
-          path: lib/add/
+          path: lib/add/add_class_postfix_by_path_list
           nameList: 
             - AppBar
             - Button
@@ -28,6 +27,6 @@ custom_lint:
           name: I
       add_class_prefix_by_path_list:
         -
-          path: lib/add/
+          path: lib/add/add_class_prefix_by_path_list
           nameList: 
-            - I
+            - FF
