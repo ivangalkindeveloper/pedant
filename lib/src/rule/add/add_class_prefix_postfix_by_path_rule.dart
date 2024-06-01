@@ -79,8 +79,7 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
         (
           ClassDeclaration node,
         ) {
-          final String source = node.toSource();
-          if (source.contains(this.pathNameListItem.path) == false) {
+          if (resolver.path.contains(this.pathNameListItem.path) == false) {
             return;
           }
 
@@ -114,29 +113,24 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
     required String name,
     required void Function() onSuccess,
   }) {
-    bool isMatch = false;
     for (final String matchName in pathNameListItem.nameList) {
       switch (this.type) {
         case PrePostFixType.prefix:
           if (name.startsWith(
             matchName,
           )) {
-            continue;
+            return;
           }
 
         case PrePostFixType.postfix:
           if (name.endsWith(
             matchName,
           )) {
-            continue;
+            return;
           }
       }
-
-      isMatch = true;
     }
 
-    if (isMatch) {
-      onSuccess();
-    }
+    onSuccess();
   }
 }

@@ -1,41 +1,21 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:yaml/yaml.dart';
+import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 
-Config getConfig() {
-  final String currentPath = Directory.current.path;
-  final File pedantYamlFile = File(
-    "$currentPath/pedant.yaml",
-  );
-  if (pedantYamlFile.existsSync()) {
-    final dynamic pedantYaml = loadYaml(
-      pedantYamlFile.readAsStringSync(),
-    );
-    final String pedantString = jsonEncode(pedantYaml);
-    final dynamic pedantJson = jsonDecode(pedantString);
-
-    return Config.fromJson(
-      json: pedantJson["pedant"],
-    );
+Config getConfig({
+  required Map<String, LintOptions> rules,
+}) {
+  if (rules.isEmpty) {
+    return const Config();
   }
 
-  final File pubspecYamlFile = File(
-    "$currentPath/pubspec.yaml",
-  );
-  if (pubspecYamlFile.existsSync()) {
-    final dynamic pubspecYaml = loadYaml(
-      pubspecYamlFile.readAsStringSync(),
+  try {
+    return Config.fromYaml(
+      map: rules.entries.first.value.json,
     );
-    final String pubspecString = jsonEncode(pubspecYaml);
-    final dynamic pubspecJson = jsonDecode(pubspecString);
-
-    return Config.fromJson(
-      json: pubspecJson["pedant"],
-    );
+  } catch (error, stackTrace) {
+    print(error);
+    print(stackTrace);
+    return const Config();
   }
-
-  return const Config();
 }

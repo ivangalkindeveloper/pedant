@@ -78,46 +78,65 @@ class Config {
   //
   final int priority;
 
-  factory Config.fromJson({
-    required Map<String, dynamic>? json,
+  factory Config.fromYaml({
+    required Map<String, dynamic> map,
   }) =>
       Config(
-        addBlocPart: json?["add_bloc_part"] ?? true,
-        addBlocSealedEvent: json?["add_bloc_sealed_event"] ?? true,
-        addBlocSealedState: json?["add_bloc_sealed_state"] ?? true,
+        addBlocPart: map["add_bloc_part"] ?? true,
+        addBlocSealedEvent: map["add_bloc_sealed_event"] ?? true,
+        addBlocSealedState: map["add_bloc_sealed_state"] ?? true,
         //
         addClassPostfixByKeywordList:
-            json?["add_class_postfix_by_keyword_list"],
-        addClassPostfixByPathList: json?["add_class_postfix_by_path_list"],
-        addClassPrefixByKeywordList: json?["add_class_prefix_by_keyword_list"],
-        addClassPrefixByPathList: json?["add_class_prefix_by_path_list"],
-        addConstConstructor: json?["add_const_constructor"] ?? true,
-        addConstVariable: json?["add_const_variable"] ?? true,
-        addConstructor: json?["add_constructor"] ?? true,
-        addFinal: json?["add_final"] ?? true,
-        addIfBracets: json?["add_if_bracets"] ?? true,
-        addOverride: json?["add_override"] ?? true,
-        addThis: json?["add_this"] ?? true,
-        addType: json?["add_type"] ?? true,
+            (map["add_class_postfix_by_keyword_list"] as List?)
+                ?.map(
+                  (e) => KeywordListNameItem.fromYaml(e),
+                )
+                .toList(),
+        addClassPostfixByPathList:
+            (map["add_class_postfix_by_path_list"] as List?)
+                ?.map(
+                  (e) => PathNameListItem.fromYaml(e),
+                )
+                .toList(),
+        addClassPrefixByKeywordList:
+            (map["add_class_prefix_by_keyword_list"] as List?)
+                ?.map(
+                  (e) => KeywordListNameItem.fromYaml(e),
+                )
+                .toList(),
+        addClassPrefixByPathList:
+            (map["add_class_prefix_by_path_list"] as List?)
+                ?.map(
+                  (e) => PathNameListItem.fromYaml(e),
+                )
+                .toList(),
+        addConstConstructor: map["add_const_constructor"] ?? true,
+        addConstVariable: map["add_const_variable"] ?? true,
+        addConstructor: map["add_constructor"] ?? true,
+        addFinal: map["add_final"] ?? true,
+        addIfBracets: map["add_if_bracets"] ?? true,
+        addOverride: map["add_override"] ?? true,
+        addThis: map["add_this"] ?? true,
+        addType: map["add_type"] ?? true,
         //
-        deleteBlocDependentBloc: json?["delete_bloc_dependent_bloc"] ?? true,
+        deleteBlocDependentBloc: map["delete_bloc_dependent_bloc"] ?? true,
         deleteBlocDependentFlutter:
-            json?["delete_bloc_dependent_flutter"] ?? true,
-        deleteBlocPublicProperty: json?["delete_bloc_public_property"] ?? true,
-        deleteClassPostfixList: json?["delete_class_postfix_list"],
-        deleteClassPrefixList: json?["delete_class_prefix_list"],
-        deleteFunctionList: json?["delete_function_list"],
-        deleteNew: json?["delete_new"] ?? true,
-        deletePackageList: json?["delete_package_list"],
-        deleteTypeList: json?["delete_type_list"],
+            map["delete_bloc_dependent_flutter"] ?? true,
+        deleteBlocPublicProperty: map["delete_bloc_public_property"] ?? true,
+        deleteClassPostfixList: map["delete_class_postfix_list"],
+        deleteClassPrefixList: map["delete_class_prefix_list"],
+        deleteFunctionList: map["delete_function_list"],
+        deleteNew: map["delete_new"] ?? true,
+        deletePackageList: map["delete_package_list"],
+        deleteTypeList: map["delete_type_list"],
         //
-        editArrowFunctions: json?["edit_arrow_functions"] ?? true,
-        editMultipleVariable: json?["edit_multiple_variable"] ?? true,
-        editPrivateInFunction: json?["edit_private_in_function"] ?? true,
-        editRelativeImport: json?["edit_relative_import"] ?? true,
-        editRequiredProperties: json?["edit_required_properties"] ?? true,
-        editLengthFile: json?["edit_length_file"],
+        editArrowFunctions: map["edit_arrow_functions"] ?? true,
+        editMultipleVariable: map["edit_multiple_variable"] ?? true,
+        editPrivateInFunction: map["edit_private_in_function"] ?? true,
+        editRelativeImport: map["edit_relative_import"] ?? true,
+        editRequiredProperties: map["edit_required_properties"] ?? true,
+        editLengthFile: map["edit_length_file"],
         //
-        priority: json?["priority"] ?? 100,
+        priority: map["priority"] ?? 100,
       );
 }

@@ -17,6 +17,7 @@ import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
 import 'package:pedant/src/rule/edit/edit_multiple_variable_rule.dart';
 import 'package:pedant/src/rule/edit/edit_private_in_function_rule.dart';
 import 'package:pedant/src/rule/edit/edit_relative_import_rule.dart';
+import 'package:pedant/src/utility/get_config.dart';
 
 // import 'package:pedant/src/rule/test_rule.dart';
 
@@ -29,7 +30,9 @@ class _PedantBase extends PluginBase {
   List<LintRule> getLintRules(
     CustomLintConfigs configs,
   ) {
-    const Config config = Config();
+    final Config config = getConfig(
+      rules: configs.rules,
+    );
     final List<LintRule> ruleList = [];
 
     AddClassPrefixPostfixByKeywordRule.combine(
