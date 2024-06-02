@@ -1,36 +1,35 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 
-class AddExtensionPostfixRule extends DartLintRule {
+class AddIfBracesRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addExtensionPostfix == false) {
+    if (config.addIfBraces == false) {
       return;
     }
 
     ruleList.add(
-      AddExtensionPostfixRule(
+      AddIfBracesRule(
         priority: config.priority,
       ),
     );
   }
 
-  const AddExtensionPostfixRule({
+  const AddIfBracesRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_extension_postfix",
-            problemMessage: "Add extension postfix",
+            name: "add_if_braces",
+            problemMessage: "Add 'if' statement braces",
             correctionMessage:
-                "Please add postfix 'Extension' to this extension.",
-            errorSeverity: ErrorSeverity.ERROR,
+                "Please add braces to then block of this 'if' statement declaration.",
+            errorSeverity: ErrorSeverity.WARNING,
           ),
         );
 
@@ -42,23 +41,17 @@ class AddExtensionPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addExtensionDeclaration(
+      context.registry.addIfStatement(
         (
-          ExtensionDeclaration node,
+          IfStatement node,
         ) {
-          final ExtensionElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
+          final Statement thenStatement = node.thenStatement;
+          if (thenStatement.beginToken.stringValue == "{") {
             return;
           }
 
-          if (declaredElement.displayName.endsWith(
-            "Extension",
-          )) {
-            return;
-          }
-
-          reporter.atElement(
-            declaredElement,
+          reporter.atNode(
+            node,
             this.code,
           );
         },
@@ -87,9 +80,9 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addExtensionDeclaration(
+      context.registry.addIfStatement(
         (
-          ExtensionDeclaration node,
+          IfStatement node,
         ) {
           if (analysisError.sourceRange.intersects(
                 node.sourceRange,
@@ -98,15 +91,9 @@ class _Fix extends DartFix {
             return;
           }
 
-          final ExtensionElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          final String displayName = declaredElement.displayName;
-          final String validName = "${displayName}Extension";
+          final Statement thenStatement = node.thenStatement;
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Pedant: Rename to '$validName'",
+            message: "Pedant: Add braces",
             priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
@@ -114,8 +101,8 @@ class _Fix extends DartFix {
               DartFileEditBuilder builder,
             ) =>
                 builder.addSimpleReplacement(
-              analysisError.sourceRange,
-              validName,
+              thenStatement.sourceRange,
+              "{${thenStatement.toString()}}",
             ),
           );
         },

@@ -19,7 +19,7 @@ class Config {
     this.addConstructor = true,
     this.addExtensionPostfix = true,
     this.addFinal = true,
-    this.addIfBracets = true,
+    this.addIfBraces = true,
     this.addMixinPostfix = true,
     this.addOverride = true,
     this.addThis = true,
@@ -59,7 +59,7 @@ class Config {
   final bool addConstructor; //
   final bool addExtensionPostfix; //
   final bool addFinal;
-  final bool addIfBracets;
+  final bool addIfBraces; //
   final bool addMixinPostfix; //
   final bool addOverride;
   final bool addThis;
@@ -122,7 +122,7 @@ class Config {
         addConstructor: map["add_constructor"] ?? true,
         addExtensionPostfix: map["add_extension_postfix"] ?? true,
         addFinal: map["add_final"] ?? true,
-        addIfBracets: map["add_if_bracets"] ?? true,
+        addIfBraces: map["add_if_braces"] ?? true,
         addMixinPostfix: map["add_mixin_postfix"] ?? true,
         addOverride: map["add_override"] ?? true,
         addThis: map["add_this"] ?? true,

@@ -50,28 +50,18 @@ class AddMixinPostfixRule extends DartLintRule {
             return;
           }
 
-          _validate(
-            name: declaredElement.displayName,
-            onSuccess: () => reporter.atElement(
-              declaredElement,
-              this.code,
-            ),
+          if (declaredElement.displayName.endsWith(
+            "Mixin",
+          )) {
+            return;
+          }
+
+          reporter.atElement(
+            declaredElement,
+            this.code,
           );
         },
       );
-
-  void _validate({
-    required String name,
-    required void Function() onSuccess,
-  }) {
-    if (name.endsWith(
-      "Mixin",
-    )) {
-      return;
-    }
-
-    onSuccess();
-  }
 
   @override
   List<Fix> getFixes() => [
