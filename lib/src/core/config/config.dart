@@ -16,8 +16,10 @@ class Config {
     this.addConstConstructor = true,
     this.addConstVariable = true,
     this.addConstructor = true,
+    this.addExtensionPostfix = true,
     this.addFinal = true,
     this.addIfBracets = true,
+    this.addMixinPostfix = true,
     this.addOverride = true,
     this.addThis = true,
     this.addType = true,
@@ -53,11 +55,13 @@ class Config {
   final bool addConstConstructor; //
   final bool addConstVariable;
   final bool addConstructor; //
+  final bool addExtensionPostfix; //
   final bool addFinal;
   final bool addIfBracets;
-  final bool addOverride; // +
+  final bool addMixinPostfix; //
+  final bool addOverride;
   final bool addThis;
-  final bool addType; // +
+  final bool addType;
   //
   final bool deleteBlocDependentBloc; //
   final bool deleteBlocDependentFlutter; //
@@ -73,8 +77,8 @@ class Config {
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
-  final bool editRequiredProperties; // +
-  final List<LengthItem>? editLengthFile; // +
+  final bool editRequiredProperties;
+  final List<LengthItem>? editLengthFile;
   //
   final int priority;
 
@@ -113,8 +117,10 @@ class Config {
         addConstConstructor: map["add_const_constructor"] ?? true,
         addConstVariable: map["add_const_variable"] ?? true,
         addConstructor: map["add_constructor"] ?? true,
+        addExtensionPostfix: map["add_extension_postfix"] ?? true,
         addFinal: map["add_final"] ?? true,
         addIfBracets: map["add_if_bracets"] ?? true,
+        addMixinPostfix: map["add_mixin_postfix"] ?? true,
         addOverride: map["add_override"] ?? true,
         addThis: map["add_this"] ?? true,
         addType: map["add_type"] ?? true,

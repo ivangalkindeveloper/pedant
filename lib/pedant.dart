@@ -6,6 +6,8 @@ import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_path_rule.dart';
 import 'package:pedant/src/rule/add/add_const_constructor_rule.dart';
 import 'package:pedant/src/rule/add/add_const_variable_rule.dart';
 import 'package:pedant/src/rule/add/add_constructor_rule.dart';
+import 'package:pedant/src/rule/add/add_extension_postfix_rule.dart';
+import 'package:pedant/src/rule/add/add_mixin_postfix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_bloc_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_flutter_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_public_property_rule.dart';
@@ -52,6 +54,14 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     AddConstructorRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddExtensionPostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddMixinPostfixRule.combine(
       config: config,
       ruleList: ruleList,
     );
