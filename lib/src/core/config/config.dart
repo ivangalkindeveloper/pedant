@@ -36,7 +36,7 @@ class Config {
     this.deletePackageList,
     this.deleteTypeList,
     //
-    this.editArrowFunctions = true,
+    this.editArrowFunction = true,
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
@@ -77,7 +77,7 @@ class Config {
   final List<DeleteListItem>? deletePackageList; //
   final List<DeleteListItem>? deleteTypeList; //
   //
-  final bool editArrowFunctions;
+  final bool editArrowFunction; //
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
@@ -162,7 +162,7 @@ class Config {
             )
             .toList(),
         //
-        editArrowFunctions: map["edit_arrow_functions"] ?? true,
+        editArrowFunction: map["edit_arrow_function"] ?? true,
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,

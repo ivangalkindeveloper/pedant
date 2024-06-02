@@ -1,34 +1,34 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 
-class AddIfBracesRule extends DartLintRule {
+class EditArrowFunctionRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addIfBraces == false) {
+    if (config.addExtensionPostfix == false) {
       return;
     }
 
     ruleList.add(
-      AddIfBracesRule(
+      EditArrowFunctionRule(
         priority: config.priority,
       ),
     );
   }
 
-  const AddIfBracesRule({
+  const EditArrowFunctionRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_if_braces",
-            problemMessage: "Add 'if' statement braces",
-            correctionMessage:
-                "Please add braces to then block of this 'if' statement declaration.",
+            name: "edit_arrow_function",
+            problemMessage: "Edit to arrow function",
+            correctionMessage: "Please edit this function to arrow function.",
             errorSeverity: ErrorSeverity.WARNING,
           ),
         );
@@ -41,13 +41,20 @@ class AddIfBracesRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addIfStatement(
+      context.registry.addFunctionBody(
         (
-          IfStatement node,
+          FunctionBody node,
         ) {
-          final Statement thenStatement = node.thenStatement;
-          final String beginLexeme = thenStatement.beginToken.lexeme;
-          if (beginLexeme == "{") {
+          final String beginLexeme = node.beginToken.lexeme;
+          final String endLexeme = node.endToken.lexeme;
+          if (beginLexeme != "{" || endLexeme != "}") {
+            return;
+          }
+
+          final SyntacticEntity? entity = node.childEntities.firstOrNull;
+          final List<String> entitySplit = entity.toString().split("; ");
+          final String? secondLexeme = node.beginToken.next?.lexeme;
+          if (secondLexeme != "return" || entitySplit.length > 1) {
             return;
           }
 
@@ -81,9 +88,9 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addIfStatement(
+      context.registry.addFunctionBody(
         (
-          IfStatement node,
+          FunctionBody node,
         ) {
           if (analysisError.sourceRange.intersects(
                 node.sourceRange,
@@ -92,9 +99,18 @@ class _Fix extends DartFix {
             return;
           }
 
-          final Statement thenStatement = node.thenStatement;
+          final String nodeString = node.toString();
+          final String cleanNode = nodeString
+              .substring(
+                1,
+                nodeString.length - 1,
+              )
+              .replaceAll(
+                "return ",
+                "",
+              );
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Pedant: Add braces",
+            message: "Pedant: Edit to arrow function",
             priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
@@ -102,8 +118,8 @@ class _Fix extends DartFix {
               DartFileEditBuilder builder,
             ) =>
                 builder.addSimpleReplacement(
-              thenStatement.sourceRange,
-              "{${thenStatement.toString()}}",
+              analysisError.sourceRange,
+              "=> $cleanNode",
             ),
           );
         },
