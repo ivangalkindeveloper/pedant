@@ -6,6 +6,7 @@ import 'package:pedant/src/core/data/path_name_list_item.dart';
 class Config {
   const Config({
     this.addBlocPart = true,
+    this.addBlocPostfix = true,
     this.addBlocSealedEvent = true,
     this.addBlocSealedState = true,
     //
@@ -46,6 +47,7 @@ class Config {
   });
 
   final bool addBlocPart;
+  final bool addBlocPostfix;
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //
@@ -89,6 +91,7 @@ class Config {
   }) =>
       Config(
         addBlocPart: map["add_bloc_part"] ?? true,
+        addBlocPostfix: map["add_bloc_postfix"] ?? true,
         addBlocSealedEvent: map["add_bloc_sealed_event"] ?? true,
         addBlocSealedState: map["add_bloc_sealed_state"] ?? true,
         //
