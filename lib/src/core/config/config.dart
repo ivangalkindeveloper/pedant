@@ -13,6 +13,7 @@ class Config {
     this.addClassPostfixByPathList,
     this.addClassPrefixByKeywordList,
     this.addClassPrefixByPathList,
+    this.addComma = true,
     this.addConstConstructor = true,
     this.addConstVariable = true,
     this.addConstructor = true,
@@ -52,6 +53,7 @@ class Config {
   final List<PathNameListItem>? addClassPostfixByPathList; //
   final List<KeywordListNameItem>? addClassPrefixByKeywordList; //
   final List<PathNameListItem>? addClassPrefixByPathList; //
+  final bool addComma;
   final bool addConstConstructor; //
   final bool addConstVariable;
   final bool addConstructor; //
@@ -114,6 +116,7 @@ class Config {
                   (e) => PathNameListItem.fromYaml(e),
                 )
                 .toList(),
+        addComma: map["add_comma"] ?? true,
         addConstConstructor: map["add_const_constructor"] ?? true,
         addConstVariable: map["add_const_variable"] ?? true,
         addConstructor: map["add_constructor"] ?? true,
