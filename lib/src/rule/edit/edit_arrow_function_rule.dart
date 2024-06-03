@@ -46,15 +46,20 @@ class EditArrowFunctionRule extends DartLintRule {
           FunctionBody node,
         ) {
           final String beginLexeme = node.beginToken.lexeme;
+          final String? nextBeginLexeme = node.beginToken.next?.lexeme;
           final String endLexeme = node.endToken.lexeme;
-          if (beginLexeme != "{" || endLexeme != "}") {
+          if (beginLexeme != "{" ||
+              nextBeginLexeme == "}" ||
+              endLexeme != "}") {
             return;
           }
 
           final SyntacticEntity? entity = node.childEntities.firstOrNull;
-          final List<String> entitySplit = entity.toString().split("; ");
+          final List<String> entitySplit = entity.toString().split(
+                "; ",
+              );
           final String? secondLexeme = node.beginToken.next?.lexeme;
-          if (secondLexeme != "return" || entitySplit.length > 1) {
+          if (secondLexeme != "return" && entitySplit.length > 1) {
             return;
           }
 

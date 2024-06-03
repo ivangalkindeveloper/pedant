@@ -62,6 +62,12 @@ class AddConstConstructorRule extends DartLintRule {
             }
           }
 
+          final ConstructorElement? superConstructor =
+              declaredElement.superConstructor;
+          if (superConstructor != null && superConstructor.isConst == false) {
+            return;
+          }
+
           reporter.atElement(
             declaredElement,
             this.code,

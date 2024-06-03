@@ -9,6 +9,7 @@ import 'package:pedant/src/rule/add/add_constructor_rule.dart';
 import 'package:pedant/src/rule/add/add_extension_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_if_bracets_rule.dart';
 import 'package:pedant/src/rule/add/add_mixin_postfix_rule.dart';
+import 'package:pedant/src/rule/add/add_override_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_bloc_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_dependent_flutter_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_public_property_rule.dart';
@@ -68,6 +69,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     AddMixinPostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddOverrideRule.combine(
       config: config,
       ruleList: ruleList,
     );

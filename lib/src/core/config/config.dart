@@ -63,7 +63,7 @@ class Config {
   final bool addFinal;
   final bool addIfBraces; //
   final bool addMixinPostfix; //
-  final bool addOverride;
+  final bool addOverride; //
   final bool addThis;
   final bool addType;
   //
