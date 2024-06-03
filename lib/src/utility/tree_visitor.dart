@@ -13,7 +13,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
     this.onFunctionDeclaration,
     this.onInstanceCreationExpression,
     this.onMethodDeclaration,
+    this.onPropertyAccess,
     this.onSimpleFormalParameter,
+    this.onSimpleIdentifier,
     this.onVariableDeclaration,
   });
 
@@ -58,8 +60,16 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   )? onMethodDeclaration;
 
   final void Function(
+    PropertyAccess node,
+  )? onPropertyAccess;
+
+  final void Function(
     SimpleFormalParameter node,
   )? onSimpleFormalParameter;
+
+  final void Function(
+    SimpleIdentifier node,
+  )? onSimpleIdentifier;
 
   final void Function(
     VariableDeclaration node,
@@ -138,6 +148,14 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
           );
 
   @override
+  void visitPropertyAccess(
+    PropertyAccess node,
+  ) =>
+      this.onPropertyAccess?.call(
+            node,
+          );
+
+  @override
   void visitMethodDeclaration(
     MethodDeclaration node,
   ) =>
@@ -150,6 +168,14 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
     SimpleFormalParameter node,
   ) =>
       this.onSimpleFormalParameter?.call(
+            node,
+          );
+
+  @override
+  void visitSimpleIdentifier(
+    SimpleIdentifier node,
+  ) =>
+      this.onSimpleIdentifier?.call(
             node,
           );
 
@@ -193,6 +219,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
 //       ),
 //       onSimpleFormalParameter: (node) => print(
 //         "onSimpleFormalParameter: $node",
+//       ),
+//             onSimpleIdentifier: (node) => print(
+//         "onSimpleIdentifier: $node",
 //       ),
 //       onVariableDeclaration: (node) => print(
 //         "onVariableDeclaration: $node",

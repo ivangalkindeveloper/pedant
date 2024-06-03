@@ -76,13 +76,14 @@ class AddOverrideRule extends DartLintRule {
               declaredElement.library,
             );
 
-            if (inheritedSetter != null) {
-              reporter.atElement(
-                field,
-                this.code,
-              );
+            if (inheritedSetter == null) {
               continue;
             }
+
+            reporter.atElement(
+              field,
+              this.code,
+            );
           }
 
           for (final MethodElement method in declaredElement.methods) {

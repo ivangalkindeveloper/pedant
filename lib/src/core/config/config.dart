@@ -18,6 +18,7 @@ class Config {
     this.addConstConstructor = true,
     this.addConstVariable = true,
     this.addConstructor = true,
+    this.addCubitPostfix = true,
     this.addExtensionPostfix = true,
     this.addFinal = true,
     this.addIfBraces = true,
@@ -37,10 +38,11 @@ class Config {
     this.deleteTypeList,
     //
     this.editArrowFunction = true,
+    this.editContructorNamedParameters = true,
+    this.editFunctionNamedParameters = true,
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
-    this.editRequiredProperties = true,
     this.editLengthFile,
     //
     this.priority = 100,
@@ -59,6 +61,7 @@ class Config {
   final bool addConstConstructor; //
   final bool addConstVariable;
   final bool addConstructor; //
+  final bool addCubitPostfix;
   final bool addExtensionPostfix; //
   final bool addFinal;
   final bool addIfBraces; //
@@ -78,10 +81,11 @@ class Config {
   final List<DeleteListItem>? deleteTypeList; //
   //
   final bool editArrowFunction; //
+  final bool editContructorNamedParameters;
+  final bool editFunctionNamedParameters;
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
-  final bool editRequiredProperties;
   final List<LengthItem>? editLengthFile;
   //
   final int priority;
@@ -123,6 +127,7 @@ class Config {
         addConstConstructor: map["add_const_constructor"] ?? true,
         addConstVariable: map["add_const_variable"] ?? true,
         addConstructor: map["add_constructor"] ?? true,
+        addCubitPostfix: map["add_cubit_postfix"] ?? true,
         addExtensionPostfix: map["add_extension_postfix"] ?? true,
         addFinal: map["add_final"] ?? true,
         addIfBraces: map["add_if_braces"] ?? true,
@@ -163,10 +168,13 @@ class Config {
             .toList(),
         //
         editArrowFunction: map["edit_arrow_function"] ?? true,
+        editContructorNamedParameters:
+            map["edit_constructor_named_parameters"] ?? true,
+        editFunctionNamedParameters:
+            map["edit_function_named_parameters"] ?? true,
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,
-        editRequiredProperties: map["edit_required_properties"] ?? true,
         editLengthFile: (map["edit_length_file"] as List?)
             ?.map(
               (e) => LengthItem.fromYaml(e),
