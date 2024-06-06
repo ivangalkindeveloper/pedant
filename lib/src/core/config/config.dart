@@ -61,13 +61,13 @@ class Config {
   final bool addConstConstructor; //
   final bool addConstVariable;
   final bool addConstructor; //
-  final bool addCubitPostfix;
+  final bool addCubitPostfix; //
   final bool addExtensionPostfix; //
   final bool addFinal;
   final bool addIfBraces; //
   final bool addMixinPostfix; //
   final bool addOverride; //
-  final bool addThis;
+  final bool addThis; // ?
   final bool addType;
   //
   final bool deleteBlocDependentBloc; //
