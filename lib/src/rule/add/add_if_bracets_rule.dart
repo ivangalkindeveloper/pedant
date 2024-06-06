@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
@@ -46,8 +47,8 @@ class AddIfBracesRule extends DartLintRule {
           IfStatement node,
         ) {
           final Statement thenStatement = node.thenStatement;
-          final String beginLexeme = thenStatement.beginToken.lexeme;
-          if (beginLexeme == "{") {
+          final TokenType beginTokenType = thenStatement.beginToken.type;
+          if (beginTokenType == TokenType.OPEN_CURLY_BRACKET) {
             return;
           }
 
