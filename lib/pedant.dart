@@ -1,6 +1,7 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/rule/add/add_bloc_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_keyword_rule.dart';
 import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_path_rule.dart';
 import 'package:pedant/src/rule/add/add_const_constructor_rule.dart';
@@ -41,6 +42,10 @@ class _PedantBase extends PluginBase {
     );
     final List<LintRule> ruleList = [];
 
+    AddBlocPostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
     AddClassPrefixPostfixByKeywordRule.combine(
       config: config,
       ruleList: ruleList,

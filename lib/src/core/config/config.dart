@@ -49,7 +49,7 @@ class Config {
   });
 
   final bool addBlocPart;
-  final bool addBlocPostfix;
+  final bool addBlocPostfix; //
   final bool addBlocSealedEvent;
   final bool addBlocSealedState;
   //

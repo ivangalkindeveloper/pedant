@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
@@ -45,21 +46,26 @@ class EditArrowFunctionRule extends DartLintRule {
         (
           FunctionBody node,
         ) {
-          final String beginLexeme = node.beginToken.lexeme;
-          final String? nextBeginLexeme = node.beginToken.next?.lexeme;
-          final String endLexeme = node.endToken.lexeme;
-          if (beginLexeme != "{" ||
-              nextBeginLexeme == "}" ||
-              endLexeme != "}") {
+          final TokenType beginTokenType = node.beginToken.type;
+          final TokenType? nextBeginTokenType = node.beginToken.next?.type;
+          final TokenType endTokenType = node.endToken.type;
+          if (beginTokenType != TokenType.OPEN_CURLY_BRACKET ||
+              nextBeginTokenType == TokenType.CLOSE_CURLY_BRACKET ||
+              endTokenType != TokenType.CLOSE_CURLY_BRACKET) {
             return;
           }
 
           final SyntacticEntity? entity = node.childEntities.firstOrNull;
+          if (entity == null) {
+            return;
+          }
+
+          //TODO Здесь проблема что не нужно делать анализ в блоке инициализации конструктора
           final List<String> entitySplit = entity.toString().split(
                 "; ",
               );
-          final String? secondLexeme = node.beginToken.next?.lexeme;
-          if (secondLexeme != "return" && entitySplit.length > 1) {
+          final TokenType? nextTokenType = node.beginToken.next?.type;
+          if (nextTokenType != Keyword.RETURN && entitySplit.length > 1) {
             return;
           }
 
