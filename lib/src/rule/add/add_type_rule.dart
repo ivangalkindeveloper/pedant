@@ -169,37 +169,6 @@ class _Fix extends DartFix {
         }
       },
     );
-    context.registry.addVariableDeclaration(
-      (
-        VariableDeclaration node,
-      ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final VariableElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
-        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Pedant: Add type",
-          priority: this.priority,
-        );
-        changeBuilder.addDartFileEdit(
-          (
-            DartFileEditBuilder builder,
-          ) =>
-              builder.addSimpleInsertion(
-            analysisError.sourceRange.offset,
-            "${declaredElement.type.getDisplayString()} ",
-          ),
-        );
-      },
-    );
     context.registry.addFunctionExpression(
       (
         FunctionExpression node,
@@ -236,6 +205,37 @@ class _Fix extends DartFix {
             ),
           );
         }
+      },
+    );
+    context.registry.addVariableDeclaration(
+      (
+        VariableDeclaration node,
+      ) {
+        if (analysisError.sourceRange.intersects(
+              node.sourceRange,
+            ) ==
+            false) {
+          return;
+        }
+
+        final VariableElement? declaredElement = node.declaredElement;
+        if (declaredElement == null) {
+          return;
+        }
+
+        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+          message: "Pedant: Add type",
+          priority: this.priority,
+        );
+        changeBuilder.addDartFileEdit(
+          (
+            DartFileEditBuilder builder,
+          ) =>
+              builder.addSimpleInsertion(
+            analysisError.sourceRange.offset,
+            "${declaredElement.type.getDisplayString()} ",
+          ),
+        );
       },
     );
   }
