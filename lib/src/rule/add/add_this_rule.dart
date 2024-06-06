@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/visitor.dart';
+// import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
@@ -42,20 +42,13 @@ class AddThisRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    // context.registry.addConstructorDeclaration(
-    //   (
-    //     ConstructorDeclaration node,
-    //   ) {
-    //     node.print("addSimpleIdentifier: ${node}");
-    //   },
-    // );
     context.registry.addClassDeclaration(
       (
         ClassDeclaration node,
       ) {
-        node.visitChildren(
-          _Visitor(),
-        );
+        // node.visitChildren(
+        //   _Visitor(),
+        // );
 
         final ClassElement? declaredElement = node.declaredElement;
         if (declaredElement == null) {
@@ -76,19 +69,54 @@ class AddThisRule extends DartLintRule {
   }
 }
 
-class _Visitor extends RecursiveAstVisitor {
-  @override
-  void visitBlockFunctionBody(BlockFunctionBody node) => print(
-        "visitBlockFunctionBody: $node",
-      );
+// class _Visitor extends RecursiveAstVisitor {
+//   @override
+//   void visitAssignedVariablePattern(AssignedVariablePattern node) => print(
+//         "visitAssignedVariablePattern: $node",
+//       );
 
-  @override
-  void visitExpressionFunctionBody(ExpressionFunctionBody node) => print(
-        "visitExpressionFunctionBody: $node",
-      );
+//   @override
+//   void visitConfiguration(Configuration node) => print(
+//         "visitConfiguration: $node",
+//       );
 
-  @override
-  void visitNativeFunctionBody(NativeFunctionBody node) => print(
-        "visitNativeFunctionBody: $node",
-      );
-}
+//   @override
+//   void visitImplementsClause(ImplementsClause node) => print(
+//         "visitImplementsClause: $node",
+//       );
+
+//   @override
+//   void visitImplicitCallReference(ImplicitCallReference node) => print(
+//         "visitImplicitCallReference: $node",
+//       );
+
+//   @override
+//   void visitLabel(Label node) => print(
+//         "visitLabel: $node",
+//       );
+
+//   @override
+//   void visitLabeledStatement(LabeledStatement node) => print(
+//         "visitLabeledStatement: $node",
+//       );
+
+//   @override
+//   void visitLogicalAndPattern(LogicalAndPattern node) => print(
+//         "visitLogicalAndPattern: $node",
+//       );
+
+//   @override
+//   void visitBlockFunctionBody(BlockFunctionBody node) => print(
+//         "visitBlockFunctionBody: $node",
+//       );
+
+//   @override
+//   void visitExpressionFunctionBody(ExpressionFunctionBody node) => print(
+//         "visitExpressionFunctionBody: $node",
+//       );
+
+//   @override
+//   void visitNativeFunctionBody(NativeFunctionBody node) => print(
+//         "visitNativeFunctionBody: $node",
+//       );
+// }

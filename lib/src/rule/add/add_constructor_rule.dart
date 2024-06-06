@@ -53,12 +53,6 @@ class AddConstructorRule extends DartLintRule {
             return;
           }
 
-          final List<ConstructorElement> constructors =
-              classElement.constructors;
-          if (constructors.isEmpty) {
-            return;
-          }
-
           bool hasDefaultConstructorDeclaration = false;
 
           classDeclaration.visitChildren(
@@ -68,12 +62,7 @@ class AddConstructorRule extends DartLintRule {
               ) {
                 final ConstructorElement? constructorElement =
                     constructorDeclaration.declaredElement;
-                if (constructorElement == null) {
-                  return;
-                }
-
-                hasDefaultConstructorDeclaration =
-                    constructors.first == constructorElement;
+                hasDefaultConstructorDeclaration = constructorElement != null;
               },
             ),
           );
@@ -111,43 +100,41 @@ class _Fix extends DartFix {
     CustomLintContext context,
     AnalysisError analysisError,
     List<AnalysisError> others,
-  ) {
-    context.registry.addClassDeclaration(
-      (
-        ClassDeclaration node,
-      ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
+  ) =>
+      context.registry.addClassDeclaration(
+        (
+          ClassDeclaration node,
+        ) {
+          if (analysisError.sourceRange.intersects(
+                node.sourceRange,
+              ) ==
+              false) {
+            return;
+          }
 
-        final ClassElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
+          final ClassElement? declaredElement = node.declaredElement;
+          if (declaredElement == null) {
+            return;
+          }
 
-        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Pedant: Add '${declaredElement.displayName}' constructor",
-          priority: this.priority,
-        );
-        changeBuilder.addDartFileEdit(
-          (
-            DartFileEditBuilder builder,
-          ) =>
-              builder.addInsertion(
-            node.leftBracket.offset + 1,
+          final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+            message: "Pedant: Add '${declaredElement.displayName}' constructor",
+            priority: this.priority,
+          );
+          changeBuilder.addDartFileEdit(
             (
-              DartEditBuilder builder,
+              DartFileEditBuilder builder,
             ) =>
-                builder.writeConstructorDeclaration(
-              declaredElement.name,
-              isConst: true,
-            ),
-          ),
-        );
-      },
-    );
-  }
+                builder.addInsertion(node.leftBracket.offset + 1, (
+              DartEditBuilder builder,
+            ) {
+              builder.write("\n  ");
+              builder.writeConstructorDeclaration(
+                declaredElement.name,
+              );
+              builder.write("\n");
+            }),
+          );
+        },
+      );
 }

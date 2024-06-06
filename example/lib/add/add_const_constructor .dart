@@ -1,7 +1,11 @@
 // class ExampleClass {
-//   ExampleClass({
+//   const ExampleClass({
 //     this.a = const Object(),
 //   });
 
-//   final a;
+//   const ExampleClass.from({
+//     dynamic a = const Object(),
+//   }) : this.a = a;
+
+//   final dynamic a;
 // }

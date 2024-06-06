@@ -1,7 +1,9 @@
 // class ExampleClass {
-//   const ExampleClass();
+//   ExampleClass();
 
 //   final String field = "One";
+
+//   late final String anotherField = this.field;
 
 //   void doSome() {}
 

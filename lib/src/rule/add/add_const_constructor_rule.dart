@@ -43,35 +43,41 @@ class AddConstConstructorRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addConstructorDeclaration(
+      context.registry.addClassDeclaration(
         (
-          ConstructorDeclaration node,
+          ClassDeclaration node,
         ) {
-          final ConstructorElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
+          final ClassElement? classElement = node.declaredElement;
+          if (classElement == null) {
             return;
           }
 
-          if (declaredElement.isConst == true) {
-            return;
-          }
-
-          for (final parameter in declaredElement.parameters) {
-            if (parameter.isFinal == false) {
+          for (final FieldElement field in classElement.fields) {
+            if (field.isLate == true) {
+              return;
+            }
+            if (field.isFinal == false) {
               return;
             }
           }
 
-          final ConstructorElement? superConstructor =
-              declaredElement.superConstructor;
-          if (superConstructor != null && superConstructor.isConst == false) {
-            return;
-          }
+          for (final ConstructorElement constructorElement
+              in classElement.constructors) {
+            final ConstructorElement? superConstructor =
+                constructorElement.superConstructor;
+            if (superConstructor?.isConst == false) {
+              continue;
+            }
 
-          reporter.atElement(
-            declaredElement,
-            this.code,
-          );
+            if (constructorElement.isConst == true) {
+              continue;
+            }
+
+            reporter.atElement(
+              constructorElement,
+              this.code,
+            );
+          }
         },
       );
 
@@ -97,43 +103,42 @@ class _Fix extends DartFix {
     CustomLintContext context,
     AnalysisError analysisError,
     List<AnalysisError> others,
-  ) {
-    context.registry.addConstructorDeclaration(
-      (
-        ConstructorDeclaration node,
-      ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
+  ) =>
+      context.registry.addConstructorDeclaration(
+        (
+          ConstructorDeclaration node,
+        ) {
+          if (analysisError.sourceRange.intersects(
+                node.sourceRange,
+              ) ==
+              false) {
+            return;
+          }
 
-        final ConstructorElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
+          final ConstructorElement? declaredElement = node.declaredElement;
+          if (declaredElement == null) {
+            return;
+          }
 
-        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message:
-              "Pedant: Add const to '${declaredElement.displayName}' constructor",
-          priority: this.priority,
-        );
-        changeBuilder.addDartFileEdit(
-          (
-            DartFileEditBuilder builder,
-          ) =>
-              builder.addInsertion(
-            node.offset,
+          final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+            message:
+                "Pedant: Add const to '${declaredElement.displayName}' constructor",
+            priority: this.priority,
+          );
+          changeBuilder.addDartFileEdit(
             (
-              DartEditBuilder builder,
+              DartFileEditBuilder builder,
             ) =>
-                builder.write(
-              "const ",
+                builder.addInsertion(
+              node.offset,
+              (
+                DartEditBuilder builder,
+              ) =>
+                  builder.write(
+                "const ",
+              ),
             ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 }
