@@ -68,7 +68,7 @@ class Config {
   final bool addMixinPostfix; //
   final bool addOverride; //
   final bool addThis; // ?
-  final bool addType;
+  final bool addType; //
   //
   final bool deleteBlocDependentBloc; //
   final bool deleteBlocDependentFlutter; //

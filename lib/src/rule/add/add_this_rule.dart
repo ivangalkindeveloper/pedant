@@ -1,11 +1,13 @@
 import 'package:analyzer/dart/ast/ast.dart';
-// import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
+
+// import 'package:analyzer/dart/ast/visitor.dart';
 
 class AddThisRule extends DartLintRule {
   static void combine({
@@ -41,32 +43,31 @@ class AddThisRule extends DartLintRule {
     CustomLintResolver resolver,
     ErrorReporter reporter,
     CustomLintContext context,
-  ) {
-    context.registry.addClassDeclaration(
-      (
-        ClassDeclaration node,
-      ) {
-        // node.visitChildren(
-        //   _Visitor(),
-        // );
+  ) =>
+      context.registry.addClassDeclaration(
+        (
+          ClassDeclaration node,
+        ) {
+          // node.visitChildren(
+          //   _Visitor(),
+          // );
 
-        final ClassElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
+          final ClassElement? declaredElement = node.declaredElement;
+          if (declaredElement == null) {
+            return;
+          }
 
-        node.visitChildren(
-          TreeVisitor(
-            onSimpleIdentifier: (
-              SimpleIdentifier node,
-            ) {
-              print(node);
-            },
-          ),
-        );
-      },
-    );
-  }
+          node.visitChildren(
+            TreeVisitor(
+              onSimpleIdentifier: (
+                SimpleIdentifier node,
+              ) {
+                print(node);
+              },
+            ),
+          );
+        },
+      );
 }
 
 // class _Visitor extends RecursiveAstVisitor {
