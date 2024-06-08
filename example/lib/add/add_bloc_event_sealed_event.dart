@@ -1,0 +1,3 @@
+class BlocEvent {
+  const BlocEvent();
+}

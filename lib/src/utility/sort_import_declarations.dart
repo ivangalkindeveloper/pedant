@@ -34,17 +34,23 @@ void sortImportDeclarations({
   }
 
   if (sortedDartFiles.isEmpty) {
+    stdout.write(
+      "\nNo files for sorting/converting import declarations.\n\n",
+    );
     return;
   }
 
   stdout.write(
-    "Sorted or converted import for files: ${sortedDartFiles.length}\n",
+    "\nSorted or converted import for files: ${sortedDartFiles.length}\n",
   );
   for (final file in sortedDartFiles) {
     stdout.write(
       "${file.path.replaceAll("${Directory.current.path}/lib/", "")}\n",
     );
   }
+  stdout.write(
+    "\n",
+  );
 }
 
 List<File> _getFiles({

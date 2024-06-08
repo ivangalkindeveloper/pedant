@@ -55,8 +55,8 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
             return;
           }
 
-          if (blocTypeChecker.isAssignableFromType(
-                declaredElement.thisType,
+          if (blocTypeChecker.isAssignableFrom(
+                declaredElement,
               ) ==
               false) {
             return;

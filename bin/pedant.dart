@@ -65,7 +65,7 @@ void main(
         ) ==
         false) {
       stdout.write(
-        "Formatting Dart code\n".yellow(),
+        "Formatting Dart code...\n".yellow(),
       );
       Process.runSync(
         "dart",

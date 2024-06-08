@@ -5,10 +5,12 @@ import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 class Config {
   const Config({
+    this.addBlocEventPostfix = true,
+    this.addBlocEventSealed = true,
     this.addBlocPart = true,
     this.addBlocPostfix = true,
-    this.addBlocSealedEvent = true,
-    this.addBlocSealedState = true,
+    this.addBlocStatePostfix = true,
+    this.addBlocStateSealed = true,
     //
     this.addClassPostfixByKeywordList,
     this.addClassPostfixByPathList,
@@ -48,10 +50,12 @@ class Config {
     this.priority = 100,
   });
 
+  final bool addBlocEventPostfix;
+  final bool addBlocEventSealed;
   final bool addBlocPart;
   final bool addBlocPostfix; //
-  final bool addBlocSealedEvent;
-  final bool addBlocSealedState;
+  final bool addBlocStatePostfix;
+  final bool addBlocStateSealed;
   //
   final List<KeywordListNameItem>? addClassPostfixByKeywordList; //
   final List<PathNameListItem>? addClassPostfixByPathList; //
@@ -94,10 +98,12 @@ class Config {
     required Map<String, dynamic> map,
   }) =>
       Config(
+        addBlocEventPostfix: map["add_bloc_event_postfix"] ?? true,
+        addBlocEventSealed: map["add_bloc_event_sealed"] ?? true,
         addBlocPart: map["add_bloc_part"] ?? true,
         addBlocPostfix: map["add_bloc_postfix"] ?? true,
-        addBlocSealedEvent: map["add_bloc_sealed_event"] ?? true,
-        addBlocSealedState: map["add_bloc_sealed_state"] ?? true,
+        addBlocStatePostfix: map["add_bloc_state_postfix"] ?? true,
+        addBlocStateSealed: map["add_bloc_state_sealed"] ?? true,
         //
         addClassPostfixByKeywordList:
             (map["add_class_postfix_by_keyword_list"] as List?)

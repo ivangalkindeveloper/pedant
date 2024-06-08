@@ -1,6 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
@@ -57,8 +56,8 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
             return;
           }
 
-          if (blocTypeChecker.isAssignableFromType(
-                declaredElement.thisType,
+          if (blocTypeChecker.isAssignableFrom(
+                declaredElement,
               ) ==
               false) {
             return;
@@ -78,7 +77,7 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
                   }
 
                   this._validateAndReport(
-                    type: declaredElement.type,
+                    element: declaredElement,
                     onSuccess: () => reporter.atElement(
                       declaredElement,
                       this.code,
@@ -98,7 +97,7 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
                   }
 
                   this._validateAndReport(
-                    type: declaredElement.type,
+                    element: declaredElement,
                     onSuccess: () => reporter.atNode(
                       node,
                       this.code,
@@ -112,11 +111,11 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
       );
 
   void _validateAndReport({
-    required DartType type,
+    required Element element,
     required void Function() onSuccess,
   }) {
-    if (blocTypeChecker.isAssignableFromType(
-          type,
+    if (blocTypeChecker.isAssignableFrom(
+          element,
         ) ==
         false) {
       return;

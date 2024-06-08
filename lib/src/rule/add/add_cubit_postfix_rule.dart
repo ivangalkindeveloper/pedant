@@ -53,8 +53,8 @@ class AddCubitPostfixRule extends DartLintRule {
             return;
           }
 
-          if (cubitTypeChecker.isAssignableFromType(
-                declaredElement.thisType,
+          if (cubitTypeChecker.isAssignableFrom(
+                declaredElement,
               ) ==
               false) {
             return;
