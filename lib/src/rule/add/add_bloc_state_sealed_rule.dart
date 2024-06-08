@@ -66,7 +66,6 @@ class AddBlocStateSealedRule extends DartLintRule {
           }
 
           final List<DartType> typeArguments = supertype.typeArguments;
-          print(typeArguments);
           if (typeArguments.length != 2) {
             return;
           }
