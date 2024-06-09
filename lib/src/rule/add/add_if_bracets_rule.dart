@@ -45,16 +45,16 @@ class AddIfBracesRule extends DartLintRule {
   ) =>
       context.registry.addIfStatement(
         (
-          IfStatement node,
+          IfStatement ifStatement,
         ) {
-          final Statement thenStatement = node.thenStatement;
+          final Statement thenStatement = ifStatement.thenStatement;
           final TokenType beginTokenType = thenStatement.beginToken.type;
           if (beginTokenType == TokenType.OPEN_CURLY_BRACKET) {
             return;
           }
 
           reporter.atNode(
-            node,
+            ifStatement,
             this.code,
           );
         },
@@ -85,16 +85,16 @@ class _Fix extends DartFix {
   ) =>
       context.registry.addIfStatement(
         (
-          IfStatement node,
+          IfStatement ifStatement,
         ) {
           if (analysisError.sourceRange.intersects(
-                node.sourceRange,
+                ifStatement.sourceRange,
               ) ==
               false) {
             return;
           }
 
-          final Statement thenStatement = node.thenStatement;
+          final Statement thenStatement = ifStatement.thenStatement;
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Add braces",
             priority: this.priority,

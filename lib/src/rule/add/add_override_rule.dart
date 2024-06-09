@@ -6,6 +6,9 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
+import 'package:pedant/src/utility/extension/add_field.dart';
+import 'package:pedant/src/utility/extension/add_method.dart';
 
 class AddOverrideRule extends DartLintRule {
   static void combine({
@@ -43,24 +46,20 @@ class AddOverrideRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClass(
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          for (final FieldElement field in declaredElement.fields) {
+          for (final FieldElement field in classElement.fields) {
             if (field.hasOverride) {
               continue;
             }
 
             final PropertyAccessorElement? inheritedGetter =
-                declaredElement.lookUpInheritedConcreteGetter(
+                classElement.lookUpInheritedConcreteGetter(
               field.name,
-              declaredElement.library,
+              classElement.library,
             );
 
             if (inheritedGetter != null) {
@@ -72,9 +71,9 @@ class AddOverrideRule extends DartLintRule {
             }
 
             final PropertyAccessorElement? inheritedSetter =
-                declaredElement.lookUpInheritedConcreteSetter(
+                classElement.lookUpInheritedConcreteSetter(
               field.name,
-              declaredElement.library,
+              classElement.library,
             );
 
             if (inheritedSetter == null) {
@@ -87,15 +86,15 @@ class AddOverrideRule extends DartLintRule {
             );
           }
 
-          for (final MethodElement method in declaredElement.methods) {
+          for (final MethodElement method in classElement.methods) {
             if (method.hasOverride) {
               continue;
             }
 
             final MethodElement? inheritedMethod =
-                declaredElement.lookUpInheritedConcreteMethod(
+                classElement.lookUpInheritedConcreteMethod(
               method.name,
-              declaredElement.library,
+              classElement.library,
             );
 
             if (inheritedMethod == null) {
@@ -133,17 +132,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addFieldDeclaration(
+    context.addFieldIntersects(
+      analysisError,
       (
-        FieldDeclaration node,
+        FieldDeclaration fieldDeclaration,
+        Element fieldElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Add @override annotation",
           priority: this.priority,
@@ -153,23 +147,17 @@ class _Fix extends DartFix {
             DartFileEditBuilder builder,
           ) =>
               builder.addSimpleInsertion(
-            node.sourceRange.offset,
+            fieldDeclaration.sourceRange.offset,
             "@override\n  ",
           ),
         );
       },
     );
-    context.registry.addMethodDeclaration(
+    context.addMethodIntersects(
+      analysisError,
       (
-        MethodDeclaration node,
+        MethodDeclaration methodDeclaration,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Add @override annotation",
           priority: this.priority,
@@ -179,7 +167,7 @@ class _Fix extends DartFix {
             DartFileEditBuilder builder,
           ) =>
               builder.addSimpleInsertion(
-            node.sourceRange.offset,
+            methodDeclaration.sourceRange.offset,
             "@override\n  ",
           ),
         );

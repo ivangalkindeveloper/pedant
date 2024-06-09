@@ -6,6 +6,9 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_constructor.dart';
+import 'package:pedant/src/utility/extension/add_function_expression.dart';
+import 'package:pedant/src/utility/extension/add_variable.dart';
 
 class AddTypeRule extends DartLintRule {
   static void combine({
@@ -43,17 +46,13 @@ class AddTypeRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addConstructorDeclaration(
+    context.addConstructor(
       (
-        ConstructorDeclaration node,
+        ConstructorDeclaration constructorDeclaration,
+        ConstructorElement constructorElement,
       ) {
-        final ConstructorElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
         for (final ParameterElement parameterElement
-            in declaredElement.parameters) {
+            in constructorElement.parameters) {
           if (parameterElement.hasImplicitType == false) {
             continue;
           }
@@ -65,17 +64,13 @@ class AddTypeRule extends DartLintRule {
         }
       },
     );
-    context.registry.addFunctionExpression(
+    context.addFunctionExpression(
       (
-        FunctionExpression node,
+        FunctionExpression functionExpression,
+        ExecutableElement executableElement,
       ) {
-        final ExecutableElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
         for (final ParameterElement parameterElement
-            in declaredElement.parameters) {
+            in executableElement.parameters) {
           if (parameterElement.hasImplicitType == false) {
             continue;
           }
@@ -87,21 +82,17 @@ class AddTypeRule extends DartLintRule {
         }
       },
     );
-    context.registry.addVariableDeclaration(
+    context.addVariable(
       (
-        VariableDeclaration node,
+        VariableDeclaration variableDeclaration,
+        VariableElement variableElement,
       ) {
-        final VariableElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
-        if (declaredElement.hasImplicitType == false) {
+        if (variableElement.hasImplicitType == false) {
           return;
         }
 
         reporter.atElement(
-          declaredElement,
+          variableElement,
           this.code,
         );
       },
@@ -131,24 +122,14 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addConstructorDeclaration(
+    context.addConstructorIntersects(
+      analysisError,
       (
-        ConstructorDeclaration node,
+        ConstructorDeclaration constructorDeclaration,
+        ConstructorElement constructorElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final ConstructorElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
         for (final ParameterElement parameterElement
-            in declaredElement.parameters) {
+            in constructorElement.parameters) {
           if (analysisError.offset != parameterElement.nameOffset) {
             continue;
           }
@@ -169,24 +150,14 @@ class _Fix extends DartFix {
         }
       },
     );
-    context.registry.addFunctionExpression(
+    context.addFunctionExpressionIntersects(
+      analysisError,
       (
-        FunctionExpression node,
+        FunctionExpression functionExpression,
+        ExecutableElement executableElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final ExecutableElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
         for (final ParameterElement parameterElement
-            in declaredElement.parameters) {
+            in executableElement.parameters) {
           if (analysisError.offset != parameterElement.nameOffset) {
             continue;
           }
@@ -207,22 +178,12 @@ class _Fix extends DartFix {
         }
       },
     );
-    context.registry.addVariableDeclaration(
+    context.addVariableIntersects(
+      analysisError,
       (
-        VariableDeclaration node,
+        VariableDeclaration variableDeclaration,
+        VariableElement variableElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final VariableElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Add type",
           priority: this.priority,
@@ -233,7 +194,7 @@ class _Fix extends DartFix {
           ) =>
               builder.addSimpleInsertion(
             analysisError.sourceRange.offset,
-            "${declaredElement.type.getDisplayString()} ",
+            "${variableElement.type.getDisplayString()} ",
           ),
         );
       },

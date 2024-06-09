@@ -6,6 +6,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_variable.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
 class EditPrivateInFunctionRule extends DartLintRule {
@@ -95,23 +96,13 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addVariableDeclaration(
+      context.addVariableIntersects(
+        analysisError,
         (
-          VariableDeclaration node,
+          VariableDeclaration variableDeclaration,
+          VariableElement variableElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final VariableElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          final String validName = declaredElement.displayName.replaceFirst(
+          final String validName = variableElement.displayName.replaceFirst(
             "_",
             "",
           );

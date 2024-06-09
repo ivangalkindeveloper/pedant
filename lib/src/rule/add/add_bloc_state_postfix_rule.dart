@@ -2,8 +2,9 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/extension/add_bloc_state_element.dart';
+import 'package:pedant/src/utility/extension/add_bloc_state.dart';
 
 class AddBlocStatePostfixRule extends DartLintRule {
   static void combine({
@@ -40,14 +41,15 @@ class AddBlocStatePostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.addBlocStateElement(
+      context.addBlocState(
         (
           ClassElement blocElement,
           ClassElement stateElement,
         ) {
           if (stateElement.displayName.endsWith(
-            "State",
-          )) {
+                "State",
+              ) ==
+              true) {
             return;
           }
 

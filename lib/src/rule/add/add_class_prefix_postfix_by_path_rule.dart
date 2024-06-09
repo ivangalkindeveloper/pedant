@@ -7,6 +7,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 import 'package:pedant/src/core/data/pre_post_fix_type.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
 
 class AddClassPrefixPostfixByPathRule extends DartLintRule {
   static void combine({
@@ -75,29 +76,25 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClass(
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
           if (resolver.path.contains(this.pathNameListItem.path) == false) {
             return;
           }
 
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
           _validate(
-            name: declaredElement.displayName,
+            name: classElement.displayName,
             onSuccess: () => reporter.atElement(
-              declaredElement,
+              classElement,
               this.code,
             ),
           );
 
           for (final ConstructorElement constructorElement
-              in declaredElement.constructors) {
+              in classElement.constructors) {
             _validate(
               name: constructorElement.displayName,
               onSuccess: () => reporter.atElement(

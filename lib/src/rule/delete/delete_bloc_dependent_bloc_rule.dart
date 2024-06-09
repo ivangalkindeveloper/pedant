@@ -8,6 +8,9 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/bloc_type_checker.dart';
+import 'package:pedant/src/utility/extension/add_bloc.dart';
+import 'package:pedant/src/utility/extension/add_constructor.dart';
+import 'package:pedant/src/utility/extension/add_field.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
 //TODO Fix initializer fields in Bloc constructor too
@@ -47,67 +50,55 @@ class DeleteBlocDependentBlocRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addBloc(
         (
-          ClassDeclaration node,
-        ) {
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          if (blocTypeChecker.isAssignableFrom(
-                declaredElement,
-              ) ==
-              false) {
-            return;
-          }
-
-          node.visitChildren(
-            TreeVisitor(
-              onConstructorDeclaration: (
-                ConstructorDeclaration node,
-              ) {
-                for (final FormalParameter parameter
-                    in node.parameters.parameters) {
-                  final ParameterElement? declaredElement =
-                      parameter.declaredElement;
-                  if (declaredElement == null) {
-                    continue;
-                  }
-
-                  this._validateAndReport(
-                    element: declaredElement,
-                    onSuccess: () => reporter.atElement(
-                      declaredElement,
-                      this.code,
-                    ),
-                  );
+          ClassDeclaration blocDeclaration,
+          ClassElement blocElement,
+        ) =>
+            blocDeclaration.visitChildren(
+          TreeVisitor(
+            onConstructorDeclaration: (
+              ConstructorDeclaration constructorDeclaration,
+            ) {
+              for (final FormalParameter parameter
+                  in constructorDeclaration.parameters.parameters) {
+                final ParameterElement? parameterElement =
+                    parameter.declaredElement;
+                if (parameterElement == null) {
+                  continue;
                 }
-              },
-              onFieldDeclaration: (
-                FieldDeclaration node,
-              ) {
-                for (final VariableDeclaration variable
-                    in node.fields.variables) {
-                  final VariableElement? declaredElement =
-                      variable.declaredElement;
-                  if (declaredElement == null) {
-                    continue;
-                  }
 
-                  this._validateAndReport(
-                    element: declaredElement,
-                    onSuccess: () => reporter.atNode(
-                      node,
-                      this.code,
-                    ),
-                  );
+                this._validateAndReport(
+                  element: parameterElement,
+                  onSuccess: () => reporter.atElement(
+                    parameterElement,
+                    this.code,
+                  ),
+                );
+              }
+            },
+            onFieldDeclaration: (
+              FieldDeclaration fieldDeclaration,
+            ) {
+              for (final VariableDeclaration variable
+                  in fieldDeclaration.fields.variables) {
+                final VariableElement? variableElement =
+                    variable.declaredElement;
+                if (variableElement == null) {
+                  continue;
                 }
-              },
-            ),
-          );
-        },
+
+                this._validateAndReport(
+                  element: variableElement,
+                  onSuccess: () => reporter.atNode(
+                    fieldDeclaration,
+                    this.code,
+                  ),
+                );
+              }
+            },
+          ),
+        ),
       );
 
   void _validateAndReport({
@@ -147,18 +138,14 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addConstructorDeclaration(
+    context.addConstructorIntersects(
+      analysisError,
       (
-        ConstructorDeclaration node,
+        ConstructorDeclaration constructorDeclaration,
+        ConstructorElement constructorElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        for (final FormalParameter parameter in node.parameters.parameters) {
+        for (final FormalParameter parameter
+            in constructorDeclaration.parameters.parameters) {
           if (analysisError.sourceRange.intersects(
                 parameter.sourceRange,
               ) ==
@@ -197,18 +184,14 @@ class _Fix extends DartFix {
         }
       },
     );
-    context.registry.addFieldDeclaration(
+    context.addFieldIntersects(
+      analysisError,
       (
-        FieldDeclaration node,
+        FieldDeclaration fieldDeclaration,
+        Element fieldElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        for (final VariableDeclaration variable in node.fields.variables) {
+        for (final VariableDeclaration variable
+            in fieldDeclaration.fields.variables) {
           if (analysisError.sourceRange.intersects(
                 variable.sourceRange,
               ) ==

@@ -7,6 +7,8 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_function_list.dart';
+import 'package:pedant/src/utility/extension/add_function_expression_invocation.dart';
+import 'package:pedant/src/utility/extension/add_method_invocation.dart';
 
 class DeleteFunctionRule extends DartLintRule {
   static void combine({
@@ -51,46 +53,38 @@ class DeleteFunctionRule extends DartLintRule {
     context.registry.addMethodInvocation(
       (
         MethodInvocation node,
-      ) {
-        final String name = node.methodName.name;
-        _validateAndReport(
-          reporter: reporter,
-          name: name,
-          offset: node.offset,
-          length: node.length + 1,
-        );
-      },
+      ) =>
+          _validateAndReport(
+        name: node.methodName.name,
+        onSuccess: () => reporter.atNode(
+          node,
+          this.code,
+        ),
+      ),
     );
     context.registry.addFunctionExpressionInvocation(
       (
         FunctionExpressionInvocation node,
-      ) {
-        final String function = node.function.toString();
-        _validateAndReport(
-          reporter: reporter,
-          name: function,
-          offset: node.offset,
-          length: node.length + 1,
-        );
-      },
+      ) =>
+          _validateAndReport(
+        name: node.function.toString(),
+        onSuccess: () => reporter.atNode(
+          node,
+          this.code,
+        ),
+      ),
     );
   }
 
   void _validateAndReport({
-    required ErrorReporter reporter,
     required String name,
-    required int offset,
-    required int length,
+    required void Function() onSuccess,
   }) {
     if (deleteListItem.nameList.contains(name) == false) {
       return;
     }
 
-    reporter.atOffset(
-      offset: offset,
-      length: length,
-      errorCode: this.code,
-    );
+    onSuccess();
   }
 
   @override
@@ -116,18 +110,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addMethodInvocation(
+    context.addMethodInvocationIntersects(
+      analysisError,
       (
-        MethodInvocation node,
+        MethodInvocation methodInvocation,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final String name = node.methodName.name;
+        final String name = methodInvocation.methodName.name;
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Delete '$name'",
           priority: this.priority,
@@ -142,18 +130,13 @@ class _Fix extends DartFix {
         );
       },
     );
-    context.registry.addFunctionExpressionInvocation(
+    context.addFunctionInvocationIntersects(
+      analysisError,
       (
-        FunctionExpressionInvocation node,
+        FunctionExpressionInvocation functionExpressionInvocation,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final String function = node.function.toString();
+        final String function =
+            functionExpressionInvocation.function.toString();
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Delete '$function'",
           priority: this.priority,

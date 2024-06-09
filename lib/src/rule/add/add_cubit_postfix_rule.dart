@@ -8,6 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/cubit_type_checkot.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
 
 class AddCubitPostfixRule extends DartLintRule {
   static void combine({
@@ -44,30 +45,27 @@ class AddCubitPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClass(
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
           if (cubitTypeChecker.isAssignableFrom(
-                declaredElement,
+                classElement,
               ) ==
               false) {
             return;
           }
 
-          if (declaredElement.displayName.endsWith(
-            "Cubit",
-          )) {
+          if (classElement.displayName.endsWith(
+                "Cubit",
+              ) ==
+              true) {
             return;
           }
 
           reporter.atElement(
-            declaredElement,
+            classElement,
             this.code,
           );
         },
@@ -96,22 +94,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClassIntersects(
+        analysisError,
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final ClassElement? classElement = node.declaredElement;
-          if (classElement == null) {
-            return;
-          }
-
           final String displayName = classElement.displayName;
           final String validName = "${displayName}Cubit";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(

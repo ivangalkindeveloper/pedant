@@ -2,8 +2,9 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/extension/add_bloc_event_element.dart';
+import 'package:pedant/src/utility/extension/add_bloc_event.dart';
 
 class AddBlocEventPostfixRule extends DartLintRule {
   static void combine({
@@ -40,14 +41,15 @@ class AddBlocEventPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.addBlocEventElement(
+      context.addBlocEvent(
         (
           ClassElement blocElement,
           ClassElement eventElement,
         ) {
           if (eventElement.displayName.endsWith(
-            "Event",
-          )) {
+                "Event",
+              ) ==
+              true) {
             return;
           }
 

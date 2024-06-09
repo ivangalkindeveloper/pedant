@@ -6,6 +6,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_mixin.dart';
 
 class AddMixinPostfixRule extends DartLintRule {
   static void combine({
@@ -42,23 +43,20 @@ class AddMixinPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addMixinDeclaration(
+      context.addMixin(
         (
-          MixinDeclaration node,
+          MixinDeclaration extensionDeclaration,
+          MixinElement extensionElement,
         ) {
-          final MixinElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          if (declaredElement.displayName.endsWith(
-            "Mixin",
-          )) {
+          if (extensionElement.displayName.endsWith(
+                "Mixin",
+              ) ==
+              true) {
             return;
           }
 
           reporter.atElement(
-            declaredElement,
+            extensionElement,
             this.code,
           );
         },
@@ -87,23 +85,13 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addMixinDeclaration(
+      context.addMixinIntersects(
+        analysisError,
         (
-          MixinDeclaration node,
+          MixinDeclaration extensionDeclaration,
+          MixinElement extensionElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final MixinElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          final String displayName = declaredElement.displayName;
+          final String displayName = extensionElement.displayName;
           final String validName = "${displayName}Mixin";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Rename to '$validName'",

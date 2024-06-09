@@ -6,6 +6,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/convert_import.dart';
+import 'package:pedant/src/utility/extension/add_import_directive.dart';
 
 class EditRelativeImportRule extends DartLintRule {
   static void combine({
@@ -82,18 +83,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addImportDirective(
+      context.addImportDirectiveIntersects(
+        analysisError,
         (
-          ImportDirective node,
+          ImportDirective importDirective,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final String source = node.toSource();
+          final String source = importDirective.toSource();
           final String sourceValid = convertImport(
             projectName: context.pubspec.name,
             libPath: "${resolver.path.split("/lib").first}/lib/",

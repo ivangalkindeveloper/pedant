@@ -7,6 +7,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_variable_declaration_list.dart';
 
 class EditMultipleVariableRule extends DartLintRule {
   static void combine({
@@ -83,17 +84,11 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addVariableDeclarationList(
+      context.addVariableDeclarationListIntersects(
+        analysisError,
         (
-          VariableDeclarationList node,
+          VariableDeclarationList variableDeclarationList,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Split variable declarations",
             priority: this.priority,
@@ -103,21 +98,22 @@ class _Fix extends DartFix {
               DartFileEditBuilder builder,
             ) {
               final String contentData = resolver.source.contents.data;
-              if (contentData[node.sourceRange.end] == ";") {
+              if (contentData[variableDeclarationList.sourceRange.end] == ";") {
                 builder.addDeletion(
                   SourceRange(
-                    node.sourceRange.end,
+                    variableDeclarationList.sourceRange.end,
                     1,
                   ),
                 );
               }
 
               builder.addReplacement(
-                node.sourceRange,
+                variableDeclarationList.sourceRange,
                 (
                   DartEditBuilder builder,
                 ) {
-                  for (final VariableDeclaration variable in node.variables) {
+                  for (final VariableDeclaration variable
+                      in variableDeclarationList.variables) {
                     final VariableElement? declaredElement =
                         variable.declaredElement;
                     if (declaredElement == null) {

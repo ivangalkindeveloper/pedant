@@ -7,7 +7,9 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/bloc_type_checker.dart';
+import 'package:pedant/src/utility/extension/add_bloc.dart';
+import 'package:pedant/src/utility/extension/add_field_formal_parameter.dart';
+import 'package:pedant/src/utility/extension/add_variable.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
 class DeleteBlocPublicPropertyRule extends DartLintRule {
@@ -46,72 +48,60 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addBloc(
         (
-          ClassDeclaration node,
-        ) {
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
+          ClassDeclaration blocDeclaration,
+          ClassElement blocElement,
+        ) =>
+            blocDeclaration.visitChildren(
+          TreeVisitor(
+            onConstructorDeclaration: (
+              ConstructorDeclaration constructorDeclaration,
+            ) {
+              final ConstructorElement? declaredElement =
+                  constructorDeclaration.declaredElement;
+              if (declaredElement == null) {
+                return;
+              }
 
-          if (blocTypeChecker.isAssignableFrom(
-                declaredElement,
-              ) ==
-              false) {
-            return;
-          }
+              for (final ParameterElement parameter
+                  in declaredElement.parameters) {
+                if (parameter.isPrivate) {
+                  continue;
+                }
 
-          node.visitChildren(
-            TreeVisitor(
-              onConstructorDeclaration: (
-                ConstructorDeclaration node,
-              ) {
-                final ConstructorElement? declaredElement =
-                    node.declaredElement;
+                if (parameter.isInitializingFormal == false) {
+                  continue;
+                }
+
+                reporter.atElement(
+                  parameter,
+                  this.code,
+                );
+              }
+            },
+            onFieldDeclaration: (
+              FieldDeclaration fieldDeclaration,
+            ) {
+              for (final VariableDeclaration variable
+                  in fieldDeclaration.fields.variables) {
+                final declaredElement = variable.declaredElement;
                 if (declaredElement == null) {
-                  return;
+                  continue;
                 }
 
-                for (final ParameterElement parameter
-                    in declaredElement.parameters) {
-                  if (parameter.isPrivate) {
-                    continue;
-                  }
-
-                  if (parameter.isInitializingFormal == false) {
-                    continue;
-                  }
-
-                  reporter.atElement(
-                    parameter,
-                    this.code,
-                  );
+                if (declaredElement.isPrivate) {
+                  continue;
                 }
-              },
-              onFieldDeclaration: (
-                FieldDeclaration node,
-              ) {
-                for (final VariableDeclaration variable
-                    in node.fields.variables) {
-                  final declaredElement = variable.declaredElement;
-                  if (declaredElement == null) {
-                    continue;
-                  }
 
-                  if (declaredElement.isPrivate) {
-                    continue;
-                  }
-
-                  reporter.atElement(
-                    declaredElement,
-                    this.code,
-                  );
-                }
-              },
-            ),
-          );
-        },
+                reporter.atElement(
+                  declaredElement,
+                  this.code,
+                );
+              }
+            },
+          ),
+        ),
       );
 
   @override
@@ -137,24 +127,14 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.registry.addFieldFormalParameter(
+    context.addFieldFormalParameterIntersects(
+      analysisError,
       (
-        FieldFormalParameter node,
+        FieldFormalParameter fieldFormalParameter,
+        ParameterElement fieldElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final ParameterElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
         final String validName =
-            "${declaredElement.type.getDisplayString()} ${declaredElement.displayName}";
+            "${fieldElement.type.getDisplayString()} ${fieldElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Rename to '$validName'",
           priority: this.priority,
@@ -173,23 +153,13 @@ class _Fix extends DartFix {
         );
       },
     );
-    context.registry.addVariableDeclaration(
+    context.addVariableIntersects(
+      analysisError,
       (
-        VariableDeclaration node,
+        VariableDeclaration variableDeclaration,
+        VariableElement variableElement,
       ) {
-        if (analysisError.sourceRange.intersects(
-              node.sourceRange,
-            ) ==
-            false) {
-          return;
-        }
-
-        final VariableElement? declaredElement = node.declaredElement;
-        if (declaredElement == null) {
-          return;
-        }
-
-        final String validName = "_${declaredElement.displayName}";
+        final String validName = "_${variableElement.displayName}";
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Rename to '$validName'",
           priority: this.priority,

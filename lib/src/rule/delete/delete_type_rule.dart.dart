@@ -8,6 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_type_list.dart';
+import 'package:pedant/src/utility/extension/add_instance_creation_expression.dart';
 
 //TODO Report and fix with specific type
 class DeleteTypeRule extends DartLintRule {
@@ -52,9 +53,9 @@ class DeleteTypeRule extends DartLintRule {
   ) =>
       context.registry.addInstanceCreationExpression(
         (
-          InstanceCreationExpression node,
+          InstanceCreationExpression instanceCreationExpression,
         ) {
-          final DartType? type = node.staticType;
+          final DartType? type = instanceCreationExpression.staticType;
           if (type == null) {
             return;
           }
@@ -63,7 +64,7 @@ class DeleteTypeRule extends DartLintRule {
           _validate(
             name: displayString,
             onSuccess: () => reporter.atNode(
-              node,
+              instanceCreationExpression,
               this.code,
             ),
           );
@@ -81,9 +82,11 @@ class DeleteTypeRule extends DartLintRule {
       }
     }
 
-    if (isMatch) {
-      onSuccess();
+    if (isMatch == false) {
+      return;
     }
+
+    onSuccess();
   }
 
   @override
@@ -109,18 +112,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addInstanceCreationExpression(
+      context.addInstanceCreationExpressionIntersects(
+        analysisError,
         (
-          InstanceCreationExpression node,
+          InstanceCreationExpression instanceCreationExpression,
         ) {
-          if (analysisError.sourceRange.covers(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final DartType? type = node.staticType;
+          final DartType? type = instanceCreationExpression.staticType;
           if (type == null) {
             return;
           }

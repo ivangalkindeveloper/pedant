@@ -7,6 +7,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_function_body.dart';
 
 class EditArrowFunctionRule extends DartLintRule {
   static void combine({
@@ -100,18 +101,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addFunctionBody(
+      context.addFunctionBodyIntersects(
+        analysisError,
         (
-          FunctionBody node,
+          FunctionBody functionBody,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final String nodeString = node.toString();
+          final String nodeString = functionBody.toString();
           final String cleanNode = nodeString
               .substring(
                 1,

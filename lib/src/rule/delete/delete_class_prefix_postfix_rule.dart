@@ -8,6 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_class_postfix_list.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
 
 class DeleteClassPrefixPostfixRule extends DartLintRule {
   static void combine({
@@ -84,25 +85,21 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClass(
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
           _validate(
-            name: declaredElement.displayName,
+            name: classElement.displayName,
             onSuccess: () => reporter.atElement(
-              declaredElement,
+              classElement,
               this.code,
             ),
           );
 
           for (final ConstructorElement constructorElement
-              in declaredElement.constructors) {
+              in classElement.constructors) {
             _validate(
               name: constructorElement.displayName,
               onSuccess: () => reporter.atElement(
@@ -128,9 +125,11 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
       }
     }
 
-    if (isMatch) {
-      onSuccess();
+    if (isMatch == false) {
+      return;
     }
+
+    onSuccess();
   }
 
   @override
@@ -156,26 +155,28 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClassIntersects(
+        analysisError,
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          this._createChangeBuilder(
-            reporter: reporter,
+          final String validName = this._getValidName(
             analysisError: analysisError,
-            name: declaredElement.displayName,
+            name: classElement.displayName,
+          );
+          final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+            message: "Pedant: Rename to '$validName'",
+            priority: this.priority,
+          );
+          changeBuilder.addDartFileEdit(
+            (
+              DartFileEditBuilder builder,
+            ) =>
+                builder.addSimpleReplacement(
+              analysisError.sourceRange,
+              validName,
+            ),
           );
         },
       );
@@ -210,29 +211,5 @@ class _Fix extends DartFix {
     }
 
     return validName;
-  }
-
-  void _createChangeBuilder({
-    required ChangeReporter reporter,
-    required AnalysisError analysisError,
-    required String name,
-  }) {
-    final String validName = this._getValidName(
-      analysisError: analysisError,
-      name: name,
-    );
-    final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-      message: "Pedant: Rename to '$validName'",
-      priority: this.priority,
-    );
-    changeBuilder.addDartFileEdit(
-      (
-        DartFileEditBuilder builder,
-      ) =>
-          builder.addSimpleReplacement(
-        analysisError.sourceRange,
-        validName,
-      ),
-    );
   }
 }

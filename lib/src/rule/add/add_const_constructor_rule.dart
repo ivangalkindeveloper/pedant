@@ -6,6 +6,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
 
 class AddConstConstructorRule extends DartLintRule {
   static void combine({
@@ -43,15 +44,11 @@ class AddConstConstructorRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClass(
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          final ClassElement? classElement = node.declaredElement;
-          if (classElement == null) {
-            return;
-          }
-
           for (final FieldElement field in classElement.fields) {
             if (field.isLate == true) {
               return;
@@ -71,6 +68,10 @@ class AddConstConstructorRule extends DartLintRule {
 
             if (constructorElement.isConst == true) {
               continue;
+            }
+
+            if (constructorElement.isFactory == true) {
+              return;
             }
 
             reporter.atElement(
@@ -104,25 +105,15 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addConstructorDeclaration(
+      context.addClassIntersects(
+        analysisError,
         (
-          ConstructorDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final ConstructorElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message:
-                "Pedant: Add const to '${declaredElement.displayName}' constructor",
+                "Pedant: Add const to '${classElement.displayName}' constructor",
             priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
@@ -130,7 +121,7 @@ class _Fix extends DartFix {
               DartFileEditBuilder builder,
             ) =>
                 builder.addInsertion(
-              node.offset,
+              classElement.nameOffset,
               (
                 DartEditBuilder builder,
               ) =>

@@ -6,6 +6,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
 class AddConstructorRule extends DartLintRule {
@@ -44,15 +45,11 @@ class AddConstructorRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClass(
         (
           ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          final ClassElement? classElement = classDeclaration.declaredElement;
-          if (classElement == null) {
-            return;
-          }
-
           bool hasDefaultConstructorDeclaration = false;
 
           classDeclaration.visitChildren(
@@ -101,36 +98,26 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClassIntersects(
+        analysisError,
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Pedant: Add '${declaredElement.displayName}' constructor",
+            message: "Pedant: Add '${classElement.displayName}' constructor",
             priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
             (
               DartFileEditBuilder builder,
             ) =>
-                builder.addInsertion(node.leftBracket.offset + 1, (
+                builder.addInsertion(classDeclaration.leftBracket.offset + 1, (
               DartEditBuilder builder,
             ) {
               builder.write("\n  ");
               builder.writeConstructorDeclaration(
-                declaredElement.name,
+                classElement.name,
               );
               builder.write("\n");
             }),

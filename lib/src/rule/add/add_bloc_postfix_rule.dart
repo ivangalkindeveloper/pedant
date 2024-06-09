@@ -7,7 +7,8 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/extension/add_bloc_element.dart';
+import 'package:pedant/src/utility/extension/add_bloc.dart';
+import 'package:pedant/src/utility/extension/add_class.dart';
 
 class AddBlocPostfixRule extends DartLintRule {
   static void combine({
@@ -44,13 +45,15 @@ class AddBlocPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.addBlocElement(
+      context.addBloc(
         (
+          ClassDeclaration blocDeclaration,
           ClassElement blocElement,
         ) {
           if (blocElement.displayName.endsWith(
-            "Bloc",
-          )) {
+                "Bloc",
+              ) ==
+              true) {
             return;
           }
 
@@ -84,22 +87,12 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addClassIntersects(
+        analysisError,
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final ClassElement? classElement = node.declaredElement;
-          if (classElement == null) {
-            return;
-          }
-
           final String displayName = classElement.displayName;
           final String validName = "${displayName}Bloc";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(

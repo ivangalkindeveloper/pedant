@@ -6,6 +6,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_extension.dart';
 
 class AddExtensionPostfixRule extends DartLintRule {
   static void combine({
@@ -43,23 +44,20 @@ class AddExtensionPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addExtensionDeclaration(
+      context.addExtension(
         (
-          ExtensionDeclaration node,
+          ExtensionDeclaration extensionDeclaration,
+          ExtensionElement extensionElement,
         ) {
-          final ExtensionElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          if (declaredElement.displayName.endsWith(
-            "Extension",
-          )) {
+          if (extensionElement.displayName.endsWith(
+                "Extension",
+              ) ==
+              true) {
             return;
           }
 
           reporter.atElement(
-            declaredElement,
+            extensionElement,
             this.code,
           );
         },
@@ -88,23 +86,13 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addExtensionDeclaration(
+      context.addExtensionIntersects(
+        analysisError,
         (
-          ExtensionDeclaration node,
+          ExtensionDeclaration extensionDeclaration,
+          ExtensionElement extensionElement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
-          final ExtensionElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          final String displayName = declaredElement.displayName;
+          final String displayName = extensionElement.displayName;
           final String validName = "${displayName}Extension";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Rename to '$validName'",

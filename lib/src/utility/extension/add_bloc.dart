@@ -1,19 +1,21 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/utility/bloc_type_checker.dart';
 
 extension CustomLintContextExtension on CustomLintContext {
-  void addBlocElement(
+  void addBloc(
     void Function(
+      ClassDeclaration blocDeclaration,
       ClassElement blocElement,
-    ) on,
+    ) execute,
   ) =>
       this.registry.addClassDeclaration(
         (
-          ClassDeclaration node,
+          ClassDeclaration classDeclaration,
         ) {
-          final ClassElement? blocElement = node.declaredElement;
+          final ClassElement? blocElement = classDeclaration.declaredElement;
           if (blocElement == null) {
             return;
           }
@@ -25,7 +27,8 @@ extension CustomLintContextExtension on CustomLintContext {
             return;
           }
 
-          on(
+          execute(
+            classDeclaration,
             blocElement,
           );
         },

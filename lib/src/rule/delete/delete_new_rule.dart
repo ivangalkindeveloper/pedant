@@ -7,6 +7,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_instance_creation_expression.dart';
 
 class DeleteNewRule extends DartLintRule {
   static void combine({
@@ -29,7 +30,8 @@ class DeleteNewRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "delete_new",
-            problemMessage: "Operator 'new' is useless in last version of SDK.",
+            problemMessage:
+                "Keyword 'new' is useless in last version of Dart SDK.",
             correctionMessage: "Please delete 'new' operator.",
             errorSeverity: ErrorSeverity.WARNING,
           ),
@@ -87,17 +89,11 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addInstanceCreationExpression(
+      context.addInstanceCreationExpressionIntersects(
+        analysisError,
         (
-          InstanceCreationExpression node,
+          InstanceCreationExpression instanceCreationExpression,
         ) {
-          if (analysisError.sourceRange.intersects(
-                node.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Delete 'new'",
             priority: this.priority,
