@@ -50,12 +50,12 @@ class Config {
     this.priority = 100,
   });
 
-  final bool addBlocEventPostfix; // ?
-  final bool addBlocEventSealed; // ?
+  final bool addBlocEventPostfix; //
+  final bool addBlocEventSealed; //
   final bool addBlocPart;
   final bool addBlocPostfix; //
-  final bool addBlocStatePostfix; // ?
-  final bool addBlocStateSealed; // ?
+  final bool addBlocStatePostfix; //
+  final bool addBlocStateSealed; //
   //
   final List<KeywordListNameItem>? addClassPostfixByKeywordList; //
   final List<PathNameListItem>? addClassPostfixByPathList; //

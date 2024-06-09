@@ -1,9 +1,12 @@
-import 'package:bloc/bloc.dart';
-import 'package:example/add/add_bloc_state_sealed_state.dart';
+// import 'package:bloc/bloc.dart';
 
-class SomeBloc extends Bloc<String, BlocState> {
-  SomeBloc()
-      : super(
-          const BlocState(),
-        ) {}
-}
+// class SomeBloc extends Bloc<String, BlocStates> {
+//   SomeBloc()
+//       : super(
+//           const BlocStates(),
+//         ) {}
+// }
+
+// class BlocStates {
+//   const BlocStates();
+// }

@@ -1,3 +1,0 @@
-class BlocState {
-  const BlocState();
-}

@@ -7,7 +7,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/bloc_type_checker.dart';
+import 'package:pedant/src/utility/extension/add_bloc_element.dart';
 
 class AddBlocPostfixRule extends DartLintRule {
   static void combine({
@@ -44,30 +44,18 @@ class AddBlocPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.registry.addClassDeclaration(
+      context.addBlocElement(
         (
-          ClassDeclaration node,
+          ClassElement blocElement,
         ) {
-          final ClassElement? declaredElement = node.declaredElement;
-          if (declaredElement == null) {
-            return;
-          }
-
-          if (blocTypeChecker.isAssignableFrom(
-                declaredElement,
-              ) ==
-              false) {
-            return;
-          }
-
-          if (declaredElement.displayName.endsWith(
+          if (blocElement.displayName.endsWith(
             "Bloc",
           )) {
             return;
           }
 
           reporter.atElement(
-            declaredElement,
+            blocElement,
             this.code,
           );
         },

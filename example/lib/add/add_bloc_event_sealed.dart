@@ -1,6 +1,9 @@
-import 'package:bloc/bloc.dart';
-import 'package:example/add/add_bloc_event_sealed_event.dart';
+// import 'package:bloc/bloc.dart';
 
-class SomeBloc extends Bloc<BlocEvent, String> {
-  SomeBloc() : super("") {}
-}
+// class SomeBloc extends Bloc<BlocEvents, String> {
+//   SomeBloc() : super("") {}
+// }
+
+// class BlocEvents {
+//   const BlocEvents();
+// }
