@@ -63,7 +63,7 @@ class Config {
   final List<PathNameListItem>? addClassPrefixByPathList; //
   final bool addComma;
   final bool addConstConstructor; //
-  final bool addConstVariable;
+  final bool addConstVariable; // ?
   final bool addConstructor; //
   final bool addCubitPostfix; //
   final bool addExtensionPostfix; //
