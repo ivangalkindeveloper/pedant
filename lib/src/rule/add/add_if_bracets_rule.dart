@@ -6,6 +6,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
+import 'package:pedant/src/utility/extension/add_if_statement.dart';
 
 class AddIfBracesRule extends DartLintRule {
   static void combine({
@@ -83,17 +84,11 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.registry.addIfStatement(
+      context.addIfStatementIntersects(
+        analysisError,
         (
           IfStatement ifStatement,
         ) {
-          if (analysisError.sourceRange.intersects(
-                ifStatement.sourceRange,
-              ) ==
-              false) {
-            return;
-          }
-
           final Statement thenStatement = ifStatement.thenStatement;
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Add braces",
