@@ -85,7 +85,7 @@ class Config {
   final List<DeleteListItem>? deleteTypeList; //
   //
   final bool editArrowFunction; //
-  final bool editContructorNamedParameter;
+  final bool editContructorNamedParameter; //
   final bool editFunctionNamedParameter;
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
