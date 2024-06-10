@@ -40,8 +40,8 @@ class Config {
     this.deleteTypeList,
     //
     this.editArrowFunction = true,
-    this.editContructorNamedParameters = true,
-    this.editFunctionNamedParameters = true,
+    this.editContructorNamedParameter = true,
+    this.editFunctionNamedParameter = true,
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
@@ -85,8 +85,8 @@ class Config {
   final List<DeleteListItem>? deleteTypeList; //
   //
   final bool editArrowFunction; //
-  final bool editContructorNamedParameters;
-  final bool editFunctionNamedParameters;
+  final bool editContructorNamedParameter;
+  final bool editFunctionNamedParameter;
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
@@ -174,10 +174,10 @@ class Config {
             .toList(),
         //
         editArrowFunction: map["edit_arrow_function"] ?? true,
-        editContructorNamedParameters:
-            map["edit_constructor_named_parameters"] ?? true,
-        editFunctionNamedParameters:
-            map["edit_function_named_parameters"] ?? true,
+        editContructorNamedParameter:
+            map["edit_constructor_named_parameter"] ?? true,
+        editFunctionNamedParameter:
+            map["edit_function_named_parameter"] ?? true,
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,

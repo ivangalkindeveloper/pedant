@@ -53,6 +53,9 @@ class AddTypeRule extends DartLintRule {
       ) {
         for (final ParameterElement parameterElement
             in constructorElement.parameters) {
+          if (parameterElement.isInitializingFormal == true) {
+            continue;
+          }
           if (parameterElement.hasImplicitType == false) {
             continue;
           }

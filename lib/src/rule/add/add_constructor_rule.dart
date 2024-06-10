@@ -112,15 +112,18 @@ class _Fix extends DartFix {
             (
               DartFileEditBuilder builder,
             ) =>
-                builder.addInsertion(classDeclaration.leftBracket.offset + 1, (
-              DartEditBuilder builder,
-            ) {
-              builder.write("\n  ");
-              builder.writeConstructorDeclaration(
-                classElement.name,
-              );
-              builder.write("\n");
-            }),
+                builder.addInsertion(
+              classDeclaration.leftBracket.offset + 1,
+              (
+                DartEditBuilder builder,
+              ) {
+                builder.write("\n  ");
+                builder.writeConstructorDeclaration(
+                  classElement.name,
+                );
+                builder.write("\n");
+              },
+            ),
           );
         },
       );
