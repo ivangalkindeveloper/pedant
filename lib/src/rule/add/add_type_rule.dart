@@ -53,6 +53,9 @@ class AddTypeRule extends DartLintRule {
       ) {
         for (final ParameterElement parameterElement
             in constructorElement.parameters) {
+          if (parameterElement.isSuperFormal == true) {
+            continue;
+          }
           if (parameterElement.isInitializingFormal == true) {
             continue;
           }

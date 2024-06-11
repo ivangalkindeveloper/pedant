@@ -40,8 +40,10 @@ class Config {
     this.deleteTypeList,
     //
     this.editArrowFunction = true,
-    this.editContructorNamedParameter = true,
-    this.editFunctionNamedParameter = true,
+    this.editContructorPrivateNamedParameter = true,
+    this.editContructorPublicNamedParameter = true,
+    this.editFunctionPrivateNamedParameter = true,
+    this.editFunctionPublicNamedParameter = true,
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
@@ -85,8 +87,10 @@ class Config {
   final List<DeleteListItem>? deleteTypeList; //
   //
   final bool editArrowFunction; //
-  final bool editContructorNamedParameter; //
-  final bool editFunctionNamedParameter;
+  final bool editContructorPrivateNamedParameter; //
+  final bool editContructorPublicNamedParameter; //
+  final bool editFunctionPrivateNamedParameter; //
+  final bool editFunctionPublicNamedParameter; //
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
@@ -174,10 +178,14 @@ class Config {
             .toList(),
         //
         editArrowFunction: map["edit_arrow_function"] ?? true,
-        editContructorNamedParameter:
-            map["edit_constructor_named_parameter"] ?? true,
-        editFunctionNamedParameter:
-            map["edit_function_named_parameter"] ?? true,
+        editContructorPrivateNamedParameter:
+            map["edit_constructor_private_named_parameter"] ?? true,
+        editContructorPublicNamedParameter:
+            map["edit_constructor_public_named_parameter"] ?? true,
+        editFunctionPrivateNamedParameter:
+            map["edit_function_private_named_parameter"] ?? true,
+        editFunctionPublicNamedParameter:
+            map["edit_function_public_named_parameter"] ?? true,
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,
