@@ -7,6 +7,8 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
+import 'package:pedant/src/utility/extension/add_constructor.dart';
+import 'package:pedant/src/utility/tree_visitor.dart';
 
 class AddConstConstructorRule extends DartLintRule {
   static void combine({
@@ -58,27 +60,38 @@ class AddConstConstructorRule extends DartLintRule {
             }
           }
 
-          for (final ConstructorElement constructorElement
-              in classElement.constructors) {
-            final ConstructorElement? superConstructor =
-                constructorElement.superConstructor;
-            if (superConstructor?.isConst == false) {
-              continue;
-            }
+          classDeclaration.visitChildren(
+            TreeVisitor(
+              onConstructorDeclaration: (
+                ConstructorDeclaration constructorDeclaration,
+              ) {
+                final ConstructorElement? constructorElement =
+                    constructorDeclaration.declaredElement;
+                if (constructorElement == null) {
+                  return;
+                }
 
-            if (constructorElement.isConst == true) {
-              continue;
-            }
+                final ConstructorElement? superConstructor =
+                    constructorElement.superConstructor;
+                if (superConstructor?.isConst == false) {
+                  return;
+                }
 
-            if (constructorElement.isFactory == true) {
-              return;
-            }
+                if (constructorElement.isConst == true) {
+                  return;
+                }
 
-            reporter.atElement(
-              constructorElement,
-              this.code,
-            );
-          }
+                if (constructorElement.isFactory == true) {
+                  return;
+                }
+
+                reporter.atElement(
+                  constructorElement,
+                  this.code,
+                );
+              },
+            ),
+          );
         },
       );
 
@@ -105,15 +118,15 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.addClassIntersects(
+      context.addConstructorIntersects(
         analysisError,
         (
-          ClassDeclaration classDeclaration,
-          ClassElement classElement,
+          ConstructorDeclaration constructorDeclaration,
+          ConstructorElement constructorElement,
         ) {
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message:
-                "Pedant: Add const to '${classElement.displayName}' constructor",
+                "Pedant: Add const to '${constructorElement.displayName}' constructor",
             priority: this.priority,
           );
           changeBuilder.addDartFileEdit(
@@ -121,7 +134,7 @@ class _Fix extends DartFix {
               DartFileEditBuilder builder,
             ) =>
                 builder.addInsertion(
-              classElement.nameOffset,
+              constructorElement.nameOffset,
               (
                 DartEditBuilder builder,
               ) =>

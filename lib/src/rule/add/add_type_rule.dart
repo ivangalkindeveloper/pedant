@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
@@ -128,6 +129,24 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
+    void createChangeBuilder({
+      required DartType type,
+    }) {
+      final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+        message: "Pedant: Add type",
+        priority: this.priority,
+      );
+      changeBuilder.addDartFileEdit(
+        (
+          DartFileEditBuilder builder,
+        ) =>
+            builder.addSimpleInsertion(
+          analysisError.sourceRange.offset,
+          "${type.getDisplayString()} ",
+        ),
+      );
+    }
+
     context.addConstructorIntersects(
       analysisError,
       (
@@ -140,18 +159,8 @@ class _Fix extends DartFix {
             continue;
           }
 
-          final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Pedant: Add type",
-            priority: this.priority,
-          );
-          changeBuilder.addDartFileEdit(
-            (
-              DartFileEditBuilder builder,
-            ) =>
-                builder.addSimpleInsertion(
-              analysisError.sourceRange.offset,
-              "${parameterElement.type.getDisplayString()} ",
-            ),
+          createChangeBuilder(
+            type: parameterElement.type,
           );
         }
       },
@@ -168,18 +177,8 @@ class _Fix extends DartFix {
             continue;
           }
 
-          final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-            message: "Pedant: Add type",
-            priority: this.priority,
-          );
-          changeBuilder.addDartFileEdit(
-            (
-              DartFileEditBuilder builder,
-            ) =>
-                builder.addSimpleInsertion(
-              analysisError.sourceRange.offset,
-              "${parameterElement.type.getDisplayString()} ",
-            ),
+          createChangeBuilder(
+            type: parameterElement.type,
           );
         }
       },
@@ -189,21 +188,10 @@ class _Fix extends DartFix {
       (
         VariableDeclaration variableDeclaration,
         VariableElement variableElement,
-      ) {
-        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Pedant: Add type",
-          priority: this.priority,
-        );
-        changeBuilder.addDartFileEdit(
-          (
-            DartFileEditBuilder builder,
-          ) =>
-              builder.addSimpleInsertion(
-            analysisError.sourceRange.offset,
-            "${variableElement.type.getDisplayString()} ",
-          ),
-        );
-      },
+      ) =>
+          createChangeBuilder(
+        type: variableElement.type,
+      ),
     );
   }
 }

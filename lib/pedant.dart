@@ -8,6 +8,7 @@ import 'package:pedant/src/rule/add/add_bloc_state_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_bloc_state_sealed_rule.dart';
 import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_keyword_rule.dart';
 import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_path_rule.dart';
+import 'package:pedant/src/rule/add/add_comma_rule.dart';
 import 'package:pedant/src/rule/add/add_const_constructor_rule.dart';
 import 'package:pedant/src/rule/add/add_const_variable_rule.dart';
 import 'package:pedant/src/rule/add/add_constructor_rule.dart';
@@ -75,6 +76,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     AddClassPrefixPostfixByPathRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddCommaRule.combine(
       config: config,
       ruleList: ruleList,
     );

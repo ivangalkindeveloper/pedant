@@ -46,18 +46,20 @@ class EditArrowFunctionRule extends DartLintRule {
   ) =>
       context.registry.addFunctionBody(
         (
-          FunctionBody node,
+          FunctionBody functionBody,
         ) {
-          final TokenType beginTokenType = node.beginToken.type;
-          final TokenType? nextBeginTokenType = node.beginToken.next?.type;
-          final TokenType endTokenType = node.endToken.type;
+          final TokenType beginTokenType = functionBody.beginToken.type;
+          final TokenType? nextBeginTokenType =
+              functionBody.beginToken.next?.type;
+          final TokenType endTokenType = functionBody.endToken.type;
           if (beginTokenType != TokenType.OPEN_CURLY_BRACKET ||
               nextBeginTokenType == TokenType.CLOSE_CURLY_BRACKET ||
               endTokenType != TokenType.CLOSE_CURLY_BRACKET) {
             return;
           }
 
-          final SyntacticEntity? entity = node.childEntities.firstOrNull;
+          final SyntacticEntity? entity =
+              functionBody.childEntities.firstOrNull;
           if (entity == null) {
             return;
           }
@@ -66,13 +68,13 @@ class EditArrowFunctionRule extends DartLintRule {
           final List<String> entitySplit = entity.toString().split(
                 "; ",
               );
-          final TokenType? nextTokenType = node.beginToken.next?.type;
+          final TokenType? nextTokenType = functionBody.beginToken.next?.type;
           if (nextTokenType != Keyword.RETURN && entitySplit.length > 1) {
             return;
           }
 
           reporter.atNode(
-            node,
+            functionBody,
             this.code,
           );
         },
