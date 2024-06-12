@@ -11,7 +11,6 @@ void fixNamedParameters({
   required int priority,
   required List<ParameterElement> parameterList,
   required SourceRange range,
-  required bool isConstructor,
 }) {
   final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
     message: "Pedant: Edit all parameters to named ",
@@ -79,6 +78,13 @@ void fixNamedParameters({
               : range.length + 1,
         ),
         result,
+      );
+
+      builder.format(
+        SourceRange(
+          range.offset,
+          result.length,
+        ),
       );
     },
   );

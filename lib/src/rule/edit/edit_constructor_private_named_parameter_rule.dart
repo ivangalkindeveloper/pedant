@@ -7,6 +7,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_constructor.dart';
 import 'package:pedant/src/utility/fix_named_parameters.dart';
+import 'package:pedant/src/utility/tree_visitor.dart';
 
 class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
   static void combine({
@@ -125,24 +126,23 @@ class _Fix extends DartFix {
         (
           ConstructorDeclaration constructorDeclaration,
           ConstructorElement constructorElement,
-        ) {
-          //TODO offsets
-          final int startBracetOffset =
-              constructorElement.nameOffset + constructorElement.nameLength + 1;
-          final int endBracetOffset =
-              constructorDeclaration.endToken.offset - 1;
-
-          return fixNamedParameters(
-            reporter: reporter,
-            analysisError: analysisError,
-            priority: priority,
-            parameterList: constructorElement.parameters,
-            range: SourceRange(
-              startBracetOffset,
-              endBracetOffset - startBracetOffset,
+        ) =>
+            constructorDeclaration.visitChildren(
+          TreeVisitor(
+            onFormalParameterList: (
+              FormalParameterList formalParameterList,
+            ) =>
+                fixNamedParameters(
+              reporter: reporter,
+              analysisError: analysisError,
+              priority: priority,
+              parameterList: constructorElement.parameters,
+              range: SourceRange(
+                formalParameterList.beginToken.offset + 1,
+                formalParameterList.length - 2,
+              ),
             ),
-            isConstructor: true,
-          );
-        },
+          ),
+        ),
       );
 }

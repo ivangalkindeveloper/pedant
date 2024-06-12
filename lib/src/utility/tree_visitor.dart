@@ -10,6 +10,7 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
     this.onDefaultFormalParameter,
     this.onFieldDeclaration,
     this.onFieldFormalParameter,
+    this.onFormalParameterList,
     this.onFunctionDeclaration,
     this.onInstanceCreationExpression,
     this.onMethodDeclaration,
@@ -46,6 +47,10 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   final void Function(
     FieldFormalParameter node,
   )? onFieldFormalParameter;
+
+  final void Function(
+    FormalParameterList node,
+  )? onFormalParameterList;
 
   final void Function(
     FunctionDeclaration node,
@@ -128,6 +133,14 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
     FieldFormalParameter node,
   ) =>
       this.onFieldFormalParameter?.call(
+            node,
+          );
+
+  @override
+  void visitFormalParameterList(
+    FormalParameterList node,
+  ) =>
+      this.onFormalParameterList?.call(
             node,
           );
 
