@@ -11,6 +11,7 @@ void fixNamedParameters({
   required int priority,
   required List<ParameterElement> parameterList,
   required SourceRange range,
+  SourceRange? superRange,
 }) {
   final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
     message: "Pedant: Edit all parameters to named ",
@@ -63,28 +64,26 @@ void fixNamedParameters({
       );
 
       final String parameterLineResult = parameterLineList.join();
-      final String privateInitilizeResult = privateInitilizePramaterList.isEmpty
-          ? ""
-          : ") : ${privateInitilizePramaterList.join(
+      String privateInitilizeResult = privateInitilizePramaterList.isNotEmpty
+          ? ") : ${privateInitilizePramaterList.join(
               ", ",
-            )}";
+            )}"
+          : "";
+      privateInitilizeResult += superRange != null ? ", " : "";
       final String result = "${parameterLineResult}${privateInitilizeResult}";
+
+      final int initializeReplacementLength = superRange != null
+          ? superRange.offset - range.offset
+          : range.length + 1;
 
       builder.addSimpleReplacement(
         SourceRange(
           range.offset,
-          privateInitilizePramaterList.isEmpty
-              ? range.length
-              : range.length + 1,
+          privateInitilizePramaterList.isNotEmpty
+              ? initializeReplacementLength
+              : range.length,
         ),
         result,
-      );
-
-      builder.format(
-        SourceRange(
-          range.offset,
-          result.length,
-        ),
       );
     },
   );

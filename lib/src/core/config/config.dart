@@ -65,7 +65,7 @@ class Config {
   final List<PathNameListItem>? addClassPrefixByPathList; //
   final bool addComma; //
   final bool addConstConstructor; //
-  final bool addConstVariable; // ?
+  final bool addConstVariable;
   final bool addConstructor; //
   final bool addCubitPostfix; //
   final bool addExtensionPostfix; //
@@ -73,7 +73,7 @@ class Config {
   final bool addIfBraces; //
   final bool addMixinPostfix; //
   final bool addOverride; //
-  final bool addThis; // ?
+  final bool addThis;
   final bool addType; //
   //
   final bool deleteBlocDependentBloc; //

@@ -2,7 +2,11 @@
 // import 'package:bloc/bloc.dart';
 
 // class ExampleBloc extends Bloc<String, String> {
-//   ExampleBloc() : super("") {
+//   final String _field;
+
+//   ExampleBloc(
+//     this._field,
+//   ) : super("") {
 //     on<String>((event, emit) {});
 //   }
 

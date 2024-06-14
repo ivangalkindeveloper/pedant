@@ -132,17 +132,28 @@ class _Fix extends DartFix {
           TreeVisitor(
             onFormalParameterList: (
               FormalParameterList formalParameterList,
-            ) =>
-                fixNamedParameters(
-              reporter: reporter,
-              analysisError: analysisError,
-              priority: priority,
-              parameterList: constructorElement.parameters,
-              range: SourceRange(
-                formalParameterList.beginToken.offset + 1,
-                formalParameterList.length - 2,
-              ),
-            ),
+            ) {
+              final NodeList<ConstructorInitializer> initializers =
+                  constructorDeclaration.initializers;
+              SourceRange? superRange;
+              for (final ConstructorInitializer initializer in initializers) {
+                if (initializer.toString().contains("super") == true) {
+                  superRange = initializer.sourceRange;
+                }
+              }
+
+              return fixNamedParameters(
+                reporter: reporter,
+                analysisError: analysisError,
+                priority: priority,
+                parameterList: constructorElement.parameters,
+                range: SourceRange(
+                  formalParameterList.beginToken.offset + 1,
+                  formalParameterList.length - 2,
+                ),
+                superRange: superRange,
+              );
+            },
           ),
         ),
       );
