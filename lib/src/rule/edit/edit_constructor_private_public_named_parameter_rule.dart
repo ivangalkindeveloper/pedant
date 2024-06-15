@@ -10,6 +10,7 @@ import 'package:pedant/src/utility/extension/add_constructor.dart';
 import 'package:pedant/src/utility/fix_named_parameters.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
+//TODO Проблема в высчитыванием оффсета при приватных инициализаторов конструктора
 class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
   static void combine({
     required Config config,
