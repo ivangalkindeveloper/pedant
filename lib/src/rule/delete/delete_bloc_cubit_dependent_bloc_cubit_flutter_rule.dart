@@ -114,7 +114,7 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
         ClassDeclaration blocDeclaration,
         ClassElement blocElement,
       ) =>
-          _visitChildren(
+          this._visitChildren(
         reporter: reporter,
         classDeclaration: blocDeclaration,
       ),
@@ -124,7 +124,7 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
         ClassDeclaration cubitDeclaration,
         ClassElement cubitElement,
       ) =>
-          _visitChildren(
+          this._visitChildren(
         reporter: reporter,
         classDeclaration: cubitDeclaration,
       ),

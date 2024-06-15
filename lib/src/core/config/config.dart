@@ -32,7 +32,7 @@ class Config {
     //
     this.deleteBlocCubitDependentBlocCubit = true,
     this.deleteBlocCubitDependentFlutter = true,
-    this.deleteBlocPublicProperty = true,
+    this.deleteBlocCubitPublicProperty = true,
     this.deleteClassPostfixList,
     this.deleteClassPrefixList,
     this.deleteFunctionList,
@@ -80,7 +80,7 @@ class Config {
   //
   final bool deleteBlocCubitDependentBlocCubit; //
   final bool deleteBlocCubitDependentFlutter; //
-  final bool deleteBlocPublicProperty; //
+  final bool deleteBlocCubitPublicProperty; //
   final List<DeleteListItem>? deleteClassPostfixList; //
   final List<DeleteListItem>? deleteClassPrefixList; //
   final List<DeleteListItem>? deleteFunctionList; //
@@ -153,7 +153,8 @@ class Config {
             map["delete_bloc_cubit_dependent_bloc_cubit"] ?? true,
         deleteBlocCubitDependentFlutter:
             map["delete_bloc_cubit_dependent_flutter"] ?? true,
-        deleteBlocPublicProperty: map["delete_bloc_public_property"] ?? true,
+        deleteBlocCubitPublicProperty:
+            map["delete_bloc_cubit_public_property"] ?? true,
         deleteClassPostfixList: (map["delete_class_postfix_list"] as List?)
             ?.map(
               (e) => DeleteListItem.fromYaml(e),

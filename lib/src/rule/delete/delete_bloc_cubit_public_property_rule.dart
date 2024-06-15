@@ -8,34 +8,35 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_bloc.dart';
+import 'package:pedant/src/utility/extension/add_cubit.dart';
 import 'package:pedant/src/utility/extension/add_field_formal_parameter.dart';
 import 'package:pedant/src/utility/extension/add_variable.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-class DeleteBlocPublicPropertyRule extends DartLintRule {
+class DeleteBlocCubitPublicPropertyRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteBlocPublicProperty == false) {
+    if (config.deleteBlocCubitPublicProperty == false) {
       return;
     }
 
     ruleList.add(
-      DeleteBlocPublicPropertyRule(
+      DeleteBlocCubitPublicPropertyRule(
         priority: config.priority,
       ),
     );
   }
 
-  const DeleteBlocPublicPropertyRule({
+  const DeleteBlocCubitPublicPropertyRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "delete_bloc_public_property",
-            problemMessage: "Delete public properties in Bloc.",
+            name: "delete_bloc_cubit_public_property",
+            problemMessage: "Delete public property in Bloc or Cubit.",
             correctionMessage:
-                "Please change access to public preperties of Bloc or delete it.",
+                "Please change access to public property of Bloc or Cubit or delete this property.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -47,60 +48,80 @@ class DeleteBlocPublicPropertyRule extends DartLintRule {
     CustomLintResolver resolver,
     ErrorReporter reporter,
     CustomLintContext context,
-  ) =>
-      context.addBloc(
-        (
-          ClassDeclaration blocDeclaration,
-          ClassElement blocElement,
-        ) =>
-            blocDeclaration.visitChildren(
-          TreeVisitor(
-            onConstructorDeclaration: (
-              ConstructorDeclaration constructorDeclaration,
-            ) {
-              final ConstructorElement? declaredElement =
-                  constructorDeclaration.declaredElement;
+  ) {
+    context.addBloc(
+      (
+        ClassDeclaration blocDeclaration,
+        ClassElement blocElement,
+      ) =>
+          this._visitChildren(
+        reporter: reporter,
+        classDeclaration: blocDeclaration,
+      ),
+    );
+    context.addCubit(
+      (
+        ClassDeclaration cubitDeclaration,
+        ClassElement cubitElement,
+      ) =>
+          this._visitChildren(
+        reporter: reporter,
+        classDeclaration: cubitDeclaration,
+      ),
+    );
+  }
+
+  void _visitChildren({
+    required ErrorReporter reporter,
+    required ClassDeclaration classDeclaration,
+  }) =>
+      classDeclaration.visitChildren(
+        TreeVisitor(
+          onConstructorDeclaration: (
+            ConstructorDeclaration constructorDeclaration,
+          ) {
+            final ConstructorElement? declaredElement =
+                constructorDeclaration.declaredElement;
+            if (declaredElement == null) {
+              return;
+            }
+
+            for (final ParameterElement parameter
+                in declaredElement.parameters) {
+              if (parameter.isPrivate) {
+                continue;
+              }
+
+              if (parameter.isInitializingFormal == false) {
+                continue;
+              }
+
+              reporter.atElement(
+                parameter,
+                this.code,
+              );
+            }
+          },
+          onFieldDeclaration: (
+            FieldDeclaration fieldDeclaration,
+          ) {
+            for (final VariableDeclaration variable
+                in fieldDeclaration.fields.variables) {
+              final declaredElement = variable.declaredElement;
               if (declaredElement == null) {
-                return;
+                continue;
               }
 
-              for (final ParameterElement parameter
-                  in declaredElement.parameters) {
-                if (parameter.isPrivate) {
-                  continue;
-                }
-
-                if (parameter.isInitializingFormal == false) {
-                  continue;
-                }
-
-                reporter.atElement(
-                  parameter,
-                  this.code,
-                );
+              if (declaredElement.isPrivate) {
+                continue;
               }
-            },
-            onFieldDeclaration: (
-              FieldDeclaration fieldDeclaration,
-            ) {
-              for (final VariableDeclaration variable
-                  in fieldDeclaration.fields.variables) {
-                final declaredElement = variable.declaredElement;
-                if (declaredElement == null) {
-                  continue;
-                }
 
-                if (declaredElement.isPrivate) {
-                  continue;
-                }
-
-                reporter.atElement(
-                  declaredElement,
-                  this.code,
-                );
-              }
-            },
-          ),
+              reporter.atElement(
+                declaredElement,
+                this.code,
+              );
+            }
+          },
         ),
       );
 

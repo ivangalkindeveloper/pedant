@@ -14,3 +14,18 @@
 //   final String _property2;
 //   final String property3;
 // }
+
+// class ExampleCubit extends Cubit<String> {
+//   ExampleCubit(
+//     this.property1, {
+//     required String property2,
+//     required this.property3,
+//   })  : this._property2 = property2,
+//         super(
+//           "",
+//         ) {}
+
+//   final String property1;
+//   final String _property2;
+//   final String property3;
+// }

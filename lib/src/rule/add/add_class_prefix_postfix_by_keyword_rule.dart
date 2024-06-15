@@ -85,6 +85,7 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
         ) {
           bool isMatch = false;
           final List<Token> tokenList = [
+            classDeclaration.augmentKeyword,
             classDeclaration.abstractKeyword,
             classDeclaration.augmentKeyword,
             classDeclaration.baseKeyword,

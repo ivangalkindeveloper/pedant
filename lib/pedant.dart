@@ -19,7 +19,7 @@ import 'package:pedant/src/rule/add/add_override_rule.dart';
 import 'package:pedant/src/rule/add/add_this_rule.dart';
 import 'package:pedant/src/rule/add/add_type_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_cubit_dependent_bloc_cubit_flutter_rule.dart';
-import 'package:pedant/src/rule/delete/delete_bloc_public_property_rule.dart';
+import 'package:pedant/src/rule/delete/delete_bloc_cubit_public_property_rule.dart';
 import 'package:pedant/src/rule/delete/delete_class_prefix_postfix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
@@ -121,7 +121,7 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    DeleteBlocPublicPropertyRule.combine(
+    DeleteBlocCubitPublicPropertyRule.combine(
       config: config,
       ruleList: ruleList,
     );
