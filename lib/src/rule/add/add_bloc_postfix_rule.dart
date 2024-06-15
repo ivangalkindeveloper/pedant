@@ -32,7 +32,7 @@ class AddBlocPostfixRule extends DartLintRule {
           code: const LintCode(
             name: "add_bloc_postfix",
             problemMessage: "Add BLoC postfix",
-            correctionMessage: "Please add postfix 'Bloc' to this BLoC.",
+            correctionMessage: "Please add postfix 'Bloc' to this Bloc.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
