@@ -122,7 +122,7 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.addConstructorIntersects(
+      context.addConstructorElementIntersects(
         analysisError,
         (
           ConstructorDeclaration constructorDeclaration,

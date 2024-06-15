@@ -132,7 +132,7 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    context.addFieldIntersects(
+    context.addFieldElementIntersects(
       analysisError,
       (
         FieldDeclaration fieldDeclaration,

@@ -147,7 +147,7 @@ class _Fix extends DartFix {
       );
     }
 
-    context.addConstructorIntersects(
+    context.addConstructorElementIntersects(
       analysisError,
       (
         ConstructorDeclaration constructorDeclaration,

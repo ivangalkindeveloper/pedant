@@ -26,7 +26,7 @@ extension CustomLintContextExtension on CustomLintContext {
         },
       );
 
-  void addFieldIntersects(
+  void addFieldElementIntersects(
     AnalysisError analysisError,
     void Function(
       FieldDeclaration fieldDeclaration,
@@ -53,6 +53,46 @@ extension CustomLintContextExtension on CustomLintContext {
             fieldDeclaration,
             fieldElement,
           );
+        },
+      );
+
+  void addFieldVariableIntersects(
+    AnalysisError analysisError,
+    void Function(
+      FieldDeclaration fieldDeclaration,
+      VariableElement variableElement,
+    ) execute,
+  ) =>
+      this.registry.addFieldDeclaration(
+        (
+          FieldDeclaration fieldDeclaration,
+        ) {
+          if (analysisError.sourceRange.intersects(
+                fieldDeclaration.sourceRange,
+              ) ==
+              false) {
+            return;
+          }
+
+          for (final VariableDeclaration variable
+              in fieldDeclaration.fields.variables) {
+            if (analysisError.sourceRange.intersects(
+                  variable.sourceRange,
+                ) ==
+                false) {
+              continue;
+            }
+
+            final VariableElement? variableElement = variable.declaredElement;
+            if (variableElement == null) {
+              continue;
+            }
+
+            execute(
+              fieldDeclaration,
+              variableElement,
+            );
+          }
         },
       );
 }

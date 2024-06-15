@@ -19,8 +19,8 @@ import 'package:pedant/src/rule/add/add_mixin_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_override_rule.dart';
 import 'package:pedant/src/rule/add/add_this_rule.dart';
 import 'package:pedant/src/rule/add/add_type_rule.dart';
-import 'package:pedant/src/rule/delete/delete_bloc_dependent_bloc_rule.dart';
-import 'package:pedant/src/rule/delete/delete_bloc_dependent_flutter_rule.dart';
+import 'package:pedant/src/rule/delete/delete_bloc_cubit_dependent_bloc_cubit_rule.dart';
+import 'package:pedant/src/rule/delete/delete_bloc_cubit_dependent_flutter_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_public_property_rule.dart';
 import 'package:pedant/src/rule/delete/delete_class_prefix_postfix_rule.dart';
 import 'package:pedant/src/rule/delete/delete_function_rule.dart';
@@ -28,7 +28,7 @@ import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
 import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
 import 'package:pedant/src/rule/edit/edit_arrow_function_rule.dart';
-import 'package:pedant/src/rule/edit/edit_constructor_private_named_parameter_rule.dart';
+import 'package:pedant/src/rule/edit/edit_constructor_private_public_named_parameter_rule.dart';
 import 'package:pedant/src/rule/edit/edit_function_private_public_named_parameter_rule.dart';
 import 'package:pedant/src/rule/edit/edit_multiple_variable_rule.dart';
 import 'package:pedant/src/rule/edit/edit_private_in_function_rule.dart';
@@ -123,11 +123,11 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    DeleteBlocDependentFlutterRule.combine(
+    DeleteBlocCubitDependentBlocCubitRule.combine(
       config: config,
       ruleList: ruleList,
     );
-    DeleteBlocDependentBlocRule.combine(
+    DeleteBlocCubitDependentFlutterRule.combine(
       config: config,
       ruleList: ruleList,
     );

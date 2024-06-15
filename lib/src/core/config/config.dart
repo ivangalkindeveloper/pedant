@@ -29,8 +29,8 @@ class Config {
     this.addThis = true,
     this.addType = true,
     //
-    this.deleteBlocDependentBloc = true,
-    this.deleteBlocDependentFlutter = true,
+    this.deleteBlocCubitDependentBlocCubit = true,
+    this.deleteBlocCubitDependentFlutter = true,
     this.deleteBlocPublicProperty = true,
     this.deleteClassPostfixList,
     this.deleteClassPrefixList,
@@ -76,8 +76,8 @@ class Config {
   final bool addThis;
   final bool addType; //
   //
-  final bool deleteBlocDependentBloc; //
-  final bool deleteBlocDependentFlutter; //
+  final bool deleteBlocCubitDependentBlocCubit; //
+  final bool deleteBlocCubitDependentFlutter; //
   final bool deleteBlocPublicProperty; //
   final List<DeleteListItem>? deleteClassPostfixList; //
   final List<DeleteListItem>? deleteClassPrefixList; //
@@ -146,9 +146,10 @@ class Config {
         addThis: map["add_this"] ?? true,
         addType: map["add_type"] ?? true,
         //
-        deleteBlocDependentBloc: map["delete_bloc_dependent_bloc"] ?? true,
-        deleteBlocDependentFlutter:
-            map["delete_bloc_dependent_flutter"] ?? true,
+        deleteBlocCubitDependentBlocCubit:
+            map["delete_bloc_cubit_dependent_bloc_cubit"] ?? true,
+        deleteBlocCubitDependentFlutter:
+            map["delete_bloc_cubit_dependent_flutter"] ?? true,
         deleteBlocPublicProperty: map["delete_bloc_public_property"] ?? true,
         deleteClassPostfixList: (map["delete_class_postfix_list"] as List?)
             ?.map(

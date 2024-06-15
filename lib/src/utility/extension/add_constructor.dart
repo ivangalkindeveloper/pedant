@@ -27,7 +27,7 @@ extension CustomLintContextExtension on CustomLintContext {
         },
       );
 
-  void addConstructorIntersects(
+  void addConstructorElementIntersects(
     AnalysisError analysisError,
     void Function(
       ConstructorDeclaration constructorDeclaration,
@@ -55,6 +55,49 @@ extension CustomLintContextExtension on CustomLintContext {
             constructorDeclaration,
             constructorElement,
           );
+        },
+      );
+
+  void addConstructorParameterIntersects(
+    AnalysisError analysisError,
+    void Function(
+      ConstructorDeclaration constructorDeclaration,
+      FormalParameter formalParameter,
+      ParameterElement parameterElement,
+    ) execute,
+  ) =>
+      this.registry.addConstructorDeclaration(
+        (
+          ConstructorDeclaration constructorDeclaration,
+        ) {
+          if (analysisError.sourceRange.intersects(
+                constructorDeclaration.sourceRange,
+              ) ==
+              false) {
+            return;
+          }
+
+          for (final FormalParameter formalParameter
+              in constructorDeclaration.parameters.parameters) {
+            if (analysisError.sourceRange.intersects(
+                  formalParameter.sourceRange,
+                ) ==
+                false) {
+              continue;
+            }
+
+            final ParameterElement? parameterElement =
+                formalParameter.declaredElement;
+            if (parameterElement == null) {
+              continue;
+            }
+
+            execute(
+              constructorDeclaration,
+              formalParameter,
+              parameterElement,
+            );
+          }
         },
       );
 }
