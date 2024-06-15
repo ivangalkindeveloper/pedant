@@ -55,12 +55,12 @@ class DeleteTypeRule extends DartLintRule {
         (
           InstanceCreationExpression instanceCreationExpression,
         ) {
-          final DartType? type = instanceCreationExpression.staticType;
-          if (type == null) {
+          final DartType? staticType = instanceCreationExpression.staticType;
+          if (staticType == null) {
             return;
           }
 
-          final String displayString = type.getDisplayString();
+          final String displayString = staticType.getDisplayString();
           _validate(
             name: displayString,
             onSuccess: () => reporter.atNode(
@@ -117,12 +117,12 @@ class _Fix extends DartFix {
         (
           InstanceCreationExpression instanceCreationExpression,
         ) {
-          final DartType? type = instanceCreationExpression.staticType;
-          if (type == null) {
+          final DartType? staticType = instanceCreationExpression.staticType;
+          if (staticType == null) {
             return;
           }
 
-          final String displayString = type.getDisplayString();
+          final String displayString = staticType.getDisplayString();
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Delete '$displayString'",
             priority: this.priority,

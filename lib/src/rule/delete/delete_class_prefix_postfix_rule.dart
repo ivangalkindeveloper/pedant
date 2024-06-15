@@ -29,12 +29,12 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
               errorSeverity: ErrorSeverity.ERROR,
             ),
             deleteListItem: deleteListItem,
-            validaton: (
-              final String name,
-              final String prefix,
-            ) =>
+            validaton: ({
+              required String name,
+              required String matchName,
+            }) =>
                 name.startsWith(
-              prefix,
+              matchName,
             ),
             priority: config.priority,
           ),
@@ -55,12 +55,12 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
           deleteListItem: deleteListItem,
-          validaton: (
-            final String name,
-            final String postfix,
-          ) =>
+          validaton: ({
+            required String name,
+            required String matchName,
+          }) =>
               name.endsWith(
-            postfix,
+            matchName,
           ),
           priority: config.priority,
         ),
@@ -76,7 +76,10 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
   });
 
   final DeleteListItem deleteListItem;
-  final bool Function(String, String) validaton;
+  final bool Function({
+    required String name,
+    required String matchName,
+  }) validaton;
   final int priority;
 
   @override
@@ -118,8 +121,8 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
     bool isMatch = false;
     for (final String matchName in deleteListItem.nameList) {
       if (this.validaton(
-        name,
-        matchName,
+        name: name,
+        matchName: matchName,
       )) {
         isMatch = true;
       }

@@ -13,30 +13,19 @@ import 'package:pedant/src/utility/bloc_type_checker.dart';
 import 'package:pedant/src/utility/cubit_type_checkot.dart';
 import 'package:pedant/src/utility/extension/add_bloc.dart';
 import 'package:pedant/src/utility/extension/add_constructor.dart';
+import 'package:pedant/src/utility/extension/add_constructor_field_initializer.dart';
 import 'package:pedant/src/utility/extension/add_cubit.dart';
 import 'package:pedant/src/utility/extension/add_field.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-//TODO Fix initializer fields in Bloc constructor too
-class DeleteBlocCubitDependentBlocCubitRule extends DartLintRule {
+class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteBlocCubitDependentBlocCubit == false) {
-      return;
-    }
-
-    ruleList.add(
-      DeleteBlocCubitDependentBlocCubitRule(
-        priority: config.priority,
-      ),
-    );
-  }
-
-  const DeleteBlocCubitDependentBlocCubitRule({
-    required this.priority,
-  }) : super(
+    if (config.deleteBlocCubitDependentBlocCubit == true) {
+      ruleList.add(
+        DeleteBlocCubitDependentBlocCubitFlutterRule(
           code: const LintCode(
             name: "delete_bloc_cubit_dependent_bloc_cubit",
             problemMessage:
@@ -45,8 +34,74 @@ class DeleteBlocCubitDependentBlocCubitRule extends DartLintRule {
                 "Please delete this Bloc or Cubit dependency.\nCommunication between Bloc's or Cubit's should occur only through widgets.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
-        );
+          validaton: ({
+            required DartType? type,
+            required String? packageName,
+          }) {
+            if (type == null) {
+              return false;
+            }
 
+            if (blocTypeChecker.isAssignableFromType(
+                      type,
+                    ) ==
+                    false &&
+                cubitTypeChecker.isAssignableFromType(
+                      type,
+                    ) ==
+                    false) {
+              return false;
+            }
+
+            return true;
+          },
+          priority: config.priority,
+        ),
+      );
+    }
+
+    if (config.deleteBlocCubitDependentFlutter == true) {
+      ruleList.add(
+        DeleteBlocCubitDependentBlocCubitFlutterRule(
+          code: const LintCode(
+            name: "delete_bloc_cubit_dependent_flutter",
+            problemMessage:
+                "Delete Flutter resource dependency in current Bloc or Cubit.",
+            correctionMessage:
+                "Please delete this Flutter resource dependency.",
+            errorSeverity: ErrorSeverity.ERROR,
+          ),
+          validaton: ({
+            required DartType? type,
+            required String? packageName,
+          }) {
+            print(packageName);
+            if (packageName == null) {
+              return false;
+            }
+
+            if (packageName.contains("package:flutter/") == false) {
+              return false;
+            }
+
+            return true;
+          },
+          priority: config.priority,
+        ),
+      );
+    }
+  }
+
+  const DeleteBlocCubitDependentBlocCubitFlutterRule({
+    required super.code,
+    required this.validaton,
+    required this.priority,
+  });
+
+  final bool Function({
+    required DartType? type,
+    required String? packageName,
+  }) validaton;
   final int priority;
 
   @override
@@ -94,16 +149,48 @@ class DeleteBlocCubitDependentBlocCubitRule extends DartLintRule {
                 continue;
               }
 
-              this._validateAndReport(
-                type: parameterElement.type,
-                onSuccess: () => reporter.atElement(
-                  parameterElement,
-                  this.code,
-                ),
+              if (this.validaton(
+                    type: parameterElement.type,
+                    packageName:
+                        parameterElement.type.element?.library?.identifier,
+                  ) ==
+                  false) {
+                continue;
+              }
+
+              reporter.atElement(
+                parameterElement,
+                this.code,
               );
             }
+
+            constructorDeclaration.visitChildren(
+              TreeVisitor(
+                onConstructorFieldInitializer: (
+                  ConstructorFieldInitializer constructorFieldInitializer,
+                ) {
+                  final DartType? staticType =
+                      constructorFieldInitializer.expression.staticType;
+                  if (staticType == null) {
+                    return;
+                  }
+
+                  if (this.validaton(
+                        type: staticType,
+                        packageName: staticType.element?.library?.identifier,
+                      ) ==
+                      false) {
+                    return;
+                  }
+
+                  reporter.atNode(
+                    constructorFieldInitializer,
+                    this.code,
+                  );
+                },
+              ),
+            );
           },
-          // TODO onContructorFieldInitializer
           onFieldDeclaration: (
             FieldDeclaration fieldDeclaration,
           ) {
@@ -114,35 +201,23 @@ class DeleteBlocCubitDependentBlocCubitRule extends DartLintRule {
                 continue;
               }
 
-              this._validateAndReport(
-                type: variableElement.type,
-                onSuccess: () => reporter.atNode(
-                  fieldDeclaration,
-                  this.code,
-                ),
+              if (this.validaton(
+                    type: variableElement.type,
+                    packageName:
+                        variableElement.type.element?.library?.identifier,
+                  ) ==
+                  false) {
+                continue;
+              }
+
+              reporter.atNode(
+                fieldDeclaration,
+                this.code,
               );
             }
           },
         ),
       );
-
-  void _validateAndReport({
-    required DartType type,
-    required void Function() onSuccess,
-  }) {
-    if (blocTypeChecker.isAssignableFromType(
-              type,
-            ) ==
-            false &&
-        cubitTypeChecker.isAssignableFromType(
-              type,
-            ) ==
-            false) {
-      return;
-    }
-
-    onSuccess();
-  }
 
   @override
   List<Fix> getFixes() => [
@@ -188,6 +263,30 @@ class _Fix extends DartFix {
               formalParameter.endToken.next?.type == TokenType.COMMA
                   ? (formalParameter.sourceRange.length + 1)
                   : formalParameter.sourceRange.length,
+            ),
+          ),
+        );
+      },
+    );
+    context.addConstructorFieldInitializerIntersects(
+      analysisError,
+      (
+        ConstructorFieldInitializer constructorFieldInitializer,
+      ) {
+        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+          message: "Pedant: Delete '${constructorFieldInitializer.fieldName}'",
+          priority: this.priority,
+        );
+        changeBuilder.addDartFileEdit(
+          (
+            DartFileEditBuilder builder,
+          ) =>
+              builder.addDeletion(
+            SourceRange(
+              constructorFieldInitializer.sourceRange.offset,
+              constructorFieldInitializer.endToken.next?.type == TokenType.COMMA
+                  ? (constructorFieldInitializer.sourceRange.length + 1)
+                  : constructorFieldInitializer.sourceRange.length,
             ),
           ),
         );
