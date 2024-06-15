@@ -8,35 +8,114 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
+import 'package:pedant/src/utility/type_checker/bloc_type_checker.dart';
+import 'package:pedant/src/utility/type_checker/change_notifier_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/cubit_type_checkot.dart';
+import 'package:pedant/src/utility/type_checker/value_notifier_type_checker.dart';
 
-class AddCubitPostfixRule extends DartLintRule {
+class AddClassPostfixRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addCubitPostfix == false) {
-      return;
+    if (config.addBlocPostfix == true) {
+      ruleList.add(
+        AddClassPostfixRule(
+          code: const LintCode(
+            name: "add_bloc_postfix",
+            problemMessage: "Add BLoC postfix",
+            correctionMessage: "Please add postfix 'Bloc' to this Bloc.",
+            errorSeverity: ErrorSeverity.ERROR,
+          ),
+          validate: ({
+            required ClassElement classElement,
+          }) {
+            if (blocTypeChecker.isAssignableFrom(
+                  classElement,
+                ) ==
+                false) {
+              return false;
+            }
+
+            return true;
+          },
+          postfix: "Bloc",
+          priority: config.priority,
+        ),
+      );
     }
 
-    ruleList.add(
-      AddCubitPostfixRule(
-        priority: config.priority,
-      ),
-    );
-  }
+    if (config.addControllerPostfix == true) {
+      ruleList.add(
+        AddClassPostfixRule(
+          code: const LintCode(
+            name: "add_controller_postfix",
+            problemMessage: "Add Controller postfix",
+            correctionMessage:
+                "Please add postfix 'Controller' to this ChangeNotifier or ValueNotifier.",
+            errorSeverity: ErrorSeverity.ERROR,
+          ),
+          validate: ({
+            required ClassElement classElement,
+          }) {
+            if (changeNotifierTypeChecker.isAssignableFrom(
+                      classElement,
+                    ) ==
+                    false &&
+                valueNotifierTypeChecker.isAssignableFrom(
+                      classElement,
+                    ) ==
+                    false) {
+              return false;
+            }
 
-  const AddCubitPostfixRule({
-    required this.priority,
-  }) : super(
+            return true;
+          },
+          postfix: "Controller",
+          priority: config.priority,
+        ),
+      );
+    }
+
+    if (config.addCubitPostfix == true) {
+      ruleList.add(
+        AddClassPostfixRule(
           code: const LintCode(
             name: "add_cubit_postfix",
             problemMessage: "Add Cubit postfix",
             correctionMessage: "Please add postfix 'Cubit' to this Cubit.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
-        );
+          validate: ({
+            required ClassElement classElement,
+          }) {
+            if (cubitTypeChecker.isAssignableFrom(
+                  classElement,
+                ) ==
+                false) {
+              return false;
+            }
 
+            return true;
+          },
+          postfix: "Cubit",
+          priority: config.priority,
+        ),
+      );
+    }
+  }
+
+  const AddClassPostfixRule({
+    required super.code,
+    required this.validate,
+    required this.postfix,
+    required this.priority,
+  });
+
+  final bool Function({
+    required ClassElement classElement,
+  }) validate;
+  final String postfix;
   final int priority;
 
   @override
@@ -50,15 +129,15 @@ class AddCubitPostfixRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
-          if (cubitTypeChecker.isAssignableFrom(
-                classElement,
+          if (validate(
+                classElement: classElement,
               ) ==
               false) {
             return;
           }
 
           if (classElement.displayName.endsWith(
-                "Cubit",
+                postfix,
               ) ==
               true) {
             return;
@@ -74,6 +153,7 @@ class AddCubitPostfixRule extends DartLintRule {
   @override
   List<Fix> getFixes() => [
         _Fix(
+          postfix: this.postfix,
           priority: this.priority,
         ),
       ];
@@ -81,9 +161,11 @@ class AddCubitPostfixRule extends DartLintRule {
 
 class _Fix extends DartFix {
   _Fix({
+    required this.postfix,
     required this.priority,
   });
 
+  final String postfix;
   final int priority;
 
   @override
@@ -101,7 +183,7 @@ class _Fix extends DartFix {
           ClassElement classElement,
         ) {
           final String displayName = classElement.displayName;
-          final String validName = "${displayName}Cubit";
+          final String validName = "${displayName}$postfix";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Rename to '$validName'",
             priority: this.priority,

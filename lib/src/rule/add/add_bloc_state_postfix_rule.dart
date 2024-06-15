@@ -4,7 +4,7 @@ import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/extension/add_bloc_state.dart';
+import 'package:pedant/src/utility/extension/add_bloc.dart';
 
 class AddBlocStatePostfixRule extends DartLintRule {
   static void combine({

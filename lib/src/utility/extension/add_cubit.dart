@@ -15,13 +15,13 @@ extension CustomLintContextExtension on CustomLintContext {
         (
           ClassDeclaration classDeclaration,
         ) {
-          final ClassElement? blocElement = classDeclaration.declaredElement;
-          if (blocElement == null) {
+          final ClassElement? classElement = classDeclaration.declaredElement;
+          if (classElement == null) {
             return;
           }
 
           if (cubitTypeChecker.isAssignableFrom(
-                blocElement,
+                classElement,
               ) ==
               false) {
             return;
@@ -29,7 +29,7 @@ extension CustomLintContextExtension on CustomLintContext {
 
           execute(
             classDeclaration,
-            blocElement,
+            classElement,
           );
         },
       );

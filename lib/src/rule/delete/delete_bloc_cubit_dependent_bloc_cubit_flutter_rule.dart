@@ -75,7 +75,6 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
             required DartType? type,
             required String? packageName,
           }) {
-            print(packageName);
             if (packageName == null) {
               return false;
             }
