@@ -9,8 +9,8 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/bloc_type_checker.dart';
-import 'package:pedant/src/utility/cubit_type_checkot.dart';
+import 'package:pedant/src/utility/type_checker/bloc_type_checker.dart';
+import 'package:pedant/src/utility/type_checker/cubit_type_checkot.dart';
 import 'package:pedant/src/utility/extension/add_bloc.dart';
 import 'package:pedant/src/utility/extension/add_constructor.dart';
 import 'package:pedant/src/utility/extension/add_constructor_field_initializer.dart';

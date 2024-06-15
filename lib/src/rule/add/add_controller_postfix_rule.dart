@@ -5,34 +5,35 @@ import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/extension/add_bloc.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
+import 'package:pedant/src/utility/type_checker/change_notifier_type_checker.dart';
+import 'package:pedant/src/utility/type_checker/value_notifier_type_checker.dart';
 
-class AddBlocPostfixRule extends DartLintRule {
+class AddControllerPostfixRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addBlocPostfix == false) {
+    if (config.addControllerPostfix == false) {
       return;
     }
 
     ruleList.add(
-      AddBlocPostfixRule(
+      AddControllerPostfixRule(
         priority: config.priority,
       ),
     );
   }
 
-  const AddBlocPostfixRule({
+  const AddControllerPostfixRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_bloc_postfix",
-            problemMessage: "Add BLoC postfix",
-            correctionMessage: "Please add postfix 'Bloc' to this BLoC.",
+            name: "add_controller_postfix",
+            problemMessage: "Add Controller postfix",
+            correctionMessage:
+                "Please add postfix 'Controller' to this ChangeNotifier or ValueNotifier.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -45,20 +46,31 @@ class AddBlocPostfixRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) =>
-      context.addBloc(
+      context.addClass(
         (
-          ClassDeclaration blocDeclaration,
-          ClassElement blocElement,
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
         ) {
-          if (blocElement.displayName.endsWith(
-                "Bloc",
+          if (changeNotifierTypeChecker.isAssignableFrom(
+                    classElement,
+                  ) ==
+                  false &&
+              valueNotifierTypeChecker.isAssignableFrom(
+                    classElement,
+                  ) ==
+                  false) {
+            return;
+          }
+
+          if (classElement.displayName.endsWith(
+                "Controller",
               ) ==
               true) {
             return;
           }
 
           reporter.atElement(
-            blocElement,
+            classElement,
             this.code,
           );
         },
@@ -94,7 +106,7 @@ class _Fix extends DartFix {
           ClassElement classElement,
         ) {
           final String displayName = classElement.displayName;
-          final String validName = "${displayName}Bloc";
+          final String validName = "${displayName}Controller";
           final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
             message: "Pedant: Rename to '$validName'",
             priority: this.priority,

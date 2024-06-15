@@ -3,7 +3,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
-import 'package:pedant/src/utility/bloc_type_checker.dart';
+import 'package:pedant/src/utility/type_checker/bloc_type_checker.dart';
 
 extension CustomLintContextExtension on CustomLintContext {
   void addBlocEvent(

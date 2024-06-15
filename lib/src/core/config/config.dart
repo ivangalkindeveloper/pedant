@@ -20,6 +20,7 @@ class Config {
     this.addConstConstructor = true,
     this.addConstVariable = true,
     this.addConstructor = true,
+    this.addControllerPostfix = true,
     this.addCubitPostfix = true,
     this.addExtensionPostfix = true,
     // this.addFinal = true,
@@ -67,6 +68,7 @@ class Config {
   final bool addConstConstructor; //
   final bool addConstVariable;
   final bool addConstructor; //
+  final bool addControllerPostfix; //
   final bool addCubitPostfix; //
   final bool addExtensionPostfix; //
   // final bool addFinal;
@@ -137,6 +139,7 @@ class Config {
         addConstConstructor: map["add_const_constructor"] ?? true,
         addConstVariable: map["add_const_variable"] ?? true,
         addConstructor: map["add_constructor"] ?? true,
+        addControllerPostfix: map["add_controller_postfix"] ?? true,
         addCubitPostfix: map["add_cubit_postfix"] ?? true,
         addExtensionPostfix: map["add_extension_postfix"] ?? true,
         // addFinal: map["add_final"] ?? true,

@@ -12,6 +12,7 @@ import 'package:pedant/src/rule/add/add_comma_rule.dart';
 import 'package:pedant/src/rule/add/add_const_constructor_rule.dart';
 import 'package:pedant/src/rule/add/add_const_variable_rule.dart';
 import 'package:pedant/src/rule/add/add_constructor_rule.dart';
+import 'package:pedant/src/rule/add/add_controller_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_cubit_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_extension_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_if_bracets_rule.dart';
@@ -91,6 +92,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     AddConstructorRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddControllerPostfixRule.combine(
       config: config,
       ruleList: ruleList,
     );
