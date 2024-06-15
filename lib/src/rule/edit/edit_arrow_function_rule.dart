@@ -48,6 +48,10 @@ class EditArrowFunctionRule extends DartLintRule {
         (
           FunctionBody functionBody,
         ) {
+          if (functionBody.parent is ConstructorDeclaration) {
+            return;
+          }
+
           final TokenType beginTokenType = functionBody.beginToken.type;
           final TokenType? nextBeginTokenType =
               functionBody.beginToken.next?.type;
@@ -64,7 +68,6 @@ class EditArrowFunctionRule extends DartLintRule {
             return;
           }
 
-          //TODO Здесь проблема что не нужно делать анализ в блоке инициализации конструктора
           final List<String> entitySplit = entity.toString().split(
                 "; ",
               );
