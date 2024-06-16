@@ -7,7 +7,7 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_bloc.dart';
 import 'package:pedant/src/utility/extension/add_cubit.dart';
 
-class AddBlocCubitPartRule extends DartLintRule {
+class AddBlocCubitEventStateFileRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
@@ -17,21 +17,21 @@ class AddBlocCubitPartRule extends DartLintRule {
     }
 
     ruleList.add(
-      AddBlocCubitPartRule(
+      AddBlocCubitEventStateFileRule(
         priority: config.priority,
       ),
     );
   }
 
-  const AddBlocCubitPartRule({
+  const AddBlocCubitEventStateFileRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_bloc_cubit_part",
+            name: "add_bloc_cubit_event_state_file_file",
             problemMessage:
-                "Add Bloc or Cubit Event and State classes via part/part of",
+                "Add Bloc or Cubit Event and State classes in this file or via part/part of",
             correctionMessage:
-                "Please add Event and State classes to this Bloc State via part/part of.",
+                "Please add Event and State classes to this same Bloc or Cubit file or via part/part of.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

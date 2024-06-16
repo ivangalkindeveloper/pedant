@@ -1,7 +1,7 @@
-sealed class IExampleState {
-  const IExampleState();
-}
+// sealed class IExampleState {
+//   const IExampleState();
+// }
 
-class ExampleState extends IExampleState {
-  const ExampleState();
-}
+// class ExampleState extends IExampleState {
+//   const ExampleState();
+// }

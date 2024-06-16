@@ -1,7 +1,7 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/rule/add/add_bloc_cubit_part_rule.dart';
+import 'package:pedant/src/rule/add/add_bloc_cubit_event_state_file_rule.dart';
 import 'package:pedant/src/rule/add/add_bloc_cubit_state_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_bloc_cubit_state_sealed_rule.dart';
 import 'package:pedant/src/rule/add/add_bloc_event_postfix_rule.dart';
@@ -28,6 +28,7 @@ import 'package:pedant/src/rule/delete/delete_package_rule.dart';
 import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
 import 'package:pedant/src/rule/edit/edit_arrow_function_rule.dart';
 import 'package:pedant/src/rule/edit/edit_constructor_private_public_named_parameter_rule.dart';
+import 'package:pedant/src/rule/edit/edit_file_length_by_path_rule.dart';
 import 'package:pedant/src/rule/edit/edit_function_private_public_named_parameter_rule.dart';
 import 'package:pedant/src/rule/edit/edit_multiple_variable_rule.dart';
 import 'package:pedant/src/rule/edit/edit_private_in_function_rule.dart';
@@ -50,7 +51,7 @@ class _PedantBase extends PluginBase {
     );
     final List<LintRule> ruleList = [];
 
-    AddBlocCubitPartRule.combine(
+    AddBlocCubitEventStateFileRule.combine(
       config: config,
       ruleList: ruleList,
     );
@@ -155,6 +156,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     EditConstructorPrivatePublicNamedParameterRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    EditFileLengthByPathRule.combine(
       config: config,
       ruleList: ruleList,
     );

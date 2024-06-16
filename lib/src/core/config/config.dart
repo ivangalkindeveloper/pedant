@@ -6,6 +6,8 @@ import 'package:pedant/src/core/data/path_name_list_item.dart';
 // Sort ARB files
 // ClassExtendsTypeByPostfix
 // AddFinal
+// DeleteDynamic
+// DeleteWidgetFunction
 
 class Config {
   const Config({
@@ -51,7 +53,7 @@ class Config {
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
-    this.editFileLength,
+    this.editFileLengthByPathList,
     //
     this.priority = 100,
   });
@@ -98,7 +100,7 @@ class Config {
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
-  final List<LengthItem>? editFileLength;
+  final List<LengthItem>? editFileLengthByPathList; //
   //
   final int priority;
 
@@ -195,11 +197,12 @@ class Config {
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,
-        editFileLength: (map["edit_file_length"] as List?)
-            ?.map(
-              (e) => LengthItem.fromYaml(e),
-            )
-            .toList(),
+        editFileLengthByPathList:
+            (map["edit_file_length_by_path_list"] as List?)
+                ?.map(
+                  (e) => LengthItem.fromYaml(e),
+                )
+                .toList(),
         //
         priority: map["priority"] ?? 100,
       );

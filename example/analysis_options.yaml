@@ -30,3 +30,7 @@ custom_lint:
           path: lib/add/add_class_prefix_by_path_list
           nameList: 
             - FF
+      edit_file_length_by_path_list:
+        - 
+          path: lib/edit/edit_file_length_by_path_list
+          length: 200

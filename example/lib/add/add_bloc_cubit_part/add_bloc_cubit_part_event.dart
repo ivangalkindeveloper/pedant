@@ -1,7 +1,7 @@
-sealed class IExampleEvent {
-  const IExampleEvent();
-}
+// sealed class IExampleEvent {
+//   const IExampleEvent();
+// }
 
-class ExampleEvent extends IExampleEvent {
-  const ExampleEvent();
-}
+// class ExampleEvent extends IExampleEvent {
+//   const ExampleEvent();
+// }
