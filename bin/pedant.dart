@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:pedant/src/utility/sort_arb.dart';
 import 'package:tint/tint.dart';
 
 import 'package:pedant/src/utility/sort_import_declarations.dart';
@@ -56,6 +57,18 @@ void main(
         "Sorting import and part declarations...\n".yellow(),
       );
       sortImportDeclarations(
+        currentPath: currentPath,
+      );
+    }
+
+    if (argumentsResult.contains(
+          "--no-sort-arb",
+        ) ==
+        false) {
+      stdout.write(
+        "Sorting arb files...\n".yellow(),
+      );
+      sortArb(
         currentPath: currentPath,
       );
     }

@@ -1,0 +1,27 @@
+{
+  "@@locale": "en",
+  "buttonReload": "Reload",
+  "errorLastFact": "Last fact error:",
+  "errorNewFact": "New fact error:",
+  "factAnimalDescription": "Animal:",
+  "factLastFactDescription": "Last fact about {animal}",
+  "@factLastFactDescription": {
+    "placeholders": {
+      "animal": {
+        "type": "String",
+        "example": "Cat"
+      }
+    }
+  },
+  "factNewFactDescription": "New fact about {animal}",
+  "@factNewFactDescription": {
+    "placeholders": {
+      "animal": {
+        "type": "String",
+        "example": "Cat"
+      }
+    }
+  },
+  "factNoLastFactDescription": "No last fact :(",
+  "factTitle": "Animal Fact"
+}

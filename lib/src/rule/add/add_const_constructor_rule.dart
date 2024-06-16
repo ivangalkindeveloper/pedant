@@ -51,11 +51,11 @@ class AddConstConstructorRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
-          for (final FieldElement field in classElement.fields) {
-            if (field.isLate == true) {
+          for (final FieldElement fieldElement in classElement.fields) {
+            if (fieldElement.isLate == true) {
               return;
             }
-            if (field.isFinal == false) {
+            if (fieldElement.isFinal == false) {
               return;
             }
           }
