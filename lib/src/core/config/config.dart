@@ -3,14 +3,18 @@ import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 
+// ClassExtendsTypeByPostfix
+// Sort ARB files
+// AddFinal
+
 class Config {
   const Config({
+    this.addBlocCubitStatePostfix = true,
+    this.addBlocCubitStateSealed = true,
     this.addBlocEventPostfix = true,
     this.addBlocEventSealed = true,
     this.addBlocPart = true,
     this.addBlocPostfix = true,
-    this.addBlocStatePostfix = true,
-    this.addBlocStateSealed = true,
     //
     this.addClassPostfixByKeywordList,
     this.addClassPostfixByPathList,
@@ -23,7 +27,6 @@ class Config {
     this.addControllerPostfix = true,
     this.addCubitPostfix = true,
     this.addExtensionPostfix = true,
-    // this.addFinal = true,
     this.addIfBraces = true,
     this.addMixinPostfix = true,
     this.addOverride = true,
@@ -53,12 +56,12 @@ class Config {
     this.priority = 100,
   });
 
+  final bool addBlocCubitStatePostfix; //
+  final bool addBlocCubitStateSealed; //
   final bool addBlocEventPostfix; //
   final bool addBlocEventSealed; //
   final bool addBlocPart;
   final bool addBlocPostfix; //
-  final bool addBlocStatePostfix; //
-  final bool addBlocStateSealed; //
   //
   final List<KeywordListNameItem>? addClassPostfixByKeywordList; //
   final List<PathNameListItem>? addClassPostfixByPathList; //
@@ -71,7 +74,6 @@ class Config {
   final bool addControllerPostfix; //
   final bool addCubitPostfix; //
   final bool addExtensionPostfix; //
-  // final bool addFinal;
   final bool addIfBraces; //
   final bool addMixinPostfix; //
   final bool addOverride; //
@@ -104,12 +106,12 @@ class Config {
     required Map<String, dynamic> map,
   }) =>
       Config(
+        addBlocCubitStatePostfix: map["add_bloc_cubit_state_postfix"] ?? true,
+        addBlocCubitStateSealed: map["add_bloc_cubit_state_sealed"] ?? true,
         addBlocEventPostfix: map["add_bloc_event_postfix"] ?? true,
         addBlocEventSealed: map["add_bloc_event_sealed"] ?? true,
         addBlocPart: map["add_bloc_part"] ?? true,
         addBlocPostfix: map["add_bloc_postfix"] ?? true,
-        addBlocStatePostfix: map["add_bloc_state_postfix"] ?? true,
-        addBlocStateSealed: map["add_bloc_state_sealed"] ?? true,
         //
         addClassPostfixByKeywordList:
             (map["add_class_postfix_by_keyword_list"] as List?)
@@ -142,7 +144,6 @@ class Config {
         addControllerPostfix: map["add_controller_postfix"] ?? true,
         addCubitPostfix: map["add_cubit_postfix"] ?? true,
         addExtensionPostfix: map["add_extension_postfix"] ?? true,
-        // addFinal: map["add_final"] ?? true,
         addIfBraces: map["add_if_braces"] ?? true,
         addMixinPostfix: map["add_mixin_postfix"] ?? true,
         addOverride: map["add_override"] ?? true,

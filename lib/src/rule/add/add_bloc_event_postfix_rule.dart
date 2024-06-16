@@ -27,8 +27,8 @@ class AddBlocEventPostfixRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_bloc_event_postfix",
-            problemMessage: "Add BLoC Event postfix",
-            correctionMessage: "Please add postfix 'Event' to this BLoC Event.",
+            problemMessage: "Add Bloc Event postfix",
+            correctionMessage: "Please add postfix 'Event' to this Bloc Event.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

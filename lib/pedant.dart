@@ -3,8 +3,8 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/rule/add/add_bloc_event_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_bloc_event_sealed_rule.dart';
-import 'package:pedant/src/rule/add/add_bloc_state_postfix_rule.dart';
-import 'package:pedant/src/rule/add/add_bloc_state_sealed_rule.dart';
+import 'package:pedant/src/rule/add/add_bloc_cubit_state_postfix_rule.dart';
+import 'package:pedant/src/rule/add/add_bloc_cubit_state_sealed_rule.dart';
 import 'package:pedant/src/rule/add/add_class_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_keyword_rule.dart';
 import 'package:pedant/src/rule/add/add_class_prefix_postfix_by_path_rule.dart';
@@ -49,7 +49,11 @@ class _PedantBase extends PluginBase {
     );
     final List<LintRule> ruleList = [];
 
-    AddBlocEventSealedRule.combine(
+    AddBlocCubitStatePostfixRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddBlocCubitStateSealedRule.combine(
       config: config,
       ruleList: ruleList,
     );
@@ -57,11 +61,7 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    AddBlocStatePostfixRule.combine(
-      config: config,
-      ruleList: ruleList,
-    );
-    AddBlocStateSealedRule.combine(
+    AddBlocEventSealedRule.combine(
       config: config,
       ruleList: ruleList,
     );

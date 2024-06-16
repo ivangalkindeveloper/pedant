@@ -48,7 +48,7 @@ const List<DeleteListItem> _commonList = [
       "freezed_result",
     ],
     description: "The package provides an Eather object.\n"
-        "Error handling should be located in one specific place, for example a controller or BLoC, and in a single form - try catch operator.\n"
+        "Error handling should be located in one specific place, for example a controller or Bloc, and in a single form - try catch operator.\n"
         "This object complicates the code and its error handling, additional code is also needed to provide error data, for example an error stacktrace.\n"
         "This object has no practical meaning.",
   ),
@@ -111,8 +111,8 @@ const List<DeleteListItem> _stateManagementList = [
       "hydrated_bloc",
     ],
     description:
-        "Globally stored BLoC states result in unexpected errors and incompatible states.\n"
-        "Please manage and design the the BLoCs yourself and control the change of his states.",
+        "Globally stored Bloc states result in unexpected errors and incompatible states.\n"
+        "Please manage and design the the Blocs yourself and control the change of his states.",
   ),
   DeleteListItem(
     nameList: [

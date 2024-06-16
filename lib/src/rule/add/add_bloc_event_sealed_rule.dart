@@ -27,9 +27,9 @@ class AddBlocEventSealedRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_bloc_event_sealed",
-            problemMessage: "Add BLoC Event class sealed keyword",
+            problemMessage: "Add Bloc Event class sealed keyword",
             correctionMessage:
-                "Please add 'sealed' keyword base Event class of this BLoC.",
+                "Please add 'sealed' keyword base Event class of this Bloc.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
