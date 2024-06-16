@@ -7,30 +7,31 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_bloc.dart';
 import 'package:pedant/src/utility/extension/add_cubit.dart';
 
-class AddBlocCubitStateSealedRule extends DartLintRule {
+class AddBlocCubitPartRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addBlocCubitStateSealed == false) {
+    if (config.addBlocCubitPart == false) {
       return;
     }
 
     ruleList.add(
-      AddBlocCubitStateSealedRule(
+      AddBlocCubitPartRule(
         priority: config.priority,
       ),
     );
   }
 
-  const AddBlocCubitStateSealedRule({
+  const AddBlocCubitPartRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_bloc_cubit_state_sealed",
-            problemMessage: "Add Bloc or Cubit State class sealed keyword",
+            name: "add_bloc_cubit_part",
+            problemMessage:
+                "Add Bloc or Cubit Event and State classes via part/part of",
             correctionMessage:
-                "Please add 'sealed' keyword to base State class of this Bloc or Cubit.",
+                "Please add Event and State classes to this Bloc State via part/part of.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
@@ -43,6 +44,17 @@ class AddBlocCubitStateSealedRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    context.addBlocEvent(
+      (
+        ClassElement blocElement,
+        ClassElement eventElement,
+      ) =>
+          _validate(
+        reporter: reporter,
+        classElement: blocElement,
+        typeClassElement: eventElement,
+      ),
+    );
     context.addBlocState(
       (
         ClassElement blocElement,
@@ -51,7 +63,7 @@ class AddBlocCubitStateSealedRule extends DartLintRule {
           _validate(
         reporter: reporter,
         classElement: blocElement,
-        stateElement: stateElement,
+        typeClassElement: stateElement,
       ),
     );
     context.addCubitState(
@@ -62,7 +74,7 @@ class AddBlocCubitStateSealedRule extends DartLintRule {
           _validate(
         reporter: reporter,
         classElement: cubitElement,
-        stateElement: stateElement,
+        typeClassElement: stateElement,
       ),
     );
   }
@@ -70,9 +82,9 @@ class AddBlocCubitStateSealedRule extends DartLintRule {
   void _validate({
     required ErrorReporter reporter,
     required ClassElement classElement,
-    required ClassElement stateElement,
+    required ClassElement typeClassElement,
   }) {
-    if (stateElement.isSealed == true) {
+    if (classElement.librarySource == typeClassElement.librarySource) {
       return;
     }
 

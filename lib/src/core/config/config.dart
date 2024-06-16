@@ -3,17 +3,17 @@ import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 
-// ClassExtendsTypeByPostfix
 // Sort ARB files
+// ClassExtendsTypeByPostfix
 // AddFinal
 
 class Config {
   const Config({
+    this.addBlocCubitPart = true,
     this.addBlocCubitStatePostfix = true,
     this.addBlocCubitStateSealed = true,
     this.addBlocEventPostfix = true,
     this.addBlocEventSealed = true,
-    this.addBlocPart = true,
     this.addBlocPostfix = true,
     //
     this.addClassPostfixByKeywordList,
@@ -51,16 +51,16 @@ class Config {
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
-    this.editLengthFile,
+    this.editFileLength,
     //
     this.priority = 100,
   });
 
+  final bool addBlocCubitPart; //
   final bool addBlocCubitStatePostfix; //
   final bool addBlocCubitStateSealed; //
   final bool addBlocEventPostfix; //
   final bool addBlocEventSealed; //
-  final bool addBlocPart;
   final bool addBlocPostfix; //
   //
   final List<KeywordListNameItem>? addClassPostfixByKeywordList; //
@@ -98,7 +98,7 @@ class Config {
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
-  final List<LengthItem>? editLengthFile;
+  final List<LengthItem>? editFileLength;
   //
   final int priority;
 
@@ -106,11 +106,11 @@ class Config {
     required Map<String, dynamic> map,
   }) =>
       Config(
+        addBlocCubitPart: map["add_bloc_cubit_part"] ?? true,
         addBlocCubitStatePostfix: map["add_bloc_cubit_state_postfix"] ?? true,
         addBlocCubitStateSealed: map["add_bloc_cubit_state_sealed"] ?? true,
         addBlocEventPostfix: map["add_bloc_event_postfix"] ?? true,
         addBlocEventSealed: map["add_bloc_event_sealed"] ?? true,
-        addBlocPart: map["add_bloc_part"] ?? true,
         addBlocPostfix: map["add_bloc_postfix"] ?? true,
         //
         addClassPostfixByKeywordList:
@@ -195,7 +195,7 @@ class Config {
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,
-        editLengthFile: (map["edit_length_file"] as List?)
+        editFileLength: (map["edit_file_length"] as List?)
             ?.map(
               (e) => LengthItem.fromYaml(e),
             )
