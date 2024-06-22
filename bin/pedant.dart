@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:pedant/src/utility/sort_arb.dart';
+import 'package:pedant/src/utility/process/fix.dart';
+import 'package:pedant/src/utility/process/format.dart';
+import 'package:pedant/src/utility/process/watch.dart';
 import 'package:tint/tint.dart';
 
-import 'package:pedant/src/utility/sort_import_declarations.dart';
+import 'package:pedant/src/utility/sort/sort_arb_files.dart';
+import 'package:pedant/src/utility/sort/sort_import_declarations.dart';
+import 'package:pedant/src/utility/sort/sort_pubspec_dependencies.dart';
 
 void main(
   List<String> arguments,
@@ -18,34 +22,25 @@ void main(
         .arguments;
     final String currentPath = Directory.current.path;
 
-    stdout.write(
-      "Watching lint problems...\n".yellow(),
-    );
-    Process.runSync(
-      "dart",
-      const [
-        "run",
-        "custom_lint",
-        "--watch",
-      ],
-      workingDirectory: currentPath,
+    watch(
+      currentPath: currentPath,
     );
 
     if (argumentsResult.contains(
           "--no-fix",
         ) ==
         false) {
-      stdout.write(
-        "Fix current lint problems...\n".yellow(),
+      fix(
+        currentPath: currentPath,
       );
-      Process.runSync(
-        "dart",
-        const [
-          "run",
-          "custom_lint",
-          "--fix",
-        ],
-        workingDirectory: currentPath,
+    }
+
+    if (argumentsResult.contains(
+          "--no-sort-arb-fiels",
+        ) ==
+        false) {
+      sortArbFiles(
+        currentPath: currentPath,
       );
     }
 
@@ -53,22 +48,16 @@ void main(
           "--no-sort-import",
         ) ==
         false) {
-      stdout.write(
-        "Sorting import and part declarations...\n".yellow(),
-      );
       sortImportDeclarations(
         currentPath: currentPath,
       );
     }
 
     if (argumentsResult.contains(
-          "--no-sort-arb",
+          "--no-sort-pubspec-dependencies",
         ) ==
         false) {
-      stdout.write(
-        "Sorting arb files...\n".yellow(),
-      );
-      sortArb(
+      sortPubspecDependencies(
         currentPath: currentPath,
       );
     }
@@ -77,30 +66,13 @@ void main(
           "--no-dart-format",
         ) ==
         false) {
-      stdout.write(
-        "Formatting Dart code...\n".yellow(),
-      );
-      Process.runSync(
-        "dart",
-        const [
-          "format",
-          ".",
-        ],
-        workingDirectory: currentPath,
+      format(
+        currentPath: currentPath,
       );
     }
 
-    stdout.write(
-      "Updating lint problems...\n".yellow(),
-    );
-    Process.runSync(
-      "dart",
-      const [
-        "run",
-        "custom_lint",
-        "--watch",
-      ],
-      workingDirectory: currentPath,
+    watch(
+      currentPath: currentPath,
     );
 
     stdout.write(

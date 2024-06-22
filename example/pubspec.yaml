@@ -8,17 +8,17 @@ environment:
 
 dependencies:
   bloc:
-  flutter_bloc:
   flutter:
     sdk: flutter
-
-dependency_overrides:
-  meta: ^1.14.0
+  flutter_bloc:
 
 dev_dependencies:
   custom_lint:
   pedant:
     path: ../
+
+dependency_overrides:
+  meta: ^1.14.0
 
 flutter:
   uses-material-design: true

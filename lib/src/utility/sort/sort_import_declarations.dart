@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:tint/tint.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:pedant/src/utility/convert_import.dart';
@@ -8,11 +9,15 @@ import 'package:pedant/src/utility/convert_import.dart';
 void sortImportDeclarations({
   required String currentPath,
 }) {
-  final File pubspecYamlFile = File(
+  stdout.write(
+    "Sorting/converting import declarations...\n".yellow(),
+  );
+
+  final File pubspecFile = File(
     "$currentPath/pubspec.yaml",
   );
   final dynamic pubspecYaml = loadYaml(
-    pubspecYamlFile.readAsStringSync(),
+    pubspecFile.readAsStringSync(),
   );
   final dynamic projectName = pubspecYaml["name"];
 
@@ -35,17 +40,14 @@ void sortImportDeclarations({
 
   if (sortedDartFiles.isEmpty) {
     stdout.write(
-      "\nNo files for sorting or converting import declarations.\n\n",
+      "No files for sorting/converting import declarations.\n\n",
     );
     return;
   }
 
-  stdout.write(
-    "\nSorted or converted import for files: ${sortedDartFiles.length}\n",
-  );
   for (final File file in sortedDartFiles) {
     stdout.write(
-      "${file.path.replaceAll("$currentPath/lib/", "")}\n",
+      "Sorted/converted import: ${file.path.replaceAll("$currentPath/lib/", "")}\n",
     );
   }
   stdout.write(

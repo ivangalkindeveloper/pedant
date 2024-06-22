@@ -3,9 +3,7 @@ import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 
-// ClassExtendsTypeByPostfix
 // AddFinal
-// DeleteDynamic
 // DeleteWidgetFunction
 
 class Config {

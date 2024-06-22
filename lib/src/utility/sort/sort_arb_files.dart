@@ -1,9 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-void sortArb({
+import 'package:tint/tint.dart';
+
+void sortArbFiles({
   required String currentPath,
 }) {
+  stdout.write(
+    "Sorting arb files...\n".yellow(),
+  );
+
   final List<File> arbFiles = _getFiles(
     path: currentPath,
   );
@@ -22,17 +28,14 @@ void sortArb({
 
   if (sortedArbFiles.isEmpty) {
     stdout.write(
-      "\nNo files for sorting .arb files.\n\n",
+      "No .ard files for sorting.\n\n",
     );
     return;
   }
 
-  stdout.write(
-    "\nSorted .arb files: ${sortedArbFiles.length}\n",
-  );
   for (final File file in sortedArbFiles) {
     stdout.write(
-      "${file.path.replaceAll("$currentPath/", "")}\n",
+      "Sorted .arb: ${file.path.replaceAll("$currentPath/", "")}\n",
     );
   }
   stdout.write(
@@ -101,6 +104,10 @@ File? _sortFile({
   final String sortedString = encoder.convert(
     sortedJson,
   );
+
+  if (fileString == sortedString) {
+    return null;
+  }
 
   final File sortedFile = File(
     file.path,
