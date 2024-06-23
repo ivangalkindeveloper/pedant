@@ -36,7 +36,7 @@ void main(
     }
 
     if (argumentsResult.contains(
-          "--no-sort-arb-fiels",
+          "--no-sort-arb-files",
         ) ==
         false) {
       sortArbFiles(
@@ -45,7 +45,7 @@ void main(
     }
 
     if (argumentsResult.contains(
-          "--no-sort-import",
+          "--no-sort-dart-import-declarations",
         ) ==
         false) {
       sortImportDeclarations(

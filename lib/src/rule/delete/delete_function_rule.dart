@@ -110,46 +110,40 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
+    void createChangeBuilder({
+      required String name,
+    }) {
+      final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
+        message: "Pedant: Delete '$name'",
+        priority: this.priority,
+      );
+      changeBuilder.addDartFileEdit(
+        (
+          DartFileEditBuilder builder,
+        ) =>
+            builder.addDeletion(
+          analysisError.sourceRange,
+        ),
+      );
+    }
+
     context.addMethodInvocationIntersects(
       analysisError,
       (
         MethodInvocation methodInvocation,
-      ) {
-        final String name = methodInvocation.methodName.name;
-        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Pedant: Delete '$name'",
-          priority: this.priority,
-        );
-        changeBuilder.addDartFileEdit(
-          (
-            DartFileEditBuilder builder,
-          ) =>
-              builder.addDeletion(
-            analysisError.sourceRange,
-          ),
-        );
-      },
+      ) =>
+          createChangeBuilder(
+        name: methodInvocation.methodName.name,
+      ),
     );
     context.addFunctionInvocationIntersects(
       analysisError,
       (
         FunctionExpressionInvocation functionExpressionInvocation,
-      ) {
-        final String function =
-            functionExpressionInvocation.function.toString();
-        final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
-          message: "Pedant: Delete '$function'",
-          priority: this.priority,
-        );
-        changeBuilder.addDartFileEdit(
-          (
-            DartFileEditBuilder builder,
-          ) =>
-              builder.addDeletion(
-            analysisError.sourceRange,
-          ),
-        );
-      },
+      ) =>
+          createChangeBuilder(
+        name: functionExpressionInvocation.function.toString(),
+      ),
     );
   }
 }

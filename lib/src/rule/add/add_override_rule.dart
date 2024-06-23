@@ -157,6 +157,7 @@ class _Fix extends DartFix {
       analysisError,
       (
         MethodDeclaration methodDeclaration,
+        ExecutableElement executableElement,
       ) {
         final ChangeBuilder changeBuilder = reporter.createChangeBuilder(
           message: "Pedant: Add @override annotation",

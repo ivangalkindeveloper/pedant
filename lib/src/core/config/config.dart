@@ -4,7 +4,6 @@ import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 // AddFinal
-// DeleteWidgetFunction
 // EditVariableName
 
 class Config {
@@ -42,6 +41,7 @@ class Config {
     this.deleteNew = true,
     this.deletePackageList,
     this.deleteTypeList,
+    this.deleteWidgetFunction = true,
     //
     this.editArrowFunction = true,
     this.editContructorPrivateNamedParameter = true,
@@ -89,6 +89,7 @@ class Config {
   final bool deleteNew; //
   final List<DeleteListItem>? deletePackageList; //
   final List<DeleteListItem>? deleteTypeList; //
+  final bool deleteWidgetFunction; //
   //
   final bool editArrowFunction; //
   final bool editContructorPrivateNamedParameter; //
@@ -182,6 +183,7 @@ class Config {
               (e) => DeleteListItem.fromYaml(e),
             )
             .toList(),
+        deleteWidgetFunction: map["delete_widget_function"] ?? true,
         //
         editArrowFunction: map["edit_arrow_function"] ?? true,
         editContructorPrivateNamedParameter:
