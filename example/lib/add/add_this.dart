@@ -5,14 +5,22 @@
 
 //   late final String anotherField = this.field;
 
-//   void doSome() {}
+//   void doSome({
+//     required String value,
+//   }) {}
 
 //   void doSomething() {
 //     String a = this.field;
-//     a.replaceAll("", "");
-//     this.field.split("");
-//     this.doSome();
-//     print(a);
+//     this.anotherField.replaceAll(
+//           "",
+//           "",
+//         );
+//     this.field.split(
+//           "",
+//         );
+//     this.doSome(
+//       value: this.field,
+//     );
 //   }
 
 //   bool check() => this.field == "One" ? true : false;

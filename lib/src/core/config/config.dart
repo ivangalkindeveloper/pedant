@@ -5,6 +5,7 @@ import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 // AddFinal
 // DeleteWidgetFunction
+// EditVariableName
 
 class Config {
   const Config({

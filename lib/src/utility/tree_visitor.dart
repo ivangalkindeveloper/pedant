@@ -14,6 +14,7 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
     this.onFunctionDeclaration,
     this.onInstanceCreationExpression,
     this.onMethodDeclaration,
+    this.onMethodInvocation,
     this.onPropertyAccess,
     this.onSimpleFormalParameter,
     this.onSimpleIdentifier,
@@ -65,6 +66,10 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   )? onMethodDeclaration;
 
   final void Function(
+    MethodInvocation node,
+  )? onMethodInvocation;
+
+  final void Function(
     PropertyAccess node,
   )? onPropertyAccess;
 
@@ -83,122 +88,162 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   @override
   void visitClassDeclaration(
     ClassDeclaration node,
-  ) =>
-      this.onClassDeclaration?.call(
-            node,
-          );
+  ) {
+    super.visitClassDeclaration(node);
+    this.onClassDeclaration?.call(
+          node,
+        );
+  }
 
   @override
   void visitClassTypeAlias(
     ClassTypeAlias node,
-  ) =>
-      this.onClassTypeAlias?.call(
-            node,
-          );
+  ) {
+    super.visitClassTypeAlias(node);
+    this.onClassTypeAlias?.call(
+          node,
+        );
+  }
 
   @override
   void visitConstructorDeclaration(
     ConstructorDeclaration node,
-  ) =>
-      this.onConstructorDeclaration?.call(
-            node,
-          );
+  ) {
+    super.visitConstructorDeclaration(node);
+    this.onConstructorDeclaration?.call(
+          node,
+        );
+  }
 
   @override
   void visitConstructorFieldInitializer(
     ConstructorFieldInitializer node,
-  ) =>
-      this.onConstructorFieldInitializer?.call(
-            node,
-          );
+  ) {
+    super.visitConstructorFieldInitializer(node);
+    this.onConstructorFieldInitializer?.call(
+          node,
+        );
+  }
 
   @override
   void visitDefaultFormalParameter(
     DefaultFormalParameter node,
-  ) =>
-      this.onDefaultFormalParameter?.call(
-            node,
-          );
+  ) {
+    super.visitDefaultFormalParameter(node);
+    this.onDefaultFormalParameter?.call(
+          node,
+        );
+  }
 
   @override
   void visitFieldDeclaration(
     FieldDeclaration node,
-  ) =>
-      this.onFieldDeclaration?.call(
-            node,
-          );
+  ) {
+    super.visitFieldDeclaration(node);
+    this.onFieldDeclaration?.call(
+          node,
+        );
+  }
 
   @override
   void visitFieldFormalParameter(
     FieldFormalParameter node,
-  ) =>
-      this.onFieldFormalParameter?.call(
-            node,
-          );
+  ) {
+    super.visitFieldFormalParameter(node);
+    this.onFieldFormalParameter?.call(
+          node,
+        );
+  }
 
   @override
   void visitFormalParameterList(
     FormalParameterList node,
-  ) =>
-      this.onFormalParameterList?.call(
-            node,
-          );
+  ) {
+    super.visitFormalParameterList(node);
+    this.onFormalParameterList?.call(
+          node,
+        );
+  }
 
   @override
   void visitFunctionDeclaration(
     FunctionDeclaration node,
-  ) =>
-      this.onFunctionDeclaration?.call(
-            node,
-          );
+  ) {
+    super.visitFunctionDeclaration(node);
+    this.onFunctionDeclaration?.call(
+          node,
+        );
+  }
 
   @override
   void visitInstanceCreationExpression(
     InstanceCreationExpression node,
-  ) =>
-      this.onInstanceCreationExpression?.call(
-            node,
-          );
+  ) {
+    super.visitInstanceCreationExpression(node);
+    this.onInstanceCreationExpression?.call(
+          node,
+        );
+  }
 
   @override
   void visitPropertyAccess(
     PropertyAccess node,
-  ) =>
-      this.onPropertyAccess?.call(
-            node,
-          );
+  ) {
+    super.visitPropertyAccess(node);
+    this.onPropertyAccess?.call(
+          node,
+        );
+  }
 
   @override
   void visitMethodDeclaration(
     MethodDeclaration node,
-  ) =>
-      this.onMethodDeclaration?.call(
-            node,
-          );
+  ) {
+    super.visitMethodDeclaration(node);
+    this.onMethodDeclaration?.call(
+          node,
+        );
+  }
+
+  @override
+  void visitMethodInvocation(
+    MethodInvocation node,
+  ) {
+    super.visitMethodInvocation(node);
+    this.onMethodInvocation?.call(
+          node,
+        );
+  }
 
   @override
   void visitSimpleFormalParameter(
     SimpleFormalParameter node,
-  ) =>
-      this.onSimpleFormalParameter?.call(
-            node,
-          );
+  ) {
+    super.visitSimpleFormalParameter(node);
+    this.onSimpleFormalParameter?.call(
+          node,
+        );
+  }
 
   @override
   void visitSimpleIdentifier(
     SimpleIdentifier node,
-  ) =>
-      this.onSimpleIdentifier?.call(
-            node,
-          );
+  ) {
+    super.visitSimpleIdentifier(node);
+    this.onSimpleIdentifier?.call(
+          node,
+        );
+  }
 
   @override
   void visitVariableDeclaration(
     VariableDeclaration node,
-  ) =>
-      this.onVariableDeclaration?.call(
-            node,
-          );
+  ) {
+    super.visitVariableDeclaration(node);
+    this.onVariableDeclaration?.call(
+          node,
+        );
+  }
 }
 
 // node.visitChildren(
