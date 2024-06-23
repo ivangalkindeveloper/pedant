@@ -26,7 +26,7 @@ import 'package:pedant/src/rule/delete/delete_function_rule.dart';
 import 'package:pedant/src/rule/delete/delete_new_rule.dart';
 import 'package:pedant/src/rule/delete/delete_package_rule.dart';
 import 'package:pedant/src/rule/delete/delete_type_rule.dart.dart';
-import 'package:pedant/src/rule/delete/delete_widget_function_rule.dart';
+import 'package:pedant/src/rule/delete/delete_widget_function_method_rule.dart';
 import 'package:pedant/src/rule/edit/edit_arrow_function_rule.dart';
 import 'package:pedant/src/rule/edit/edit_constructor_private_public_named_parameter_rule.dart';
 import 'package:pedant/src/rule/edit/edit_file_length_by_path_rule.dart';
@@ -152,7 +152,7 @@ class _PedantBase extends PluginBase {
       config: config,
       ruleList: ruleList,
     );
-    DeleteWidgetFunctionRule.combine(
+    DeleteWidgetFunctionMethodRule.combine(
       config: config,
       ruleList: ruleList,
     );

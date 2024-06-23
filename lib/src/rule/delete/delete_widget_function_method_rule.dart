@@ -11,30 +11,30 @@ import 'package:pedant/src/utility/extension/add_method.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
 
-class DeleteWidgetFunctionRule extends DartLintRule {
+class DeleteWidgetFunctionMethodRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteWidgetFunction == false) {
+    if (config.deleteWidgetFunctionMethod == false) {
       return;
     }
 
     ruleList.add(
-      DeleteWidgetFunctionRule(
+      DeleteWidgetFunctionMethodRule(
         priority: config.priority,
       ),
     );
   }
 
-  const DeleteWidgetFunctionRule({
+  const DeleteWidgetFunctionMethodRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "delete_widget_function",
-            problemMessage: "Delete function returning a Widget",
+            name: "delete_widget_function_method",
+            problemMessage: "Delete function or method returning a Widget",
             correctionMessage:
-                "Please celete this function returning a Widget.",
+                "Please celete this function or method returning a Widget.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );
