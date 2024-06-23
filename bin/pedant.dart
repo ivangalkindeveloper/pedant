@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:tint/tint.dart';
+
 import 'package:pedant/src/utility/process/fix.dart';
 import 'package:pedant/src/utility/process/format.dart';
 import 'package:pedant/src/utility/process/watch.dart';
-import 'package:tint/tint.dart';
-
 import 'package:pedant/src/utility/sort/sort_arb_files.dart';
 import 'package:pedant/src/utility/sort/sort_import_declarations.dart';
 import 'package:pedant/src/utility/sort/sort_pubspec_dependencies.dart';

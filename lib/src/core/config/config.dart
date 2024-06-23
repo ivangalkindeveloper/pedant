@@ -4,7 +4,6 @@ import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 // AddFinal
-// EditVariableName
 
 class Config {
   const Config({
@@ -46,12 +45,13 @@ class Config {
     this.editArrowFunction = true,
     this.editContructorPrivateNamedParameter = true,
     this.editContructorPublicNamedParameter = true,
+    this.editFileLengthByPathList,
     this.editFunctionPrivateNamedParameter = true,
     this.editFunctionPublicNamedParameter = true,
     this.editMultipleVariable = true,
     this.editPrivateInFunction = true,
     this.editRelativeImport = true,
-    this.editFileLengthByPathList,
+    this.editVariableNameByType = true,
     //
     this.priority = 100,
   });
@@ -94,12 +94,13 @@ class Config {
   final bool editArrowFunction; //
   final bool editContructorPrivateNamedParameter; //
   final bool editContructorPublicNamedParameter; //
+  final List<LengthItem>? editFileLengthByPathList; //
   final bool editFunctionPrivateNamedParameter; //
   final bool editFunctionPublicNamedParameter; //
   final bool editMultipleVariable; //
   final bool editPrivateInFunction; //
   final bool editRelativeImport; //
-  final List<LengthItem>? editFileLengthByPathList; //
+  final bool editVariableNameByType; //
   //
   final int priority;
 
@@ -191,6 +192,12 @@ class Config {
             map["edit_constructor_private_named_parameter"] ?? true,
         editContructorPublicNamedParameter:
             map["edit_constructor_public_named_parameter"] ?? true,
+        editFileLengthByPathList:
+            (map["edit_file_length_by_path_list"] as List?)
+                ?.map(
+                  (e) => LengthItem.fromYaml(e),
+                )
+                .toList(),
         editFunctionPrivateNamedParameter:
             map["edit_function_private_named_parameter"] ?? true,
         editFunctionPublicNamedParameter:
@@ -198,12 +205,7 @@ class Config {
         editMultipleVariable: map["edit_multiple_variable"] ?? true,
         editPrivateInFunction: map["edit_private_in_function"] ?? true,
         editRelativeImport: map["edit_relative_import"] ?? true,
-        editFileLengthByPathList:
-            (map["edit_file_length_by_path_list"] as List?)
-                ?.map(
-                  (e) => LengthItem.fromYaml(e),
-                )
-                .toList(),
+        editVariableNameByType: map["edit_variable_name_by_type"] ?? true,
         //
         priority: map["priority"] ?? 100,
       );

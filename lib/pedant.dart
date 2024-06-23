@@ -34,6 +34,7 @@ import 'package:pedant/src/rule/edit/edit_function_private_public_named_paramete
 import 'package:pedant/src/rule/edit/edit_multiple_variable_rule.dart';
 import 'package:pedant/src/rule/edit/edit_private_in_function_rule.dart';
 import 'package:pedant/src/rule/edit/edit_relative_import_rule.dart';
+import 'package:pedant/src/rule/edit/edit_variable_name_by_type_rule.dart';
 import 'package:pedant/src/utility/get_config.dart';
 
 // import 'package:pedant/src/rule/test_rule.dart';
@@ -181,6 +182,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     EditRelativeImportRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    EditVariableNameByTypeRule.combine(
       config: config,
       ruleList: ruleList,
     );

@@ -79,7 +79,7 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
               return false;
             }
 
-            if (packageName.contains("package:flutter/") == false) {
+            if (packageName.startsWith("package:flutter") == false) {
               return false;
             }
 
