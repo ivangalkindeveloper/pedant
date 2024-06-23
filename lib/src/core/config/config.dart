@@ -77,7 +77,7 @@ class Config {
   final bool addIfBraces; //
   final bool addMixinPostfix; //
   final bool addOverride; //
-  final bool addThis;
+  final bool addThis; //
   final bool addType; //
   //
   final bool deleteBlocCubitDependentBlocCubit; //
