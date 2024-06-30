@@ -7,21 +7,21 @@ extension CustomLintContextExtension on CustomLintContext {
   void addField(
     void Function(
       FieldDeclaration fieldDeclaration,
-      Element fieldElement,
+      Element element,
     ) execute,
   ) =>
       this.registry.addFieldDeclaration(
         (
           FieldDeclaration fieldDeclaration,
         ) {
-          final Element? fieldElement = fieldDeclaration.declaredElement;
-          if (fieldElement == null) {
+          final Element? element = fieldDeclaration.declaredElement;
+          if (element == null) {
             return;
           }
 
           execute(
             fieldDeclaration,
-            fieldElement,
+            element,
           );
         },
       );
@@ -30,7 +30,7 @@ extension CustomLintContextExtension on CustomLintContext {
     AnalysisError analysisError,
     void Function(
       FieldDeclaration fieldDeclaration,
-      Element fieldElement,
+      Element element,
     ) execute,
   ) =>
       this.registry.addFieldDeclaration(
@@ -44,14 +44,14 @@ extension CustomLintContextExtension on CustomLintContext {
             return;
           }
 
-          final Element? fieldElement = fieldDeclaration.declaredElement;
-          if (fieldElement == null) {
+          final Element? element = fieldDeclaration.declaredElement;
+          if (element == null) {
             return;
           }
 
           execute(
             fieldDeclaration,
-            fieldElement,
+            element,
           );
         },
       );

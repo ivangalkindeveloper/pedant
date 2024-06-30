@@ -3,7 +3,7 @@ import 'package:analyzer/error/error.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 extension CustomLintContextExtension on CustomLintContext {
-  void addVariableDeclarationListIntersects(
+  void addVariableListIntersects(
     AnalysisError analysisError,
     void Function(
       VariableDeclarationList variableDeclarationList,

@@ -7,7 +7,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/extension/add_variable_declaration_list.dart';
+import 'package:pedant/src/utility/extension/add_variable_list.dart';
 
 class EditMultipleVariableRule extends DartLintRule {
   static void combine({
@@ -84,7 +84,7 @@ class _Fix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) =>
-      context.addVariableDeclarationListIntersects(
+      context.addVariableListIntersects(
         analysisError,
         (
           VariableDeclarationList variableDeclarationList,

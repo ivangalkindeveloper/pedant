@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_variable.dart';
 
@@ -79,6 +80,7 @@ class EditVariableNameByTypeRule extends DartLintRule {
                     value.toLowerCase(),
               )
               .toList();
+
           for (final String variableSplitPart in variableSplit) {
             if (typeSplit.contains(variableSplitPart)) {
               return;
