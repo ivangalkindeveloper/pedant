@@ -17,6 +17,7 @@ import 'package:pedant/src/rule/add/add_extension_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_if_bracets_rule.dart';
 import 'package:pedant/src/rule/add/add_mixin_postfix_rule.dart';
 import 'package:pedant/src/rule/add/add_override_rule.dart';
+import 'package:pedant/src/rule/add/add_static.dart';
 import 'package:pedant/src/rule/add/add_this_rule.dart';
 import 'package:pedant/src/rule/add/add_type_rule.dart';
 import 'package:pedant/src/rule/delete/delete_bloc_cubit_dependent_bloc_cubit_flutter_rule.dart';
@@ -114,6 +115,10 @@ class _PedantBase extends PluginBase {
       ruleList: ruleList,
     );
     AddOverrideRule.combine(
+      config: config,
+      ruleList: ruleList,
+    );
+    AddStaticRule.combine(
       config: config,
       ruleList: ruleList,
     );
