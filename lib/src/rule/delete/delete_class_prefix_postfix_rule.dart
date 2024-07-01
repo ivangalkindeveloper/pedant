@@ -6,7 +6,6 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_class_postfix_list.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
 
@@ -15,67 +14,62 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    final List<DeleteListItem>? deleteClassPrefixList =
-        config.deleteClassPrefixList;
+    final List<String>? deleteClassPrefixList = config.deleteClassPrefixList;
     if (deleteClassPrefixList != null) {
-      for (final DeleteListItem deleteListItem in deleteClassPrefixList) {
-        ruleList.add(
-          DeleteClassPrefixPostfixRule(
-            code: LintCode(
-              name: "delete_class_prefix",
-              problemMessage:
-                  "Сlass name must not contain an prefix: ${deleteListItem.nameList.join(", ")}.",
-              correctionMessage: "Please delete prefix in class.",
-              errorSeverity: ErrorSeverity.ERROR,
-            ),
-            deleteListItem: deleteListItem,
-            validaton: ({
-              required String name,
-              required String matchName,
-            }) =>
-                name.startsWith(
-              matchName,
-            ),
-            priority: config.priority,
-          ),
-        );
-      }
-    }
-
-    final List<DeleteListItem> deleteClassPostfixList =
-        config.deleteClassPostfixList ?? defaultDeleteClassPostfixList;
-    for (final DeleteListItem deleteListItem in deleteClassPostfixList) {
       ruleList.add(
         DeleteClassPrefixPostfixRule(
           code: LintCode(
-            name: "delete_class_postfix",
+            name: "delete_class_prefix",
             problemMessage:
-                "Сlass name must not contain an postfix: ${deleteListItem.nameList.join(", ")}.",
-            correctionMessage: "Please delete postfix in class.",
+                "Сlass name must not contain an prefix: ${deleteClassPrefixList.join(", ")}.",
+            correctionMessage: "Please delete prefix in class.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
-          deleteListItem: deleteListItem,
+          list: deleteClassPrefixList,
           validaton: ({
             required String name,
             required String matchName,
           }) =>
-              name.endsWith(
+              name.startsWith(
             matchName,
           ),
           priority: config.priority,
         ),
       );
     }
+
+    final List<String> deleteClassPostfixList =
+        config.deleteClassPostfixList ?? defaultDeleteClassPostfixList;
+    ruleList.add(
+      DeleteClassPrefixPostfixRule(
+        code: LintCode(
+          name: "delete_class_postfix",
+          problemMessage:
+              "Сlass name must not contain an postfix: ${deleteClassPostfixList.join(", ")}.",
+          correctionMessage: "Please delete postfix in class.",
+          errorSeverity: ErrorSeverity.ERROR,
+        ),
+        list: deleteClassPostfixList,
+        validaton: ({
+          required String name,
+          required String matchName,
+        }) =>
+            name.endsWith(
+          matchName,
+        ),
+        priority: config.priority,
+      ),
+    );
   }
 
   const DeleteClassPrefixPostfixRule({
     required super.code,
-    required this.deleteListItem,
+    required this.list,
     required this.validaton,
     required this.priority,
   });
 
-  final DeleteListItem deleteListItem;
+  final List<String> list;
   final bool Function({
     required String name,
     required String matchName,
@@ -119,7 +113,7 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
     required void Function() onSuccess,
   }) {
     bool isMatch = false;
-    for (final String matchName in deleteListItem.nameList) {
+    for (final String matchName in this.list) {
       if (this.validaton(
         name: name,
         matchName: matchName,

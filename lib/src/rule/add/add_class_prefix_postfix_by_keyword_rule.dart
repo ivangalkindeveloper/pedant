@@ -9,6 +9,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/pre_post_fix_type.dart';
+import 'package:pedant/src/core/default/default_add_postfix_by_keyword_list.dart';
 import 'package:pedant/src/core/default/default_add_prefix_by_keyword_list.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
 
@@ -38,26 +39,25 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
       );
     }
 
-    final List<KeywordListNameItem>? addClassPostfixByKeywordList =
-        config.addClassPostfixByKeywordList;
-    if (addClassPostfixByKeywordList != null) {
-      for (final KeywordListNameItem keywordListNameItem
-          in addClassPostfixByKeywordList) {
-        ruleList.add(
-          AddClassPrefixPostfixByKeywordRule(
-            code: LintCode(
-              name: "add_postfix_by_keyword",
-              problemMessage:
-                  "Сlass name must ends with an postfix: ${keywordListNameItem.name}.",
-              correctionMessage: "Please add postfix in class.",
-              errorSeverity: ErrorSeverity.ERROR,
-            ),
-            keywordListNameItem: keywordListNameItem,
-            type: PrePostFixType.postfix,
-            priority: config.priority,
+    final List<KeywordListNameItem> addClassPostfixByKeywordList =
+        config.addClassPostfixByKeywordList ??
+            defaultAddClassPostfixByKeywordList;
+    for (final KeywordListNameItem keywordListNameItem
+        in addClassPostfixByKeywordList) {
+      ruleList.add(
+        AddClassPrefixPostfixByKeywordRule(
+          code: LintCode(
+            name: "add_postfix_by_keyword",
+            problemMessage:
+                "Сlass name must ends with an postfix: ${keywordListNameItem.name}.",
+            correctionMessage: "Please add postfix in class.",
+            errorSeverity: ErrorSeverity.ERROR,
           ),
-        );
-      }
+          keywordListNameItem: keywordListNameItem,
+          type: PrePostFixType.postfix,
+          priority: config.priority,
+        ),
+      );
     }
   }
 

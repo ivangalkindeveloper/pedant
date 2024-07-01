@@ -1,62 +1,126 @@
 # Pedant
-Строгий статический анализатор и скрипт для форматирования Dart кода.\
-Призван решать проблемы в проекте на этапах проектирования и поддержки.
+A strict static analyzer and script for formatting Dart code.\
+Designed to solve problems in a project at the design and support stages.
 
-Анализатор:
- - строгие архитектурные правила;
- - строгие стилистические правила;
- - не строгие правила подходов.
+Analyzer:
+ - strict architectural rules;
+ - strict stylistic rules;
+ - not strict rules of approach.
 
-Скрипт:
- - aвтоматические решение обнаруженных ошибок линтера;
- - сортировка в алфавитном порядке полей .arb файлов;
- - сортировка в алфавитном порядке деклараций импоротов, экспортов и частей;
- - сортировка в алфавитном порядке ключей dependencies, dev_dependencies, dependency_overrides в pubspec.yaml;
- - форматирование Dart кода.
+Script:
+ - automatic solutions to detected linter errors;
+ - sorting in alphabetical order of the fields of .arb files;
+ - sorting in alphabetical order of declarations of imports, exports and parts;
+ - sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml;
+ - Dart code formatting.
 
 
 ## Get started
-
 ### Installing
-1) Добавьте два пакета в pubspec.yaml файл в раздел dev_dependencies:
+1) Add two packages to the pubspec.yaml file in the dev_dependencies section:
 ```yaml
 dev_dependencies:
   custom_lint: ^latest_version
   pedant: ^latest_version
 ```
-
-2) Добавьте в файл analysis_options.yaml включение кастомного анализатора:
+2) Add the inclusion of a custom analyzer to the analysis_options.yaml file:
 ```yaml
 custom_lint:
   rules:
     - pedant:
 ```
-
-Желательно после подключения анализатора перезапустить IDE.
+It is advisable to restart the IDE after connecting the analyzer.
 
 ### Config
-Полная конфигурация правил может выглядеть так:
+Current default configuration:
+```yaml
+custom_lint:
+  rules:
+    - pedant:
+      add_bloc_cubit_event_state_file: true
+      add_bloc_cubit_state_postfix: true
+      add_bloc_cubit_state_sealed: true
+      add_bloc_event_postfix: true
+      add_bloc_event_sealed: true
+      add_bloc_postfix: true
+      add_class_postfix_by_keyword_list:
+        -
+          keywordList:
+            - base
+          name: Base
+      add_class_postfix_by_path_list: null
+      add_class_prefix_by_keyword_list:
+        -
+          keywordList:
+            - abstract
+            - interface
+            - sealed
+          name: I
+      add_class_prefix_by_path_list: null
+      add_comma: true
+      add_const_constructor: true
+      add_const: true
+      add_constructor: true
+      add_controller_postfix: true
+      add_cubit_postfix: true
+      add_extension_postfix: true
+      add_if_braces: true
+      add_mixin_postfix: true
+      add_override: true
+      add_static: true
+      add_this: true
+      add_type: true
+      delete_bloc_cubit_dependent_bloc_cubit: true
+      delete_bloc_cubit_dependent_flutter: true
+      delete_bloc_cubit_public_property: true
+      delete_class_postfix_list:
+        - Impl
+        - Implementation
+        - Model
+      delete_class_prefix_list: null
+      delete_function_list:
+        - print
+        - debugPrint
+        - debugPrintThrottled
+      delete_new: true
+      # delete_package_list: Check note
+      # delete_type_list: Check note
+      delete_widget_function_method: true
+      edit_arrow_function: true
+      edit_constructor_private_named_parameter: true
+      edit_constructor_public_named_parameter: true
+      edit_file_length_by_path_list: null
+      edit_function_private_named_parameter: true
+      edit_function_public_named_parameter: true
+      edit_multiple_variable: true
+      edit_private_in_function: true
+      edit_relative_import: true
+      edit_variable_name_by_type: true
+      priority: 100
+```
+Note:\
+Default list of delete_package_list check [here](https://github.com/ivangalkindeveloper/pedant/blob/master/lib/src/core/default/default_delete_package_list.dart).\
+Default list of delete_type_list check [here](https://github.com/ivangalkindeveloper/pedant/blob/master/lib/src/core/default/default_delete_type_list.dart).
 
 ### CLI
-Скрипт спроектирован с точки зрения максимального охвата и наведения порядка в проекте.\
-Запустите скрипт:
+The script is designed from the point of view of maximum coverage and bringing order to the project.\
+Run the script:
 ```shell
 dart run pedant
 ```
-
-Аргументы:
+Arguments:
 ```shell
- --no-fix - отключение решения проанализированных проблем линтера;\
- --no-sort-arb-files - отключение сортировки .arb файлов;\
- --no-sort-dart-import-declarations - отключение сортировки деклараций импортов .dart файлов;\
- --no-sort-pubspec-dependencies - отключение сортировки зависимостей в pubspec.yaml файле;\
- --no-dart-format - отключение итогового форматирования на этапе завершения скрипта;
+ --no-fix - disabling fix of analyzed linter problems;
+ --no-sort-arb-files - disable alphabetical sorting of .arb files;
+ --no-sort-dart-import-declarations - disable alphabetical sorting of declarations of imports of .dart files;
+ --no-sort-pubspec-dependencies - disable alphabetical sorting dependencшуы in the pubspec.yaml file;
+ --no-dart-format - disabling final formatting at the script completion stage;
 ```
 
 ## Rules
 ### Add
 #### add_bloc_cubit_part
-Класс состояния и события Bloc/Cubit должны находится либо в одном файле, либо в одной зоне видимости через part/part of.
+The Bloc/Cubit state and event class must be located either in the same file or in the same visibility area through part/part of.
 
 ```dart
 // BAD:
@@ -65,7 +129,7 @@ dart run pedant
 ```
 
 #### add_bloc_cubit_state_postfix
-Класс состояния Bloc/Cubit должно иметь постфикс State.
+The Bloc/Cubit state class must have a State postfix.
 
 ```dart
 // BAD:
@@ -74,7 +138,7 @@ dart run pedant
 ```
 
 #### add_bloc_cubit_state_sealed
-Класс состояния Bloc/Cubit должно быть объявлены ключевым словом sealed.
+The Bloc/Cubit state class must be declared with the 'sealed' keyword.
 
 ```dart
 // BAD:
@@ -83,7 +147,7 @@ dart run pedant
 ```
 
 #### add_bloc_event_postfix
-Класс события Bloc должно иметь постфикс Event.
+The Bloc event class must have the Event postfix.
 
 ```dart
 // BAD:
@@ -92,7 +156,7 @@ dart run pedant
 ```
 
 #### add_bloc_event_sealed
-Класс события Bloc должно быть объявлены ключевым словом sealed.
+The Bloc event class must be declared with the 'sealed' keyword.
 
 ```dart
 // BAD:
@@ -101,7 +165,7 @@ dart run pedant
 ```
 
 #### add_bloc_postfix
-Класс Bloc должен иметь постфикс Bloc.
+The Bloc class must have a Bloc postfix.
 
 ```dart
 // BAD:
@@ -110,7 +174,7 @@ dart run pedant
 ```
 
 #### add_class_postfix_by_keyword_list
-Класс, который содержат ключевые слова из списка, должнен иметь соответствующий постфикс.
+Classes that contain keywords from the list must have the appropriate postfix.
 
 ```dart
 // BAD:
@@ -119,7 +183,7 @@ dart run pedant
 ```
 
 #### add_class_postfix_by_path_list
-Класс, который находится по пути из списка, должен иметь соответствующий постфикс.
+Classes that are located along the path from the list must have the appropriate postfix.
 
 ```dart
 // BAD:
@@ -128,7 +192,7 @@ dart run pedant
 ```
 
 #### add_class_prefix_by_keyword_list
-Класс, который содержит ключевые слова из списка, должен иметь соответствующий префикс.
+Classes that contain keywords from the list must be prefixed accordingly.
 
 ```dart
 // BAD:
@@ -137,7 +201,7 @@ dart run pedant
 ```
 
 #### add_class_prefix_by_path_list
-Класс, который находится по пути из списка, должен иметь соответствующий префикс.
+Classes that are located along the path from the list must have the appropriate prefix.
 
 ```dart
 // BAD:
@@ -146,7 +210,7 @@ dart run pedant
 ```
 
 #### add_comma
-В конце списка параметров должна быть запятая.
+There must be a comma at the end of the parameter list.
 
 ```dart
 // BAD:
@@ -155,7 +219,7 @@ dart run pedant
 ```
 
 #### add_const_constructor
-Класс, имеющий все поля final поля должен иметь const конструктор.
+A class that has all final fields must have a const constructor.
 
 ```dart
 // BAD:
@@ -164,7 +228,7 @@ dart run pedant
 ```
 
 #### add_const
-Глобальные переменные, статические поля, переменные в функциях и объекты, имеющие ключевое слово final и способные быть константами, должны иметь ключевое слово const.
+Global variables, static fields, variables in functions, and objects that have the final keyword and can be constants must have the const keyword.
 
 ```dart
 // BAD:
@@ -173,7 +237,7 @@ dart run pedant
 ```
 
 #### add_controller_postfix
-Класс ChangeNotifier/ValueNotifier должен иметь постфикс Controller. 
+The ChangeNotifier/ValueNotifier class must have a Controller postfix.
 
 ```dart
 // BAD:
@@ -182,7 +246,7 @@ dart run pedant
 ```
 
 #### add_cubit_postfix
-Класс Cubit должен иметь постфикс Cubit.
+The Cubit class must have the Cubit postfix.
 
 ```dart
 // BAD:
@@ -191,7 +255,7 @@ dart run pedant
 ```
 
 #### add_extension_postfix
-Расширение должно иметь постфикс Extension.
+The extension must have the Extension postfix.
 
 ```dart
 // BAD:
@@ -200,7 +264,7 @@ dart run pedant
 ```
 
 #### add_if_braces
-Выражение if должно иметь скобочки.
+The if expression must have parentheses.
 
 ```dart
 // BAD:
@@ -209,7 +273,7 @@ dart run pedant
 ```
 
 #### add_mixin_postfix
-Миксин должен иметь постфикс Mixin.
+A mixin must have a Mixin postfix.
 
 ```dart
 // BAD:
@@ -218,7 +282,7 @@ dart run pedant
 ```
 
 #### add_override
-Поля и методы класса, переопределенные от базового, должны иметь аннотацию @override.
+Fields and methods of a class overridden from the base one must have the @override annotation.
 
 ```dart
 // BAD:
@@ -227,7 +291,7 @@ dart run pedant
 ```
 
 #### add_static
-Поле класса, имеющую инициализацию, должно начинаться с ключевого слова static.
+A class field that has an initialization must begin with the 'static' keyword.
 
 ```dart
 // BAD:
@@ -236,7 +300,7 @@ dart run pedant
 ```
 
 #### add_this
-В пределах класса, доступ к внутренним полям и методам должен начинатся с ключевого слова this.
+Within a class, access to internal fields and methods must begin with the this keyword.
 
 ```dart
 // BAD:
@@ -245,7 +309,7 @@ dart run pedant
 ```
 
 #### add_type
-Переменные и параметры замыканий должны иметь тип.
+Variables and parameters of closures must have a type.
 
 ```dart
 // BAD:
@@ -256,7 +320,7 @@ dart run pedant
 
 ### Delete
 #### delete_bloc_cubit_dependent_bloc_cubit
-Необходимо удалить Bloc/Cubit зависимосить в классе Bloc/Cubit.
+Need to remove the Bloc/Cubit dependency in the Bloc/Cubit class.
 
 ```dart
 // BAD:
@@ -265,7 +329,7 @@ dart run pedant
 ```
 
 #### delete_bloc_cubit_dependent_flutter
-Необходимо удалить зависимосить Flutter ресурсов в классе Bloc/Cubit.
+Need to remove the Flutter resource dependency in the Bloc/Cubit class.
 
 ```dart
 // BAD:
@@ -274,7 +338,7 @@ dart run pedant
 ```
 
 #### delete_bloc_cubit_public_property
-Необходимо удалить публичные свойства в классе Bloc/Cubit.
+Need to remove public properties in the Bloc/Cubit class.
 
 ```dart
 // BAD:
@@ -283,7 +347,7 @@ dart run pedant
 ```
 
 #### delete_class_postfix_list
-Необходимо удалить постфикс класса, входящий в список.
+Need to remove the class postfix included in the list.
 
 ```dart
 // BAD:
@@ -292,7 +356,7 @@ dart run pedant
 ```
 
 #### delete_class_prefix_list
-Необходимо удалить префикс класса, входящий в список.
+Need to remove the class prefix included in the list.
 
 ```dart
 // BAD:
@@ -301,7 +365,7 @@ dart run pedant
 ```
 
 #### delete_function_list
-Необходимо удалить функцию, входящий в список.
+Need to remove a function from the list.
 
 ```dart
 // BAD:
@@ -310,7 +374,7 @@ dart run pedant
 ```
 
 #### delete_new
-Необходимо удалить ключевое слово new при создании экземляра.
+Need to remove the 'new' keyword when creating the instance.
 
 ```dart
 // BAD:
@@ -319,7 +383,7 @@ dart run pedant
 ```
 
 #### delete_package_list
-Необходимо удалить пакет, входящий в список.
+Need to remove the package that is on the list.
 
 ```dart
 // BAD:
@@ -328,7 +392,7 @@ dart run pedant
 ```
 
 #### delete_type_list
-Необходимо удалить тип, входящий в список.
+Need to remove a type from the list.
 
 ```dart
 // BAD:
@@ -337,7 +401,7 @@ dart run pedant
 ```
 
 #### delete_widget_function_method
-Необходимо удалить функцию, которая возвращает Widget.
+Need to remove the function that returns Widget.
 
 ```dart
 // BAD:
@@ -347,7 +411,7 @@ dart run pedant
 
 ### Edit
 #### edit_arrow_function
-Необходимо отредактировать функцию в стрелочную.
+Need to edit the arrow function.
 
 ```dart
 // BAD:
@@ -356,7 +420,7 @@ dart run pedant
 ```
 
 #### edit_constructor_private_named_parameter
-Необходимо отредактировать все параметры приватного конструктора в именованные.
+Need to edit all parameters of the private constructor into named ones.
 
 ```dart
 // BAD:
@@ -365,7 +429,7 @@ dart run pedant
 ```
 
 #### edit_constructor_public_named_parameter
-Необходимо отредактировать все параметры публичного конструктора в именованные.
+Need to edit all parameters of the public constructor into named ones.
 
 ```dart
 // BAD:
@@ -374,7 +438,7 @@ dart run pedant
 ```
 
 #### edit_file_length_by_path_list
-Необходимо отредактировать файл, находящийся по пути, на допустимую длину кода.
+Need to edit the file located along the path to the allowable code length.
 
 ```dart
 // BAD:
@@ -383,7 +447,7 @@ dart run pedant
 ```
 
 #### edit_function_private_named_parameter
-Необходимо отредактировать все параметры приватной функции в именованные.
+Need to edit all parameters of a private function into named ones.
 
 ```dart
 // BAD:
@@ -392,7 +456,7 @@ dart run pedant
 ```
 
 #### edit_function_public_named_parameter
-Необходимо отредактировать все параметры публичной функции в именованные.
+Need to edit all parameters of a public function into named ones.
 
 ```dart
 // BAD:
@@ -401,7 +465,7 @@ dart run pedant
 ```
 
 #### edit_multiple_variable
-Необходимо отредактировать объявление списка переменных в раздельные.
+Need to edit the declaration of the list of variables into separate ones.
 
 ```dart
 // BAD:
@@ -410,7 +474,7 @@ dart run pedant
 ```
 
 #### edit_private_in_function
-Необходимо отредактировать приватную переменную в функции.
+Need to edit a private variable to public in a function.
 
 ```dart
 // BAD:
@@ -419,7 +483,7 @@ dart run pedant
 ```
 
 #### edit_relative_import
-Необходимо отредактировать относительный импорт в абсолютный.
+Need to edit relative import to absolute.
 
 ```dart
 // BAD:
@@ -428,7 +492,7 @@ dart run pedant
 ```
 
 #### edit_variable_name_by_type
-Необходимо отредактировать имя переменной по ее типу.
+You need to edit the variable name based on its type.
 
 ```dart
 // BAD:
@@ -438,4 +502,4 @@ dart run pedant
 
 ### Other
 #### Priority
-Приоритет отображаемых команд в IDE.
+The priority of displayed commands in the IDE.

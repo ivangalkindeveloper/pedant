@@ -7,7 +7,7 @@ import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 class Config {
   const Config({
-    this.addBlocCubitPart = true,
+    this.addBlocCubitEventStateFile = true,
     this.addBlocCubitStatePostfix = true,
     this.addBlocCubitStateSealed = true,
     this.addBlocEventPostfix = true,
@@ -57,52 +57,52 @@ class Config {
     this.priority = 100,
   });
 
-  final bool addBlocCubitPart; //
-  final bool addBlocCubitStatePostfix; //
-  final bool addBlocCubitStateSealed; //
-  final bool addBlocEventPostfix; //
-  final bool addBlocEventSealed; //
-  final bool addBlocPostfix; //
+  final bool addBlocCubitEventStateFile;
+  final bool addBlocCubitStatePostfix;
+  final bool addBlocCubitStateSealed;
+  final bool addBlocEventPostfix;
+  final bool addBlocEventSealed;
+  final bool addBlocPostfix;
   //
-  final List<KeywordListNameItem>? addClassPostfixByKeywordList; //
-  final List<PathNameListItem>? addClassPostfixByPathList; //
-  final List<KeywordListNameItem>? addClassPrefixByKeywordList; //
-  final List<PathNameListItem>? addClassPrefixByPathList; //
-  final bool addComma; //
-  final bool addConstConstructor; //
+  final List<KeywordListNameItem>? addClassPostfixByKeywordList;
+  final List<PathNameListItem>? addClassPostfixByPathList;
+  final List<KeywordListNameItem>? addClassPrefixByKeywordList;
+  final List<PathNameListItem>? addClassPrefixByPathList;
+  final bool addComma;
+  final bool addConstConstructor;
   final bool addConst;
-  final bool addConstructor; //
-  final bool addControllerPostfix; //
-  final bool addCubitPostfix; //
-  final bool addExtensionPostfix; //
-  final bool addIfBraces; //
-  final bool addMixinPostfix; //
-  final bool addOverride; //
-  final bool addStatic; //
-  final bool addThis; //
-  final bool addType; //
+  final bool addConstructor;
+  final bool addControllerPostfix;
+  final bool addCubitPostfix;
+  final bool addExtensionPostfix;
+  final bool addIfBraces;
+  final bool addMixinPostfix;
+  final bool addOverride;
+  final bool addStatic;
+  final bool addThis;
+  final bool addType;
   //
-  final bool deleteBlocCubitDependentBlocCubit; //
-  final bool deleteBlocCubitDependentFlutter; //
-  final bool deleteBlocCubitPublicProperty; //
-  final List<DeleteListItem>? deleteClassPostfixList; //
-  final List<DeleteListItem>? deleteClassPrefixList; //
-  final List<DeleteListItem>? deleteFunctionList; //
-  final bool deleteNew; //
-  final List<DeleteListItem>? deletePackageList; //
-  final List<DeleteListItem>? deleteTypeList; //
-  final bool deleteWidgetFunctionMethod; //
+  final bool deleteBlocCubitDependentBlocCubit;
+  final bool deleteBlocCubitDependentFlutter;
+  final bool deleteBlocCubitPublicProperty;
+  final List<String>? deleteClassPostfixList;
+  final List<String>? deleteClassPrefixList;
+  final List<String>? deleteFunctionList;
+  final bool deleteNew;
+  final List<DeleteListItem>? deletePackageList;
+  final List<DeleteListItem>? deleteTypeList;
+  final bool deleteWidgetFunctionMethod;
   //
-  final bool editArrowFunction; //
-  final bool editContructorPrivateNamedParameter; //
-  final bool editContructorPublicNamedParameter; //
-  final List<LengthItem>? editFileLengthByPathList; //
-  final bool editFunctionPrivateNamedParameter; //
-  final bool editFunctionPublicNamedParameter; //
-  final bool editMultipleVariable; //
-  final bool editPrivateInFunction; //
-  final bool editRelativeImport; //
-  final bool editVariableNameByType; //
+  final bool editArrowFunction;
+  final bool editContructorPrivateNamedParameter;
+  final bool editContructorPublicNamedParameter;
+  final List<LengthItem>? editFileLengthByPathList;
+  final bool editFunctionPrivateNamedParameter;
+  final bool editFunctionPublicNamedParameter;
+  final bool editMultipleVariable;
+  final bool editPrivateInFunction;
+  final bool editRelativeImport;
+  final bool editVariableNameByType;
   //
   final int priority;
 
@@ -110,7 +110,8 @@ class Config {
     required Map<String, dynamic> map,
   }) =>
       Config(
-        addBlocCubitPart: map["add_bloc_cubit_part"] ?? true,
+        addBlocCubitEventStateFile:
+            map["add_bloc_cubit_event_state_file"] ?? true,
         addBlocCubitStatePostfix: map["add_bloc_cubit_state_postfix"] ?? true,
         addBlocCubitStateSealed: map["add_bloc_cubit_state_sealed"] ?? true,
         addBlocEventPostfix: map["add_bloc_event_postfix"] ?? true,
@@ -161,21 +162,10 @@ class Config {
             map["delete_bloc_cubit_dependent_flutter"] ?? true,
         deleteBlocCubitPublicProperty:
             map["delete_bloc_cubit_public_property"] ?? true,
-        deleteClassPostfixList: (map["delete_class_postfix_list"] as List?)
-            ?.map(
-              (e) => DeleteListItem.fromYaml(e),
-            )
-            .toList(),
-        deleteClassPrefixList: (map["delete_class_prefix_list"] as List?)
-            ?.map(
-              (e) => DeleteListItem.fromYaml(e),
-            )
-            .toList(),
-        deleteFunctionList: (map["delete_function_list"] as List?)
-            ?.map(
-              (e) => DeleteListItem.fromYaml(e),
-            )
-            .toList(),
+        deleteClassPostfixList:
+            map["delete_class_postfix_list"] as List<String>?,
+        deleteClassPrefixList: map["delete_class_prefix_list"] as List<String>?,
+        deleteFunctionList: map["delete_function_list"] as List<String>?,
         deleteNew: map["delete_new"] ?? true,
         deletePackageList: (map["delete_package_list"] as List?)
             ?.map(

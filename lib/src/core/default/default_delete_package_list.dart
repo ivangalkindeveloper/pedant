@@ -4,6 +4,7 @@ const List<DeleteListItem> defaultDeletePackageList = [
   ..._commonList,
   ..._databaseList,
   ..._stateManagementList,
+  ..._frameworkList,
 ];
 
 const List<DeleteListItem> _commonList = [
@@ -174,5 +175,15 @@ const List<DeleteListItem> _stateManagementList = [
     ],
     description:
         "Management of states using global variables, as a result - not the best control using global resources.",
+  ),
+];
+
+const _frameworkList = [
+  DeleteListItem(
+    nameList: [
+      "flutter_screenutil",
+    ],
+    description:
+        "The package is useless because Flutter already accepts and converts dimensions as logical pixels under the hood.",
   ),
 ];

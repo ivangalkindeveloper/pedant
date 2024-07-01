@@ -5,7 +5,6 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_function_list.dart';
 import 'package:pedant/src/utility/extension/add_function_expression_invocation.dart';
 import 'package:pedant/src/utility/extension/add_method_invocation.dart';
@@ -15,33 +14,29 @@ class DeleteFunctionRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    final List<DeleteListItem> deleteFunctionList =
+    final List<String> deleteFunctionList =
         config.deleteFunctionList ?? defaultDeleteFunctionList;
-    for (final DeleteListItem deleteListItem in deleteFunctionList) {
-      ruleList.add(
-        DeleteFunctionRule(
-          deleteListItem: deleteListItem,
-          priority: config.priority,
-        ),
-      );
-    }
+    ruleList.add(
+      DeleteFunctionRule(
+        list: deleteFunctionList,
+        priority: config.priority,
+      ),
+    );
   }
 
   DeleteFunctionRule({
-    required this.deleteListItem,
+    required this.list,
     required this.priority,
   }) : super(
           code: LintCode(
             name: "delete_function",
-            problemMessage:
-                "Delete function: ${deleteListItem.nameList.join(", ")}.",
-            correctionMessage:
-                "Please delete this function from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
+            problemMessage: "Delete function: ${list.join(", ")}.",
+            correctionMessage: "Please delete this function from code snippet.",
             errorSeverity: ErrorSeverity.WARNING,
           ),
         );
 
-  final DeleteListItem deleteListItem;
+  final List<String> list;
   final int priority;
 
   @override
@@ -54,7 +49,7 @@ class DeleteFunctionRule extends DartLintRule {
       (
         MethodInvocation node,
       ) =>
-          _validateAndReport(
+          _validate(
         name: node.methodName.name,
         onSuccess: () => reporter.atNode(
           node,
@@ -66,7 +61,7 @@ class DeleteFunctionRule extends DartLintRule {
       (
         FunctionExpressionInvocation node,
       ) =>
-          _validateAndReport(
+          _validate(
         name: node.function.toString(),
         onSuccess: () => reporter.atNode(
           node,
@@ -76,11 +71,11 @@ class DeleteFunctionRule extends DartLintRule {
     );
   }
 
-  void _validateAndReport({
+  void _validate({
     required String name,
     required void Function() onSuccess,
   }) {
-    if (deleteListItem.nameList.contains(name) == false) {
+    if (this.list.contains(name) == false) {
       return;
     }
 

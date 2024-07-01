@@ -12,7 +12,7 @@ class AddBlocCubitEventStateFileRule extends DartLintRule {
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.addBlocCubitPart == false) {
+    if (config.addBlocCubitEventStateFile == false) {
       return;
     }
 
@@ -27,7 +27,7 @@ class AddBlocCubitEventStateFileRule extends DartLintRule {
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "add_bloc_cubit_event_state_file_file",
+            name: "add_bloc_cubit_event_state_file",
             problemMessage:
                 "Add Bloc or Cubit Event and State classes in this file or via part/part of",
             correctionMessage:
