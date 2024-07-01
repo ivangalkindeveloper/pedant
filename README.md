@@ -8,11 +8,11 @@ Analyzer:
  - not strict rules of approach.
 
 Script:
- - automatic solutions to detected linter errors;
+ - automatic fix of detected linter errors;
  - sorting in alphabetical order of the fields of .arb files;
  - sorting in alphabetical order of declarations of imports, exports and parts;
  - sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml;
- - Dart code formatting.
+ - code formatting.
 
 
 ## Get started
@@ -83,8 +83,8 @@ custom_lint:
         - debugPrint
         - debugPrintThrottled
       delete_new: true
-      # delete_package_list: Check note
-      # delete_type_list: Check note
+      # delete_package_list: - Check note
+      # delete_type_list: - Check note
       delete_widget_function_method: true
       edit_arrow_function: true
       edit_constructor_private_named_parameter: true
@@ -117,6 +117,7 @@ Arguments:
  --no-dart-format - disabling final formatting at the script completion stage;
 ```
 
+
 ## Rules
 ### Add
 #### add_bloc_cubit_part
@@ -124,8 +125,36 @@ The Bloc/Cubit state and event class must be located either in the same file or 
 
 ```dart
 // BAD:
+import 'package:example/example_event.dart';
+import 'package:example/example_state.dart';
+
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ...
+}
 
 // GOOD:
+import 'package:example/example_event.dart';
+import 'package:example/example_state.dart';
+
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ...
+}
+
+sealed class IExampleEvent {
+  ...
+}
+
+sealed class IExampleState {
+  ...
+}
+
+// GOOD:
+part of 'example_event.dart';
+part of 'example_state.dart';
+
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ...
+}
 ```
 
 #### add_bloc_cubit_state_postfix
@@ -133,8 +162,14 @@ The Bloc/Cubit state class must have a State postfix.
 
 ```dart
 // BAD:
+sealed class IExampleSt {
+  ...
+}
 
 // GOOD:
+sealed class IExampleState {
+  ...
+}
 ```
 
 #### add_bloc_cubit_state_sealed
@@ -142,8 +177,14 @@ The Bloc/Cubit state class must be declared with the 'sealed' keyword.
 
 ```dart
 // BAD:
+class ExampleState {
+  ...
+}
 
 // GOOD:
+sealed class IExampleState {
+  ...
+}
 ```
 
 #### add_bloc_event_postfix
@@ -151,8 +192,14 @@ The Bloc event class must have the Event postfix.
 
 ```dart
 // BAD:
+sealed class IExampleEv {
+  ...
+}
 
 // GOOD:
+sealed class IExampleEvent {
+  ...
+}
 ```
 
 #### add_bloc_event_sealed
@@ -160,8 +207,14 @@ The Bloc event class must be declared with the 'sealed' keyword.
 
 ```dart
 // BAD:
+class ExampleEvent {
+  ...
+}
 
 // GOOD:
+sealed class IExampleEvent {
+  ...
+}
 ```
 
 #### add_bloc_postfix
@@ -169,8 +222,14 @@ The Bloc class must have a Bloc postfix.
 
 ```dart
 // BAD:
+class ExampleBlc extends Bloc<IExampleEvent, IExampleState> {
+  ...
+}
 
 // GOOD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ...
+}
 ```
 
 #### add_class_postfix_by_keyword_list
@@ -178,8 +237,14 @@ Classes that contain keywords from the list must have the appropriate postfix.
 
 ```dart
 // BAD:
+base class Example {
+  ...
+}
 
 // GOOD:
+base class ExampleBase {
+  ...
+}
 ```
 
 #### add_class_postfix_by_path_list
@@ -187,8 +252,14 @@ Classes that are located along the path from the list must have the appropriate 
 
 ```dart
 // BAD:
+base class Example {
+  ...
+}
 
 // GOOD:
+base class ExampleBase {
+  ...
+}
 ```
 
 #### add_class_prefix_by_keyword_list
@@ -196,8 +267,14 @@ Classes that contain keywords from the list must be prefixed accordingly.
 
 ```dart
 // BAD:
+interface class Example {
+  ...
+}
 
 // GOOD:
+interface class IExample {
+  ...
+}
 ```
 
 #### add_class_prefix_by_path_list
@@ -205,8 +282,14 @@ Classes that are located along the path from the list must have the appropriate 
 
 ```dart
 // BAD:
+interface class Example {
+  ...
+}
 
 // GOOD:
+interface class IExample {
+  ...
+}
 ```
 
 #### add_comma
@@ -214,8 +297,25 @@ There must be a comma at the end of the parameter list.
 
 ```dart
 // BAD:
+(a, b) {}
+
+named({required String argument}) {
+  print("Hello World!");
+}
 
 // GOOD:
+(
+  a, 
+  b,
+) {}
+
+named({
+  required String argument,
+}) {
+  print(
+    "Hello World!",
+  );
+}
 ```
 
 #### add_const_constructor
@@ -223,17 +323,78 @@ A class that has all final fields must have a const constructor.
 
 ```dart
 // BAD:
+class Example {
+  Example({
+    required this.title,
+  });
+
+  final String title;
+}
+
 
 // GOOD:
+class Example {
+  const Example({
+    required this.title,
+  });
+
+  final String title;
+}
 ```
 
 #### add_const
-Global variables, static fields, variables in functions, and objects that have the final keyword and can be constants must have the const keyword.
+Global variables, static fields, variables in functions, and objects that have the final keyword and can be constants must have the 'const' keyword.
 
 ```dart
 // BAD:
+final Example topLevel = Example(
+  title: "Title",
+);
+
+class Example {
+  static final String subTitle = "SubTitle";
+
+  const Example({
+    required this.title,
+  });
+
+  final String title;
+}
+
+void doSomething() {
+  final Example function = Example(
+    title: "Title",
+  );
+}
 
 // GOOD:
+const Example topLevel = Example(
+  title: "Title",
+);
+
+class Example {
+  static const String title = "SubTitle";
+
+  const Example();
+}
+
+void doSomething() {
+  const Example function = Example(
+    title: "Title",
+  );
+}
+```
+
+#### add_constructor
+All classes must have an explicit constructor.
+```dart
+// BAD:
+class Example {}
+
+// GOOD:
+class Example {
+  Example();
+}
 ```
 
 #### add_controller_postfix
@@ -241,8 +402,10 @@ The ChangeNotifier/ValueNotifier class must have a Controller postfix.
 
 ```dart
 // BAD:
+class ExampleNotifier extends ChangeNotifier {}
 
 // GOOD:
+class ExampleController extends ChangeNotifier {}
 ```
 
 #### add_cubit_postfix
@@ -250,8 +413,14 @@ The Cubit class must have the Cubit postfix.
 
 ```dart
 // BAD:
+class ExampleCub extends Cubit<ExampleState> {
+  ...
+}
 
 // GOOD:
+class ExampleCubit extends Cubit<ExampleState> {
+  ...
+}
 ```
 
 #### add_extension_postfix
@@ -259,8 +428,10 @@ The extension must have the Extension postfix.
 
 ```dart
 // BAD:
+extension ExampleX on Object {}
 
 // GOOD:
+extension ExampleExtension on Object {}
 ```
 
 #### add_if_braces
@@ -268,8 +439,12 @@ The if expression must have parentheses.
 
 ```dart
 // BAD:
+if (list.isEmpty) return;
 
 // GOOD:
+if (list.isEmpty) {
+  return;
+}
 ```
 
 #### add_mixin_postfix
@@ -277,8 +452,10 @@ A mixin must have a Mixin postfix.
 
 ```dart
 // BAD:
+mixin StringMix on Object {}
 
 // GOOD:
+mixin StringMixin on Object {}
 ```
 
 #### add_override
@@ -286,8 +463,16 @@ Fields and methods of a class overridden from the base one must have the @overri
 
 ```dart
 // BAD:
+class Example {
+  String toString() => "";
+}
 
 // GOOD:
+class Example {
+  @override
+  String toString() => "";
+}
+
 ```
 
 #### add_static
@@ -295,8 +480,14 @@ A class field that has an initialization must begin with the 'static' keyword.
 
 ```dart
 // BAD:
+class Example {
+  final String title = "Title";
+}
 
 // GOOD:
+class Example {
+  static final String title = "Title";
+}
 ```
 
 #### add_this
