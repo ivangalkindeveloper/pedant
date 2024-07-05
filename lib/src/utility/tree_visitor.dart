@@ -7,6 +7,7 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
     this.onClassTypeAlias,
     this.onConstructorDeclaration,
     this.onConstructorFieldInitializer,
+    this.onDeclaredIdentifier,
     this.onDefaultFormalParameter,
     this.onFieldDeclaration,
     this.onFieldFormalParameter,
@@ -36,6 +37,10 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   final void Function(
     ConstructorFieldInitializer node,
   )? onConstructorFieldInitializer;
+
+  final void Function(
+    DeclaredIdentifier node,
+  )? onDeclaredIdentifier;
 
   final void Function(
     DefaultFormalParameter node,
@@ -121,6 +126,16 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   ) {
     super.visitConstructorFieldInitializer(node);
     this.onConstructorFieldInitializer?.call(
+          node,
+        );
+  }
+
+  @override
+  void visitDeclaredIdentifier(
+    DeclaredIdentifier node,
+  ) {
+    super.visitDeclaredIdentifier(node);
+    this.onDeclaredIdentifier?.call(
           node,
         );
   }

@@ -4,6 +4,7 @@ import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 // AddFinal
+// DeleteSwitchDefault
 
 class Config {
   const Config({

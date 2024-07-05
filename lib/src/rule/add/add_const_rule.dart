@@ -127,6 +127,7 @@ class AddConstRule extends DartLintRule {
     for (final VariableDeclaration variableDeclaration
         in variableList.variables) {
       final Expression? initializer = variableDeclaration.initializer;
+
       if (initializer == null) {
         return;
       }
@@ -134,6 +135,13 @@ class AddConstRule extends DartLintRule {
       if (initializer is Literal) {
         onSuccess();
         return;
+      }
+
+      if (initializer is SimpleIdentifier) {
+        this._validateSimpleIdentifier(
+          simpleIdentifier: initializer,
+          onSuccess: onSuccess,
+        );
       }
 
       if (initializer is InstanceCreationExpression) {
@@ -144,6 +152,31 @@ class AddConstRule extends DartLintRule {
         return;
       }
     }
+  }
+
+  void _validateSimpleIdentifier({
+    required SimpleIdentifier simpleIdentifier,
+    required void Function() onSuccess,
+  }) {
+    final Element? staticElement = simpleIdentifier.staticElement;
+    if (staticElement == null) {
+      return;
+    }
+
+    if (staticElement is! PropertyAccessorElement) {
+      return;
+    }
+
+    final PropertyInducingElement? variable2 = staticElement.variable2;
+    if (variable2 == null) {
+      return;
+    }
+
+    if (variable2.isConst == false) {
+      return;
+    }
+
+    onSuccess();
   }
 
   void _validateInstance({
@@ -170,7 +203,7 @@ class AddConstRule extends DartLintRule {
 
     bool isConstInstanceCreationExpression = true;
 
-    instanceCreationExpression.argumentList.visitChildren(
+    instanceCreationExpression.visitChildren(
       TreeVisitor(
         onInstanceCreationExpression: (
           InstanceCreationExpression childrenInstanceCreationExpression,
@@ -184,6 +217,29 @@ class AddConstRule extends DartLintRule {
           }
 
           if (childrenStaticElement.isConst == false) {
+            isConstInstanceCreationExpression = false;
+            return;
+          }
+        },
+        onSimpleIdentifier: (
+          SimpleIdentifier simpleIdentifier,
+        ) {
+          final Element? staticElement = simpleIdentifier.staticElement;
+          if (staticElement == null) {
+            return;
+          }
+
+          if (staticElement is! PropertyAccessorElement) {
+            return;
+          }
+
+          final PropertyInducingElement? variable2 = staticElement.variable2;
+          if (variable2 == null) {
+            isConstInstanceCreationExpression = false;
+            return;
+          }
+
+          if (variable2.isConst == false) {
             isConstInstanceCreationExpression = false;
             return;
           }

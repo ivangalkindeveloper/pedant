@@ -1,43 +1,27 @@
 // class ConstClass {
-//   final String subTitle = "asadsd";
-
 //   const ConstClass({
-//     this.nonConst,
-//     required this.title,
 //     required this.age,
 //   });
 
-//   final NonConstClass? nonConst;
-//   final String title;
 //   final int age;
-
-//   void say() {}
-// }
-
-// class NonConstClass {
-//   NonConstClass({
-//     this.title,
-//   });
-
-//   String? title;
 // }
 
 // // ---
 
-// const int a = 0;
+// const int globalVar = 0;
+
+// const int anotherVar = globalVar;
 
 // const ConstClass topLevelConst = ConstClass(
-//   title: "title",
-//   age: 18,
+//   age: globalVar,
 // );
 
 // void b() {
 //   const ConstClass(
-//     title: "title",
-//     age: 18,
+//     age: anotherVar,
 //   );
 
-//   const int a = 0;
+  // const int a = 0;
 //   const ConstClass constVariable = ConstClass(
 //     title: "asd",
 //     age: 20,
