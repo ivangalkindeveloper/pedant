@@ -495,8 +495,25 @@ Within a class, access to internal fields and methods must begin with the this k
 
 ```dart
 // BAD:
+class Example {
+  ...
+
+  final String title;
+
+  @override
+  String toString() => title;
+}
+
 
 // GOOD:
+class Example {
+  ...
+
+  final String title;
+
+  @override
+  String toString() => this.title;
+}
 ```
 
 #### add_type
@@ -504,8 +521,18 @@ Variables and parameters of closures must have a type.
 
 ```dart
 // BAD:
+void doSomething(
+  field,
+) {
+  final variable = "";
+}
 
 // GOOD:
+void doSomething(
+  dynamic field,
+) {
+  final String variable = "";
+}
 ```
 
 
@@ -515,8 +542,24 @@ Need to remove the Bloc/Cubit dependency in the Bloc/Cubit class.
 
 ```dart
 // BAD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ExampleBloc({
+    required AnotherBloc anotherbloc,
+  })  : this._anotherbloc = anotherbloc,
+        super(
+          const ExampleLoadingState(),
+        );
+
+  final AnotherBloc _anotherbloc = AnotherBloc();
+}
 
 // GOOD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ExampleBloc({
+  }) : super(
+          const ExampleLoadingState(),
+        );
+}
 ```
 
 #### delete_bloc_cubit_dependent_flutter
