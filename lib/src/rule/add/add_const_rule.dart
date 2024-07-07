@@ -49,7 +49,7 @@ class AddConstRule extends DartLintRule {
       (
         InstanceCreationExpression instanceCreationExpression,
       ) {
-        if (instanceCreationExpression.parent is VariableDeclaration) {
+        if (instanceCreationExpression.parent is! ExpressionStatement) {
           return;
         }
 
@@ -67,7 +67,7 @@ class AddConstRule extends DartLintRule {
       (
         TopLevelVariableDeclaration topLevelVariableDeclaration,
       ) =>
-          this._validateVariableListAndInstance(
+          this._validateVariableList(
         variableList: topLevelVariableDeclaration.variables,
         onSuccess: () => reporter.atNode(
           topLevelVariableDeclaration,
@@ -84,7 +84,7 @@ class AddConstRule extends DartLintRule {
           return;
         }
 
-        this._validateVariableListAndInstance(
+        this._validateVariableList(
           variableList: fieldDeclaration.fields,
           onSuccess: () => reporter.atNode(
             fieldDeclaration,
@@ -98,7 +98,7 @@ class AddConstRule extends DartLintRule {
       (
         VariableDeclarationStatement variableDeclarationStatement,
       ) =>
-          this._validateVariableListAndInstance(
+          this._validateVariableList(
         variableList: variableDeclarationStatement.variables,
         onSuccess: () => reporter.atNode(
           variableDeclarationStatement,
@@ -108,7 +108,7 @@ class AddConstRule extends DartLintRule {
     );
   }
 
-  void _validateVariableListAndInstance({
+  void _validateVariableList({
     required VariableDeclarationList variableList,
     required void Function() onSuccess,
   }) {
@@ -132,62 +132,32 @@ class AddConstRule extends DartLintRule {
         return;
       }
 
-      if (initializer is Literal) {
-        onSuccess();
-        return;
-      }
+      this._checkExpressionChildren(
+        expression: initializer,
+        onSuccess: () {
+          if (initializer is InstanceCreationExpression) {
+            this._validateInstance(
+              instanceCreationExpression: initializer,
+              onSuccess: onSuccess,
+            );
+            return;
+          }
 
-      if (initializer is SimpleIdentifier) {
-        this._validateSimpleIdentifier(
-          simpleIdentifier: initializer,
-          onSuccess: onSuccess,
-        );
-      }
-
-      if (initializer is InstanceCreationExpression) {
-        this._validateInstance(
-          instanceCreationExpression: initializer,
-          onSuccess: onSuccess,
-        );
-        return;
-      }
+          onSuccess();
+        },
+      );
     }
-  }
-
-  void _validateSimpleIdentifier({
-    required SimpleIdentifier simpleIdentifier,
-    required void Function() onSuccess,
-  }) {
-    final Element? staticElement = simpleIdentifier.staticElement;
-    if (staticElement == null) {
-      return;
-    }
-
-    if (staticElement is! PropertyAccessorElement) {
-      return;
-    }
-
-    final PropertyInducingElement? variable2 = staticElement.variable2;
-    if (variable2 == null) {
-      return;
-    }
-
-    if (variable2.isConst == false) {
-      return;
-    }
-
-    onSuccess();
   }
 
   void _validateInstance({
     required InstanceCreationExpression instanceCreationExpression,
     required void Function() onSuccess,
   }) {
-    if (instanceCreationExpression.isConst) {
+    if (instanceCreationExpression.isConst == true) {
       return;
     }
 
-    if (instanceCreationExpression.inConstantContext) {
+    if (instanceCreationExpression.inConstantContext == true) {
       return;
     }
 
@@ -201,15 +171,25 @@ class AddConstRule extends DartLintRule {
       return;
     }
 
+    this._checkExpressionChildren(
+      expression: instanceCreationExpression,
+      onSuccess: onSuccess,
+    );
+  }
+
+  void _checkExpressionChildren({
+    required Expression expression,
+    required void Function() onSuccess,
+  }) {
     bool isConstInstanceCreationExpression = true;
 
-    instanceCreationExpression.visitChildren(
+    expression.visitChildren(
       TreeVisitor(
         onInstanceCreationExpression: (
-          InstanceCreationExpression childrenInstanceCreationExpression,
+          InstanceCreationExpression instanceCreationExpression,
         ) {
           final ConstructorElement? childrenStaticElement =
-              childrenInstanceCreationExpression.constructorName.staticElement;
+              instanceCreationExpression.constructorName.staticElement;
 
           if (childrenStaticElement == null) {
             isConstInstanceCreationExpression = false;

@@ -3,10 +3,10 @@
 //     required this.age,
 //   });
 
-//   final int age;
+//   final int? age;
 // }
 
-// // ---
+// // // ---
 
 // const int globalVar = 0;
 
@@ -21,9 +21,14 @@
 //     age: anotherVar,
 //   );
 
-  // const int a = 0;
+//   const int a = 0;
 //   const ConstClass constVariable = ConstClass(
-//     title: "asd",
 //     age: 20,
 //   );
 // }
+
+// const List<ConstClass> a = [
+//   ConstClass(
+//     age: 12,
+//   ),
+// ];
