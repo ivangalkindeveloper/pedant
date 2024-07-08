@@ -299,7 +299,7 @@ There must be a comma at the end of the parameter list.
 // BAD:
 (a, b) {}
 
-named({required String argument}) {
+void exampleFunction({required String argument}) {
   print("Hello World!");
 }
 
@@ -309,7 +309,7 @@ named({required String argument}) {
   b,
 ) {}
 
-named({
+void exampleFunction({
   required String argument,
 }) {
   print(
@@ -361,7 +361,7 @@ class Example {
   final String title;
 }
 
-void doSomething() {
+void exampleFunction() {
   final Example function = Example(
     title: "Title",
   );
@@ -378,7 +378,7 @@ class Example {
   const Example();
 }
 
-void doSomething() {
+void exampleFunction() {
   const Example function = Example(
     title: "Title",
   );
@@ -521,14 +521,14 @@ Variables and parameters of closures must have a type.
 
 ```dart
 // BAD:
-void doSomething(
+void exampleFunction(
   field,
 ) {
   final variable = "";
 }
 
 // GOOD:
-void doSomething(
+void exampleFunction(
   dynamic field,
 ) {
   final String variable = "";
@@ -550,15 +550,14 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
           const ExampleLoadingState(),
         );
 
-  final AnotherBloc _anotherbloc = AnotherBloc();
+  final AnotherBloc _anotherbloc;
 }
 
 // GOOD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
-  ExampleBloc({
-  }) : super(
-          const ExampleLoadingState(),
-        );
+  ExampleBloc() : super(
+    const ExampleLoadingState(),
+  );
 }
 ```
 
@@ -567,8 +566,23 @@ Need to remove the Flutter resource dependency in the Bloc/Cubit class.
 
 ```dart
 // BAD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ExampleBloc({
+    required TextEditingController textController,
+  })  : this._textController = textController,
+        super(
+          const ExampleLoadingState(),
+        );
+
+  final TextEditingController _textController;
+}
 
 // GOOD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ExampleBloc() : super(
+    const ExampleLoadingState(),
+  );
+}
 ```
 
 #### delete_bloc_cubit_public_property
@@ -576,8 +590,22 @@ Need to remove public properties in the Bloc/Cubit class.
 
 ```dart
 // BAD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ExampleBloc({
+    required this.publicProperty,
+  })  :  super(
+          const ExampleLoadingState(),
+        );
+
+  final String publicProperty;
+}
 
 // GOOD:
+class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+  ExampleBloc() : super(
+    const ExampleLoadingState(),
+  );
+}
 ```
 
 #### delete_class_postfix_list
@@ -585,8 +613,14 @@ Need to remove the class postfix included in the list.
 
 ```dart
 // BAD:
+class ExampleModel {
+  const ExampleModel();
+}
 
 // GOOD:
+class Example {
+  const Example();
+}
 ```
 
 #### delete_class_prefix_list
@@ -594,8 +628,14 @@ Need to remove the class prefix included in the list.
 
 ```dart
 // BAD:
+class ModelExample {
+  const ModelExample();
+}
 
 // GOOD:
+class Example {
+  const Example();
+}
 ```
 
 #### delete_function_list
@@ -603,8 +643,12 @@ Need to remove a function from the list.
 
 ```dart
 // BAD:
+void exampleFunction() {
+  print(something);
+}
 
 // GOOD:
+void exampleFunction() {}
 ```
 
 #### delete_new
@@ -612,17 +656,27 @@ Need to remove the 'new' keyword when creating the instance.
 
 ```dart
 // BAD:
+final ExampleClass example = new ExampleClass();
 
 // GOOD:
+final ExampleClass example = ExampleClass();
 ```
 
 #### delete_package_list
 Need to remove the package that is on the list.
 
-```dart
-// BAD:
+```yaml
+# BAD:
+dependencies:
+  bloc:
+  get:
+  get_it:
+  fpdart:
+  hive:
 
-// GOOD:
+# GOOD:
+dependencies:
+  bloc:
 ```
 
 #### delete_type_list
@@ -630,8 +684,21 @@ Need to remove a type from the list.
 
 ```dart
 // BAD:
+return Scaffold(
+  body: Container(
+    ... ,
+  ),
+);
 
 // GOOD:
+return Scaffold(
+  body: Padding(
+    padding: ... ,
+    child: ColorBox(
+      color: ... ,
+    ),
+  ),
+);
 ```
 
 #### delete_widget_function_method
@@ -639,8 +706,14 @@ Need to remove the function that returns Widget.
 
 ```dart
 // BAD:
+Widget _buildRow() => Row(
+  ... ,
+);
 
 // GOOD:
+List<String> _entityList() => [
+  ... ,
+];
 ```
 
 ### Edit
@@ -649,8 +722,12 @@ Need to edit the arrow function.
 
 ```dart
 // BAD:
+int exampleFunction() {
+  return 1 + 1;
+}
 
 // GOOD:
+int exampleFunction() => 1 + 1;
 ```
 
 #### edit_constructor_private_named_parameter
@@ -658,8 +735,24 @@ Need to edit all parameters of the private constructor into named ones.
 
 ```dart
 // BAD:
+class _ExampleClass {
+  const _ExampleClass(
+    this.property0,
+    this.property1,
+  );
+
+  ...
+}
 
 // GOOD:
+class _ExampleClass {
+  const _ExampleClass({
+    required this.property0,
+    required this.property1,
+  });
+
+  ...
+}
 ```
 
 #### edit_constructor_public_named_parameter
@@ -667,26 +760,48 @@ Need to edit all parameters of the public constructor into named ones.
 
 ```dart
 // BAD:
+class ExampleClass {
+  const ExampleClass(
+    this.property0,
+    this.property1,
+  );
+
+  ...
+}
 
 // GOOD:
+class ExampleClass {
+  const ExampleClass({
+    required this.property0,
+    required this.property1,
+  });
+
+  ...
+}
 ```
 
 #### edit_file_length_by_path_list
 Need to edit the file located along the path to the allowable code length.
-
-```dart
-// BAD:
-
-// GOOD:
-```
 
 #### edit_function_private_named_parameter
 Need to edit all parameters of a private function into named ones.
 
 ```dart
 // BAD:
+void _exampleFunction(
+  String argument0,
+  String argument1,
+) {
+  ...
+}
 
 // GOOD:
+void _exampleFunction({
+  required String argument0,
+  required String argument1,
+}) {
+  ...
+}
 ```
 
 #### edit_function_public_named_parameter
@@ -694,8 +809,20 @@ Need to edit all parameters of a public function into named ones.
 
 ```dart
 // BAD:
+void exampleFunction(
+  String argument0,
+  String argument1,
+) {
+  ...
+}
 
 // GOOD:
+void exampleFunction({
+  required String argument0,
+  required String argument1,
+}) {
+  ...
+}
 ```
 
 #### edit_multiple_variable
@@ -703,8 +830,12 @@ Need to edit the declaration of the list of variables into separate ones.
 
 ```dart
 // BAD:
+final String variable0, variable1, variable2 = "";
 
 // GOOD:
+final String variable0 = "";
+final String variable1 = "";
+final String variable2 = "";
 ```
 
 #### edit_private_in_function
@@ -712,8 +843,14 @@ Need to edit a private variable to public in a function.
 
 ```dart
 // BAD:
+void exampleFunction() {
+  final String _variable = "";
+}
 
 // GOOD:
+void exampleFunction() {
+  final String variable = "";
+}
 ```
 
 #### edit_relative_import
@@ -721,8 +858,10 @@ Need to edit relative import to absolute.
 
 ```dart
 // BAD:
+import '../src/example.dart';
 
 // GOOD:
+import 'package:example/src/example.dart';
 ```
 
 #### edit_variable_name_by_type
@@ -730,8 +869,10 @@ You need to edit the variable name based on its type.
 
 ```dart
 // BAD:
+final ExampleClass a = ExampleClass();
 
 // GOOD:
+final ExampleClass example = ExampleClass();
 ```
 
 ### Other
