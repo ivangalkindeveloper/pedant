@@ -133,9 +133,6 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 }
 
 // GOOD:
-import 'package:example/example_event.dart';
-import 'package:example/example_state.dart';
-
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
   ...
 }
