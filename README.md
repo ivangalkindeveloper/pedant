@@ -224,14 +224,14 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 ```
 
 #### add_class_postfix_by_keyword_list
-Classes that contain keywords from the list must have the appropriate postfix.
+Classes that contain keywords from the list must have the appropriate postfix.\
 Example:
 ```yaml
-      add_class_postfix_by_keyword_list:
-        -
-          keywordList:
-            - base
-          name: Base
+add_class_postfix_by_keyword_list:
+  -
+    keywordList:
+      - base
+    name: Base
 ```
 ```dart
 // BAD:
@@ -261,16 +261,16 @@ base class ExampleBase {
 ```
 
 #### add_class_prefix_by_keyword_list
-Classes that contain keywords from the list must be prefixed accordingly.
+Classes that contain keywords from the list must be prefixed accordingly.\
 Example:
 ```yaml
-      add_class_prefix_by_keyword_list:
-        -
-          keywordList:
-            - abstract
-            - interface
-            - sealed
-          name: I
+add_class_prefix_by_keyword_list:
+  -
+    keywordList:
+      - abstract
+      - interface
+      - sealed
+    name: I
 ```
 ```dart
 // BAD:
