@@ -48,19 +48,14 @@ class AddConstRule extends DartLintRule {
     context.registry.addInstanceCreationExpression(
       (
         InstanceCreationExpression instanceCreationExpression,
-      ) {
-        if (instanceCreationExpression.parent is! ExpressionStatement) {
-          return;
-        }
-
-        this._validateInstance(
-          instanceCreationExpression: instanceCreationExpression,
-          onSuccess: () => reporter.atNode(
-            instanceCreationExpression,
-            this.code,
-          ),
-        );
-      },
+      ) =>
+          this._validateInstance(
+        instanceCreationExpression: instanceCreationExpression,
+        onSuccess: () => reporter.atNode(
+          instanceCreationExpression,
+          this.code,
+        ),
+      ),
     );
 
     context.registry.addTopLevelVariableDeclaration(
