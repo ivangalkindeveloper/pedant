@@ -48,19 +48,9 @@ custom_lint:
       add_bloc_event_postfix: true
       add_bloc_event_sealed: true
       add_bloc_postfix: true
-      add_class_postfix_by_keyword_list:
-        -
-          keywordList:
-            - base
-          name: Base
+      add_class_postfix_by_keyword_list: null
       add_class_postfix_by_path_list: null
-      add_class_prefix_by_keyword_list:
-        -
-          keywordList:
-            - abstract
-            - interface
-            - sealed
-          name: I
+      add_class_prefix_by_keyword_list: null
       add_class_prefix_by_path_list: null
       add_comma: true
       add_const_constructor: true
@@ -235,7 +225,14 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 
 #### add_class_postfix_by_keyword_list
 Classes that contain keywords from the list must have the appropriate postfix.
-
+Example:
+```yaml
+      add_class_postfix_by_keyword_list:
+        -
+          keywordList:
+            - base
+          name: Base
+```
 ```dart
 // BAD:
 base class Example {
@@ -265,7 +262,16 @@ base class ExampleBase {
 
 #### add_class_prefix_by_keyword_list
 Classes that contain keywords from the list must be prefixed accordingly.
-
+Example:
+```yaml
+      add_class_prefix_by_keyword_list:
+        -
+          keywordList:
+            - abstract
+            - interface
+            - sealed
+          name: I
+```
 ```dart
 // BAD:
 interface class Example {
