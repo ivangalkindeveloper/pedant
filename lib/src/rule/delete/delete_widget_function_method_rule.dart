@@ -10,6 +10,7 @@ import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/extension/add_function.dart';
 import 'package:pedant/src/utility/extension/add_method.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/type_checker/state_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
 
 class DeleteWidgetFunctionMethodRule extends DartLintRule {
@@ -65,6 +66,8 @@ class DeleteWidgetFunctionMethodRule extends DartLintRule {
           return;
         }
 
+        print("addFunction: $element");
+
         reporter.atNode(
           functionDeclaration,
           this.code,
@@ -87,6 +90,18 @@ class DeleteWidgetFunctionMethodRule extends DartLintRule {
               return;
             }
 
+            if ((widgetTypeChecker.isAssignableFrom(
+                          classElement,
+                        ) ==
+                        true ||
+                    stateTypeChecker.isAssignableFrom(
+                          classElement,
+                        ) ==
+                        true) &&
+                executableElement.name == "build") {
+              return;
+            }
+
             final Element? returnElement = executableElement.returnType.element;
             if (returnElement == null) {
               return;
@@ -96,14 +111,6 @@ class DeleteWidgetFunctionMethodRule extends DartLintRule {
                   returnElement,
                 ) ==
                 false) {
-              return;
-            }
-
-            if (widgetTypeChecker.isAssignableFrom(
-                      classElement,
-                    ) ==
-                    true &&
-                executableElement.name == "build") {
               return;
             }
 
