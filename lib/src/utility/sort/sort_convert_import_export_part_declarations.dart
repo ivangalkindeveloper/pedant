@@ -6,6 +6,7 @@ import 'package:yaml/yaml.dart';
 
 import 'package:pedant/src/utility/convert_import.dart';
 
+//TODO Проблема с ключевыми словами show
 void sortConvertImportExportPartDeclarations({
   required String currentPath,
 }) {
@@ -35,7 +36,9 @@ void sortConvertImportExportPartDeclarations({
       continue;
     }
 
-    sortedDartFiles.add(sortedFile);
+    sortedDartFiles.add(
+      sortedFile,
+    );
   }
 
   if (sortedDartFiles.isEmpty) {
@@ -79,6 +82,7 @@ File? _sortFile({
   required String projectName,
   required File file,
 }) {
+  const String prefixLibrary = "library";
   const String prefixDart = "import 'dart:";
   const String prefixFlutter = "import 'package:flutter/";
   const String prefixPackage = "import 'package:";
@@ -94,6 +98,7 @@ File? _sortFile({
     return null;
   }
 
+  final List<String> libraries = [];
   final List<String> importsDart = [];
   final List<String> importsFlutter = [];
   final List<String> importsPackage = [];
@@ -105,6 +110,7 @@ File? _sortFile({
   final List<String> linesAfterImports = [];
 
   bool isImportEmpty() =>
+      libraries.isEmpty &&
       importsDart.isEmpty &&
       importsFlutter.isEmpty &&
       importsPackage.isEmpty &&
@@ -124,40 +130,75 @@ File? _sortFile({
       );
     }
 
-    if (line.startsWith(prefixDart)) {
-      importsDart.add(line);
+    if (line.startsWith(
+      prefixLibrary,
+    )) {
+      libraries.add(
+        line,
+      );
       continue;
     }
 
-    if (line.startsWith(prefixFlutter)) {
-      importsFlutter.add(line);
+    if (line.startsWith(
+      prefixDart,
+    )) {
+      importsDart.add(
+        line,
+      );
       continue;
     }
 
-    if (line.startsWith(prefixProject)) {
-      importsProject.add(line);
+    if (line.startsWith(
+      prefixFlutter,
+    )) {
+      importsFlutter.add(
+        line,
+      );
       continue;
     }
 
-    if (line.startsWith(prefixPackage)) {
-      importsPackage.add(line);
+    if (line.startsWith(
+      prefixProject,
+    )) {
+      importsProject.add(
+        line,
+      );
       continue;
     }
 
-    if (line.startsWith(prefixExport)) {
+    if (line.startsWith(
+      prefixPackage,
+    )) {
+      importsPackage.add(
+        line,
+      );
+      continue;
+    }
+
+    if (line.startsWith(
+      prefixExport,
+    )) {
       exports.add(line);
       continue;
     }
 
-    if (line.startsWith(prefixPart)) {
-      parts.add(line);
+    if (line.startsWith(
+      prefixPart,
+    )) {
+      parts.add(
+        line,
+      );
       continue;
     }
 
     if (isImportEmpty()) {
-      linesBeforeImports.add(line);
+      linesBeforeImports.add(
+        line,
+      );
     } else {
-      linesAfterImports.add(line);
+      linesAfterImports.add(
+        line,
+      );
     }
   }
 
@@ -184,10 +225,15 @@ File? _sortFile({
       linesSorted.addAll(
         list,
       );
-      linesSorted.add("");
+      linesSorted.add(
+        "",
+      );
     }
   }
 
+  combineLines(
+    list: libraries,
+  );
   combineLines(
     list: importsDart,
   );
@@ -213,7 +259,9 @@ File? _sortFile({
 
   for (int i = linesSorted.length - 1; i > 0; i--) {
     if (linesSorted[i] == "" && linesSorted[i - 1] == "") {
-      linesSorted.removeAt(i);
+      linesSorted.removeAt(
+        i,
+      );
     }
   }
 
@@ -228,7 +276,9 @@ File? _sortFile({
     file.path,
   );
   sortedFile.writeAsStringSync(
-    linesSorted.join("\n"),
+    linesSorted.join(
+      "\n",
+    ),
   );
 
   return sortedFile;
@@ -238,4 +288,9 @@ bool _isRelativeImport({
   required String line,
 }) =>
     line.startsWith("import '") &&
-    (line.contains("../") || line.contains("./"));
+    (line.contains(
+          "../",
+        ) ||
+        line.contains(
+          "./",
+        ));
