@@ -17,4 +17,7 @@ void fix({
     ],
     workingDirectory: currentPath,
   );
+  stdout.write(
+    "\n",
+  );
 }

@@ -16,4 +16,7 @@ void format({
     ],
     workingDirectory: currentPath,
   );
+  stdout.write(
+    "\n",
+  );
 }

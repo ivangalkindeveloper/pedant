@@ -6,11 +6,11 @@ import 'package:yaml/yaml.dart';
 
 import 'package:pedant/src/utility/convert_import.dart';
 
-void sortImportDeclarations({
+void sortConvertImportExportPartDeclarations({
   required String currentPath,
 }) {
   stdout.write(
-    "Sorting/converting import declarations...\n".yellow(),
+    "Sorting/converting import, export and part declarations...\n".yellow(),
   );
 
   final File pubspecFile = File(
@@ -40,14 +40,14 @@ void sortImportDeclarations({
 
   if (sortedDartFiles.isEmpty) {
     stdout.write(
-      "No files for sorting/converting import declarations.\n\n",
+      "No import, exports or part declarations files for sorting/converting.\n\n",
     );
     return;
   }
 
   for (final File file in sortedDartFiles) {
     stdout.write(
-      "Sorted/converted import: ${file.path.replaceAll("$currentPath/lib/", "")}\n",
+      "Sorted/converted: ${file.path.replaceAll("$currentPath/lib/", "")}\n",
     );
   }
   stdout.write(
@@ -81,8 +81,9 @@ File? _sortFile({
 }) {
   const String prefixDart = "import 'dart:";
   const String prefixFlutter = "import 'package:flutter/";
-  final String prefixProject = "import 'package:$projectName";
   const String prefixPackage = "import 'package:";
+  final String prefixProject = "import 'package:$projectName";
+  const String prefixExport = "export";
   const String prefixPart = "part";
 
   final List<String> lines = file.readAsLinesSync();
@@ -95,9 +96,10 @@ File? _sortFile({
 
   final List<String> importsDart = [];
   final List<String> importsFlutter = [];
-  final List<String> importsProject = [];
   final List<String> importsPackage = [];
-  final List<String> importsPart = [];
+  final List<String> importsProject = [];
+  final List<String> exports = [];
+  final List<String> parts = [];
 
   final List<String> linesBeforeImports = [];
   final List<String> linesAfterImports = [];
@@ -105,9 +107,10 @@ File? _sortFile({
   bool isImportEmpty() =>
       importsDart.isEmpty &&
       importsFlutter.isEmpty &&
-      importsProject.isEmpty &&
       importsPackage.isEmpty &&
-      importsPart.isEmpty;
+      importsProject.isEmpty &&
+      exports.isEmpty &&
+      parts.isEmpty;
 
   for (String line in lines) {
     if (_isRelativeImport(
@@ -141,8 +144,13 @@ File? _sortFile({
       continue;
     }
 
+    if (line.startsWith(prefixExport)) {
+      exports.add(line);
+      continue;
+    }
+
     if (line.startsWith(prefixPart)) {
-      importsPart.add(line);
+      parts.add(line);
       continue;
     }
 
@@ -168,32 +176,35 @@ File? _sortFile({
     }
   }
 
-  void combineImportLines({
-    required List<String> importList,
+  void combineLines({
+    required List<String> list,
   }) {
-    if (importList.isNotEmpty) {
-      importList.sort();
+    if (list.isNotEmpty) {
+      list.sort();
       linesSorted.addAll(
-        importList,
+        list,
       );
       linesSorted.add("");
     }
   }
 
-  combineImportLines(
-    importList: importsDart,
+  combineLines(
+    list: importsDart,
   );
-  combineImportLines(
-    importList: importsFlutter,
+  combineLines(
+    list: importsFlutter,
   );
-  combineImportLines(
-    importList: importsPackage,
+  combineLines(
+    list: importsPackage,
   );
-  combineImportLines(
-    importList: importsProject,
+  combineLines(
+    list: importsProject,
   );
-  combineImportLines(
-    importList: importsPart,
+  combineLines(
+    list: exports,
+  );
+  combineLines(
+    list: parts,
   );
 
   linesSorted.addAll(

@@ -28,7 +28,7 @@ void sortArbFiles({
 
   if (sortedArbFiles.isEmpty) {
     stdout.write(
-      "No .ard files for sorting.\n\n",
+      "No .arb files for sorting.\n\n",
     );
     return;
   }

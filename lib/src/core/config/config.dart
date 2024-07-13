@@ -29,7 +29,6 @@ class Config {
     this.addIfBraces = true,
     this.addMixinPostfix = true,
     this.addOverride = true,
-    this.addStatic = true,
     this.addThis = true,
     this.addType = true,
     //
@@ -79,7 +78,6 @@ class Config {
   final bool addIfBraces;
   final bool addMixinPostfix;
   final bool addOverride;
-  final bool addStatic;
   final bool addThis;
   final bool addType;
   //
@@ -153,7 +151,6 @@ class Config {
         addIfBraces: map["add_if_braces"] ?? true,
         addMixinPostfix: map["add_mixin_postfix"] ?? true,
         addOverride: map["add_override"] ?? true,
-        addStatic: map["add_static"] ?? true,
         addThis: map["add_this"] ?? true,
         addType: map["add_type"] ?? true,
         //

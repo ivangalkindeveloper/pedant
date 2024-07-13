@@ -37,7 +37,6 @@ custom_lint:
       # add_if_braces: true
       # add_mixin_postfix: true
       # add_override: true
-      # add_static: true
       # add_this: true
       # add_type: true
       # delete_bloc_cubit_dependent_bloc_cubit: true

@@ -7,65 +7,91 @@ import 'package:pedant/src/utility/process/fix.dart';
 import 'package:pedant/src/utility/process/format.dart';
 import 'package:pedant/src/utility/process/watch.dart';
 import 'package:pedant/src/utility/sort/sort_arb_files.dart';
-import 'package:pedant/src/utility/sort/sort_import_declarations.dart';
+import 'package:pedant/src/utility/sort/sort_convert_import_export_part_declarations.dart';
 import 'package:pedant/src/utility/sort/sort_pubspec_dependencies.dart';
 
 void main(
   List<String> arguments,
 ) {
+  final String currentPath = Directory.current.path;
+
+  final ArgParser argParser = ArgParser()
+    ..addFlag(
+      'no-fix',
+      negatable: false,
+      help: "Don't automatic fix all detected linter errors.",
+    )
+    ..addFlag(
+      'no-sort-arb-files',
+      negatable: false,
+      help: "Don't sorting in alphabetical order of the fields of .arb files.",
+    )
+    ..addFlag(
+      'no-sort-convert-import-export-part',
+      negatable: false,
+      help:
+          "Don't sorting/converting in alphabetical order of declarations of imports, exports and parts.",
+    )
+    ..addFlag(
+      'no-sort-pubspec-dependencies',
+      negatable: false,
+      help:
+          "Don't sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml.",
+    )
+    ..addFlag(
+      'no-dart-format',
+      negatable: false,
+      help: "Don't Dart code formatting.",
+    )
+    ..addFlag(
+      'help',
+      negatable: false,
+      help: 'Prints command usage',
+    );
+  final ArgResults argResults = argParser.parse(
+    arguments,
+  );
+
   try {
-    final ArgParser parser = ArgParser();
-    final List<String> argumentsResult = parser
-        .parse(
-          arguments,
-        )
-        .arguments;
-    final String currentPath = Directory.current.path;
+    if (argResults['help'] == true) {
+      stdout.writeln(
+        'Usage: predant',
+      );
+      stdout.writeln(
+        argParser.usage,
+      );
+      return;
+    }
 
     watch(
       currentPath: currentPath,
     );
 
-    if (argumentsResult.contains(
-          "--no-fix",
-        ) ==
-        false) {
+    if (argResults["no-fix"] == false) {
       fix(
         currentPath: currentPath,
       );
     }
 
-    if (argumentsResult.contains(
-          "--no-sort-arb-files",
-        ) ==
-        false) {
+    if (argResults["no-sort-arb-files"] == false) {
       sortArbFiles(
         currentPath: currentPath,
       );
     }
 
-    if (argumentsResult.contains(
-          "--no-sort-dart-import-declarations",
-        ) ==
-        false) {
-      sortImportDeclarations(
+    if (argResults["no-sort-convert-import-export-part"] == false) {
+      sortConvertImportExportPartDeclarations(
         currentPath: currentPath,
       );
     }
 
-    if (argumentsResult.contains(
-          "--no-sort-pubspec-dependencies",
-        ) ==
-        false) {
+    if (argResults["no-sort-pubspec-dependencies"] == false) {
       sortPubspecDependencies(
         currentPath: currentPath,
       );
     }
 
-    if (argumentsResult.contains(
-          "--no-dart-format",
-        ) ==
-        false) {
+    if (argResults["no-dart-format"] == false) {
       format(
         currentPath: currentPath,
       );
@@ -79,7 +105,11 @@ void main(
       "Done.\n".green(),
     );
   } catch (error, stackTrace) {
-    stdout.write(error);
-    stdout.write(stackTrace);
+    stdout.write(
+      error,
+    );
+    stdout.write(
+      stackTrace,
+    );
   }
 }

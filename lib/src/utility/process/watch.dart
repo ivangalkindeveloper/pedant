@@ -17,4 +17,7 @@ void watch({
     ],
     workingDirectory: currentPath,
   );
+  stdout.write(
+    "\n",
+  );
 }

@@ -10,9 +10,9 @@ Analyzer:
 Script:
  - automatic fix of detected linter errors;
  - sorting in alphabetical order of the fields of .arb files;
- - sorting in alphabetical order of declarations of imports, exports and parts;
+ - sorting in alphabetical order and converting declarations of imports, exports and parts;
  - sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml;
- - code formatting.
+ - Dart code formatting.
 
 
 ## Get started
@@ -25,6 +25,11 @@ dev_dependencies:
 ```
 2) Add the inclusion of a custom analyzer to the analysis_options.yaml file:
 ```yaml
+analyzer:
+  plugins:
+    - custom_lint
+
+# For rules configuration add this inclusion
 custom_lint:
   rules:
     - pedant:
@@ -67,7 +72,6 @@ custom_lint:
       add_if_braces: true
       add_mixin_postfix: true
       add_override: true
-      add_static: true
       add_this: true
       add_type: true
       delete_bloc_cubit_dependent_bloc_cubit: true
@@ -110,11 +114,11 @@ dart run pedant
 ```
 Arguments:
 ```shell
- --no-fix - disabling fix of analyzed linter problems;
+ --no-fix - disable fix of analyzed linter problems;
  --no-sort-arb-files - disable alphabetical sorting of .arb files;
- --no-sort-dart-import-declarations - disable alphabetical sorting of declarations of imports of .dart files;
+ --no-sort-convert-import-export-part - disable alphabetical sorting of declarations of imports, exports and parts of .dart files;
  --no-sort-pubspec-dependencies - disable alphabetical sorting dependencшуы in the pubspec.yaml file;
- --no-dart-format - disabling final formatting at the script completion stage;
+ --no-dart-format - disable final formatting at the script completion stage;
 ```
 
 
@@ -470,21 +474,6 @@ class Example {
   String toString() => "";
 }
 
-```
-
-#### add_static
-A class field that has an initialization must begin with the 'static' keyword.
-
-```dart
-// BAD:
-class Example {
-  final String title = "Title";
-}
-
-// GOOD:
-class Example {
-  static final String title = "Title";
-}
 ```
 
 #### add_this
