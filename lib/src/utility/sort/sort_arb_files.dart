@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:tint/tint.dart';
 
-void sortArbFiles({
+void sortArb({
   required String currentPath,
 }) {
   stdout.write(

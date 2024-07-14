@@ -22,12 +22,12 @@ void main(
       help: "Don't automatic fix all detected linter errors.",
     )
     ..addFlag(
-      'no-sort-arb-files',
+      'no-sort-arb',
       negatable: false,
       help: "Don't sorting in alphabetical order of the fields of .arb files.",
     )
     ..addFlag(
-      'no-sort-convert-import-export-part',
+      'no-sort-convert-export-import-part',
       negatable: false,
       help:
           "Don't sorting/converting in alphabetical order of declarations of imports, exports and parts.",
@@ -39,7 +39,7 @@ void main(
           "Don't sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml.",
     )
     ..addFlag(
-      'no-dart-format',
+      'no-format',
       negatable: false,
       help: "Don't Dart code formatting.",
     )
@@ -55,7 +55,7 @@ void main(
   try {
     if (argResults['help'] == true) {
       stdout.writeln(
-        'Usage: predant',
+        'Usage: pedant',
       );
       stdout.writeln(
         argParser.usage,
@@ -73,14 +73,14 @@ void main(
       );
     }
 
-    if (argResults["no-sort-arb-files"] == false) {
-      sortArbFiles(
+    if (argResults["no-sort-arb"] == false) {
+      sortArb(
         currentPath: currentPath,
       );
     }
 
-    if (argResults["no-sort-convert-import-export-part"] == false) {
-      sortConvertImportExportPartDeclarations(
+    if (argResults["no-sort-convert-export-import-part"] == false) {
+      sortConvertExportImportPart(
         currentPath: currentPath,
       );
     }
@@ -91,7 +91,7 @@ void main(
       );
     }
 
-    if (argResults["no-dart-format"] == false) {
+    if (argResults["no-format"] == false) {
       format(
         currentPath: currentPath,
       );

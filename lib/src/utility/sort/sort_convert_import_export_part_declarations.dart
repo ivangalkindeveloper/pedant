@@ -6,8 +6,7 @@ import 'package:yaml/yaml.dart';
 
 import 'package:pedant/src/utility/convert_import.dart';
 
-//TODO Проблема с ключевыми словами show
-void sortConvertImportExportPartDeclarations({
+void sortConvertExportImportPart({
   required String currentPath,
 }) {
   stdout.write(
@@ -62,17 +61,29 @@ List<File> _getFiles({
   required String path,
 }) {
   final List<File> dartFiles = [];
-  final List<FileSystemEntity> entities = Directory(path).listSync(
+  final List<FileSystemEntity> entities = Directory(
+    path,
+  ).listSync(
     recursive: true,
   );
   for (final FileSystemEntity entity in entities) {
     if (entity is! File ||
-        !entity.path.endsWith(".dart") ||
-        entity.path.contains("generated_plugin_registrant")) {
+        !entity.path.endsWith(
+          ".dart",
+        ) ||
+        entity.path.contains(
+          "generated_plugin_registrant",
+        )) {
       continue;
     }
 
-    dartFiles.add(entity);
+    if (!entity.path.contains("edit_relative_import.dart")) {
+      continue;
+    }
+
+    dartFiles.add(
+      entity,
+    );
   }
 
   return dartFiles;
@@ -82,13 +93,30 @@ File? _sortFile({
   required String projectName,
   required File file,
 }) {
-  const String prefixLibrary = "library";
-  const String prefixDart = "import 'dart:";
-  const String prefixFlutter = "import 'package:flutter/";
-  const String prefixPackage = "import 'package:";
-  final String prefixProject = "import 'package:$projectName";
-  const String prefixExport = "export";
-  const String prefixPart = "part";
+  final RegExp prefixLibrary = RegExp(
+    "library ",
+  );
+  final RegExp prefixExport = RegExp(
+    "export [\"']",
+  );
+  final RegExp prefixDart = RegExp(
+    "import [\"']dart:",
+  );
+  final RegExp prefixFlutter = RegExp(
+    "import [\"']package:flutter/",
+  );
+  final RegExp prefixPackage = RegExp(
+    "import [\"']package:/",
+  );
+  final RegExp prefixProject = RegExp(
+    "import [\"']package:$projectName/",
+  );
+  final RegExp prefixPart = RegExp(
+    "part [\"']",
+  );
+  final RegExp prefixPartOf = RegExp(
+    "part of [\"']",
+  );
 
   final List<String> lines = file.readAsLinesSync();
   if (lines.isEmpty) {
@@ -99,26 +127,30 @@ File? _sortFile({
   }
 
   final List<String> libraries = [];
+  final List<String> exports = [];
   final List<String> importsDart = [];
   final List<String> importsFlutter = [];
   final List<String> importsPackage = [];
   final List<String> importsProject = [];
-  final List<String> exports = [];
   final List<String> parts = [];
+  final List<String> partOfs = [];
 
-  final List<String> linesBeforeImports = [];
-  final List<String> linesAfterImports = [];
+  final List<String> linesBeforeDeclarations = [];
+  final List<String> linesAfterDeclarations = [];
 
-  bool isImportEmpty() =>
+  bool isDeclarationsEmpty() =>
       libraries.isEmpty &&
+      exports.isEmpty &&
       importsDart.isEmpty &&
       importsFlutter.isEmpty &&
       importsPackage.isEmpty &&
       importsProject.isEmpty &&
-      exports.isEmpty &&
-      parts.isEmpty;
+      parts.isEmpty &&
+      partOfs.isEmpty;
 
-  for (String line in lines) {
+  for (int index = 0; index < lines.length; index++) {
+    String line = lines[index];
+
     if (_isRelativeImport(
       line: line,
     )) {
@@ -140,8 +172,28 @@ File? _sortFile({
     }
 
     if (line.startsWith(
+      prefixExport,
+    )) {
+      exports.add(
+        line,
+      );
+      continue;
+    }
+
+    if (line.startsWith(
       prefixDart,
     )) {
+      final (
+        int,
+        String,
+      ) multilineOffset = _multilineOffset(
+        lines: lines,
+        currentIndex: index,
+        line: line,
+      );
+      index += multilineOffset.$1;
+      line = multilineOffset.$2;
+
       importsDart.add(
         line,
       );
@@ -151,6 +203,17 @@ File? _sortFile({
     if (line.startsWith(
       prefixFlutter,
     )) {
+      final (
+        int,
+        String,
+      ) multilineOffset = _multilineOffset(
+        lines: lines,
+        currentIndex: index,
+        line: line,
+      );
+      index += multilineOffset.$1;
+      line = multilineOffset.$2;
+
       importsFlutter.add(
         line,
       );
@@ -160,6 +223,17 @@ File? _sortFile({
     if (line.startsWith(
       prefixProject,
     )) {
+      final (
+        int,
+        String,
+      ) multilineOffset = _multilineOffset(
+        lines: lines,
+        currentIndex: index,
+        line: line,
+      );
+      index += multilineOffset.$1;
+      line = multilineOffset.$2;
+
       importsProject.add(
         line,
       );
@@ -169,16 +243,20 @@ File? _sortFile({
     if (line.startsWith(
       prefixPackage,
     )) {
+      final (
+        int,
+        String,
+      ) multilineOffset = _multilineOffset(
+        lines: lines,
+        currentIndex: index,
+        line: line,
+      );
+      index += multilineOffset.$1;
+      line = multilineOffset.$2;
+
       importsPackage.add(
         line,
       );
-      continue;
-    }
-
-    if (line.startsWith(
-      prefixExport,
-    )) {
-      exports.add(line);
       continue;
     }
 
@@ -191,29 +269,40 @@ File? _sortFile({
       continue;
     }
 
-    if (isImportEmpty()) {
-      linesBeforeImports.add(
+    if (line.startsWith(
+      prefixPartOf,
+    )) {
+      partOfs.add(
+        line,
+      );
+      continue;
+    }
+
+    if (isDeclarationsEmpty()) {
+      linesBeforeDeclarations.add(
         line,
       );
     } else {
-      linesAfterImports.add(
+      linesAfterDeclarations.add(
         line,
       );
     }
   }
 
-  if (isImportEmpty()) {
+  if (isDeclarationsEmpty()) {
     return null;
   }
 
   final List<String> linesSorted = [];
 
-  if (linesBeforeImports.isNotEmpty) {
+  if (linesBeforeDeclarations.isNotEmpty) {
     linesSorted.addAll(
-      linesBeforeImports,
+      linesBeforeDeclarations,
     );
-    if (linesBeforeImports.last.isNotEmpty) {
-      linesSorted.add("");
+    if (linesBeforeDeclarations.last.isNotEmpty) {
+      linesSorted.add(
+        "",
+      );
     }
   }
 
@@ -235,6 +324,9 @@ File? _sortFile({
     list: libraries,
   );
   combineLines(
+    list: exports,
+  );
+  combineLines(
     list: importsDart,
   );
   combineLines(
@@ -247,14 +339,14 @@ File? _sortFile({
     list: importsProject,
   );
   combineLines(
-    list: exports,
+    list: parts,
   );
   combineLines(
-    list: parts,
+    list: partOfs,
   );
 
   linesSorted.addAll(
-    linesAfterImports,
+    linesAfterDeclarations,
   );
 
   for (int i = linesSorted.length - 1; i > 0; i--) {
@@ -287,10 +379,49 @@ File? _sortFile({
 bool _isRelativeImport({
   required String line,
 }) =>
-    line.startsWith("import '") &&
+    line.startsWith(
+      "import '",
+    ) &&
     (line.contains(
           "../",
         ) ||
         line.contains(
           "./",
         ));
+
+(
+  int,
+  String,
+) _multilineOffset({
+  required List<String> lines,
+  required int currentIndex,
+  required String line,
+}) {
+  if (line.endsWith(
+    ";",
+  )) {
+    return (
+      0,
+      line,
+    );
+  }
+
+  int offset = 0;
+  for (int index = currentIndex + 1; index < lines.length; index++) {
+    final String currentLine = lines[index];
+
+    offset++;
+    line += " $currentLine";
+
+    if (line.endsWith(
+      ";",
+    )) {
+      break;
+    }
+  }
+
+  return (
+    offset,
+    line,
+  );
+}
