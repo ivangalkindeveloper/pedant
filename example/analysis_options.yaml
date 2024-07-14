@@ -7,62 +7,52 @@ custom_lint:
   verbose: true
   rules:
     - pedant:
-      # add_bloc_cubit_event_state_file: true
-      # add_bloc_cubit_state_postfix: true
-      # add_bloc_cubit_state_sealed: true
-      # add_bloc_event_postfix: true
-      # add_bloc_event_sealed: true
-      # add_bloc_postfix: true
-      # add_class_postfix_by_keyword_list:
-      #   -
-      #     keywordList:
-      #       - base
-      #     name: Base
-      # add_class_postfix_by_path_list: null
-      # add_class_prefix_by_keyword_list:
-      #   -
-      #     keywordList:
-      #       - abstract
-      #       - interface
-      #       - sealed
-      #     name: I
-      # add_class_prefix_by_path_list: null
-      # add_comma: true
-      # add_const_constructor: true
-      # add_const: true
-      # add_constructor: true
-      # add_controller_postfix: true
-      # add_cubit_postfix: true
-      # add_extension_postfix: true
-      # add_if_braces: true
-      # add_mixin_postfix: true
-      # add_override: true
-      # add_this: true
-      # add_type: true
-      # delete_bloc_cubit_dependent_bloc_cubit: true
-      # delete_bloc_cubit_dependent_flutter: true
-      # delete_bloc_cubit_public_property: true
-      # delete_class_postfix_list:
-      #   - Impl
-      #   - Implementation
-      #   - Model
-      # delete_class_prefix_list: null
-      # delete_function_list:
-      #   - print
-      #   - debugPrint
-      #   - debugPrintThrottled
-      # delete_new: true
-      # # delete_package_list:
-      # # delete_type_list:
-      # delete_widget_function_method: true
-      # edit_arrow_function: true
-      # edit_constructor_private_named_parameter: true
-      # edit_constructor_public_named_parameter: true
-      # edit_file_length_by_path_list: null
-      # edit_function_private_named_parameter: true
-      # edit_function_public_named_parameter: true
-      # edit_multiple_variable: true
-      # edit_private_in_function: true
-      # edit_relative_import: true
-      # edit_variable_name_by_type: true
-      # priority: 100
+      add_bloc_cubit_event_state_file: true
+      add_bloc_cubit_state_postfix: true
+      add_bloc_cubit_state_sealed: true
+      add_bloc_event_postfix: true
+      add_bloc_event_sealed: true
+      add_bloc_postfix: true
+      add_class_postfix_by_keyword_list: null
+      add_class_postfix_by_path_list: null
+      add_class_prefix_by_keyword_list: null
+      add_class_prefix_by_path_list: null
+      add_comma: true
+      add_const_constructor: true
+      add_const: true
+      add_constructor: true
+      add_controller_postfix: true
+      add_cubit_postfix: true
+      add_extension_postfix: true
+      add_if_braces: true
+      add_mixin_postfix: true
+      add_override: true
+      add_this: true
+      add_type: true
+      delete_bloc_cubit_dependent_bloc_cubit: true
+      delete_bloc_cubit_dependent_flutter: true
+      delete_bloc_cubit_public_property: true
+      delete_class_postfix_list:
+        - Impl
+        - Implementation
+        - Model
+      delete_class_prefix_list: null
+      delete_function_list:
+        - print
+        - debugPrint
+        - debugPrintThrottled
+      delete_new: true
+      # delete_package_list: - Check note
+      # delete_type_list: - Check note
+      delete_widget_function_method: true
+      edit_arrow_function: true
+      edit_constructor_private_named_parameter: true
+      edit_constructor_public_named_parameter: true
+      edit_file_length_by_path_list: null
+      edit_function_private_named_parameter: true
+      edit_function_public_named_parameter: true
+      edit_multiple_variable: true
+      edit_private_in_function: true
+      edit_relative_import: true
+      edit_variable_name_by_type: true
+      priority: 100
