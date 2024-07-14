@@ -102,7 +102,7 @@ File? _sortFile({
     "import [\"']package:flutter/",
   );
   final RegExp prefixPackage = RegExp(
-    "import [\"']package:/",
+    "import [\"']package:",
   );
   final RegExp prefixProject = RegExp(
     "import [\"']package:$projectName/",
