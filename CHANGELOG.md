@@ -1,3 +1,6 @@
+## 1.0.2
+* Delete temp resources.
+
 ## 1.0.1
 * Fix implementations of export/import/part sortings;
 * Delete add_static rule.

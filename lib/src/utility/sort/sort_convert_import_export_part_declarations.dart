@@ -77,10 +77,6 @@ List<File> _getFiles({
       continue;
     }
 
-    if (!entity.path.contains("edit_relative_import.dart")) {
-      continue;
-    }
-
     dartFiles.add(
       entity,
     );
