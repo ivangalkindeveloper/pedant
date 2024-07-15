@@ -29,7 +29,7 @@ class AddBlocCubitEventStateFileRule extends DartLintRule {
           code: const LintCode(
             name: "add_bloc_cubit_event_state_file",
             problemMessage:
-                "Add Bloc or Cubit Event and State classes in this file or via part/part of",
+                "Pedant: Add Bloc or Cubit Event and State classes in this file or via part/part of.",
             correctionMessage:
                 "Please add Event and State classes to this same Bloc or Cubit file or via part/part of.",
             errorSeverity: ErrorSeverity.ERROR,

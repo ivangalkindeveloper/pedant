@@ -29,7 +29,7 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
           code: const LintCode(
             name: "delete_bloc_cubit_dependent_bloc_cubit",
             problemMessage:
-                "Delete Bloc or Cubit dependency in current Bloc or Cubit.",
+                "Pedant: Delete Bloc or Cubit dependency in current Bloc or Cubit.",
             correctionMessage:
                 "Please delete this Bloc or Cubit dependency.\nCommunication between Bloc's or Cubit's should occur only through widgets.",
             errorSeverity: ErrorSeverity.ERROR,

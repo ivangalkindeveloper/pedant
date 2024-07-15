@@ -34,7 +34,7 @@ class DeleteBlocCubitPublicPropertyRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "delete_bloc_cubit_public_property",
-            problemMessage: "Delete public property in Bloc or Cubit.",
+            problemMessage: "Pedant: Delete public property in Bloc or Cubit.",
             correctionMessage:
                 "Please change access to public property of Bloc or Cubit or delete this property.",
             errorSeverity: ErrorSeverity.ERROR,

@@ -34,7 +34,8 @@ class DeleteWidgetFunctionMethodRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "delete_widget_function_method",
-            problemMessage: "Delete function or method returning a Widget",
+            problemMessage:
+                "Pedant: Delete function or method returning a Widget.",
             correctionMessage:
                 "Please celete this function or method returning a Widget.",
             errorSeverity: ErrorSeverity.ERROR,

@@ -21,7 +21,7 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
           code: LintCode(
             name: "delete_class_prefix",
             problemMessage:
-                "Сlass name must not contain an prefix: ${deleteClassPrefixList.join(", ")}.",
+                "Pedant: Сlass name must not contain an prefix: ${deleteClassPrefixList.join(", ")}.",
             correctionMessage: "Please delete prefix in class.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
@@ -45,7 +45,7 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
         code: LintCode(
           name: "delete_class_postfix",
           problemMessage:
-              "Сlass name must not contain an postfix: ${deleteClassPostfixList.join(", ")}.",
+              "Pedant: Сlass name must not contain an postfix: ${deleteClassPostfixList.join(", ")}.",
           correctionMessage: "Please delete postfix in class.",
           errorSeverity: ErrorSeverity.ERROR,
         ),

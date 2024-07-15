@@ -30,7 +30,7 @@ class EditMultipleVariableRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "edit_multiple_variable",
-            problemMessage: "Edit multiple variable declarations.",
+            problemMessage: "Pedant: Edit multiple variable declarations.",
             correctionMessage:
                 "Please edit multiple variable declarations to separate variable declaration.",
             errorSeverity: ErrorSeverity.WARNING,

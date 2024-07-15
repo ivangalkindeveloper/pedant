@@ -31,9 +31,9 @@ class DeletePackageRule extends LintRule {
           code: LintCode(
             name: "delete_package",
             problemMessage:
-                "Delete package and its dependencies: ${deleteListItem.nameList.first}.",
+                "Pedant: Delete package and its dependencies: ${deleteListItem.nameList.first}.",
             correctionMessage:
-                "Please delete this package from pubspec.yaml.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
+                "Please delete this package from pubspec.yaml.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

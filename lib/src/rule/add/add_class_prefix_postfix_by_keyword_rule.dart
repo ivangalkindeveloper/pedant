@@ -26,7 +26,7 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
             code: LintCode(
               name: "add_prefix_by_keyword",
               problemMessage:
-                  "Сlass name must starts with an prefix: ${keywordListNameItem.name}.",
+                  "Pedant: Сlass name must starts with an prefix: ${keywordListNameItem.name}.",
               correctionMessage: "Please add prefix in class.",
               errorSeverity: ErrorSeverity.ERROR,
             ),

@@ -30,7 +30,7 @@ class DeleteFunctionRule extends DartLintRule {
   }) : super(
           code: LintCode(
             name: "delete_function",
-            problemMessage: "Delete function: ${list.join(", ")}.",
+            problemMessage: "Pedant: Delete function: ${list.join(", ")}.",
             correctionMessage: "Please delete this function from code snippet.",
             errorSeverity: ErrorSeverity.WARNING,
           ),

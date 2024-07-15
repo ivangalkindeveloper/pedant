@@ -32,7 +32,7 @@ class EditFileLengthByPathRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "edit_file_length_by_path",
-            problemMessage: "Edit file length",
+            problemMessage: "Pedant: Edit file length.",
             correctionMessage: "Please edit this file for less length of code.",
             errorSeverity: ErrorSeverity.WARNING,
           ),

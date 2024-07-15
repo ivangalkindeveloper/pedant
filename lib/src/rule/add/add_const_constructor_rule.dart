@@ -31,7 +31,7 @@ class AddConstConstructorRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_const_constructor",
-            problemMessage: "Add const constructor",
+            problemMessage: "Pedant: Add const constructor.",
             correctionMessage:
                 "Please add const keyword to default constructor of this class.",
             errorSeverity: ErrorSeverity.ERROR,

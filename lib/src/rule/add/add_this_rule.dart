@@ -11,8 +11,6 @@ import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/extension/add_simple_identifier.dart';
 import 'package:pedant/src/utility/tree_visitor.dart';
 
-// import 'package:analyzer/dart/ast/visitor.dart';
-
 class AddThisRule extends DartLintRule {
   static void combine({
     required Config config,
@@ -34,7 +32,7 @@ class AddThisRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_this",
-            problemMessage: "Add this keyword",
+            problemMessage: "Pedant: Add 'this' keyword.",
             correctionMessage:
                 "Please add 'this' keyword to this class field or method.",
             errorSeverity: ErrorSeverity.WARNING,
@@ -65,6 +63,12 @@ class AddThisRule extends DartLintRule {
               if (fieldElement == null) {
                 return;
               }
+              if (fieldElement.isStatic == true) {
+                return;
+              }
+              if (fieldElement.enclosingElement == classElement) {
+                return;
+              }
 
               if (simpleIdentifier.beginToken.previous?.previous?.type ==
                   Keyword.THIS) {
@@ -83,6 +87,12 @@ class AddThisRule extends DartLintRule {
                 methodInvocation.methodName.name,
               );
               if (methodElement == null) {
+                return;
+              }
+              if (methodElement.isStatic == true) {
+                return;
+              }
+              if (methodElement.enclosingElement == classElement) {
                 return;
               }
 

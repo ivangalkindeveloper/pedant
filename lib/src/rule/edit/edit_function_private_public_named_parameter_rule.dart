@@ -24,7 +24,8 @@ class EditFunctionPrivatePublicNamedParameterRule extends DartLintRule {
               executableElement.isPrivate == true,
           code: const LintCode(
             name: "edit_function_private_named_parameter",
-            problemMessage: "Edit private function parameters to maned",
+            problemMessage:
+                "Pedant: Edit private function parameters to named.",
             correctionMessage:
                 "Please edit all parameters of this private function to named.",
             errorSeverity: ErrorSeverity.WARNING,
@@ -43,7 +44,7 @@ class EditFunctionPrivatePublicNamedParameterRule extends DartLintRule {
               executableElement.isPublic == true,
           code: const LintCode(
             name: "edit_function_public_named_parameter",
-            problemMessage: "Edit public function parameters to maned",
+            problemMessage: "Pedant: Edit public function parameters to named.",
             correctionMessage:
                 "Please edit all parameters of this public function to named.",
             errorSeverity: ErrorSeverity.WARNING,

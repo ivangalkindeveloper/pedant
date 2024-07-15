@@ -31,7 +31,7 @@ class DeleteNewRule extends DartLintRule {
           code: const LintCode(
             name: "delete_new",
             problemMessage:
-                "Keyword 'new' is useless in last version of Dart SDK.",
+                "Pedant: Keyword 'new' is useless in last version of Dart SDK.",
             correctionMessage: "Please delete 'new' operator.",
             errorSeverity: ErrorSeverity.WARNING,
           ),

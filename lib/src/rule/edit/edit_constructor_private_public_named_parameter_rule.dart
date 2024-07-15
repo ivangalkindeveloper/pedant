@@ -24,7 +24,8 @@ class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
               constructor.displayName.startsWith("_") == true,
           code: const LintCode(
             name: "edit_constructor_private_named_parameter",
-            problemMessage: "Edit private constructor parameters to maned",
+            problemMessage:
+                "Pedant: Edit private constructor parameters to maned.",
             correctionMessage:
                 "Please edit all parameters of this private constructor to named.",
             errorSeverity: ErrorSeverity.WARNING,
@@ -43,7 +44,8 @@ class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
               constructor.displayName.startsWith("_") == false,
           code: const LintCode(
             name: "edit_constructor_public_named_parameter",
-            problemMessage: "Edit public constructor parameters to maned",
+            problemMessage:
+                "Pedant: Edit public constructor parameters to maned.",
             correctionMessage:
                 "Please edit all parameters of this public constructor to named.",
             errorSeverity: ErrorSeverity.WARNING,

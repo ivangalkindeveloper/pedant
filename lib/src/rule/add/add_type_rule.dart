@@ -32,9 +32,9 @@ class AddTypeRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_type",
-            problemMessage: "Add variable, field of parameter type",
+            problemMessage: "Pedant: Add variable, field of argument type.",
             correctionMessage:
-                "Please add type to this variable, field or parameter.",
+                "Please add type to this variable, field or argument.",
             errorSeverity: ErrorSeverity.WARNING,
           ),
         );

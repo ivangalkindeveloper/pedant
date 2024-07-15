@@ -30,7 +30,7 @@ class AddConstRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_const",
-            problemMessage: "Add const to this declaration",
+            problemMessage: "Pedant: Add const to this declaration.",
             correctionMessage:
                 "Please add const keyword instead of final keyword to this variable, static field or instance declaration.",
             errorSeverity: ErrorSeverity.ERROR,

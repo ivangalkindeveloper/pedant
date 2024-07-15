@@ -30,7 +30,7 @@ class EditArrowFunctionRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "edit_arrow_function",
-            problemMessage: "Edit to arrow function",
+            problemMessage: "Pedant: Edit to arrow function.",
             correctionMessage: "Please edit this function to arrow function.",
             errorSeverity: ErrorSeverity.WARNING,
           ),

@@ -31,7 +31,7 @@ class EditPrivateInFunctionRule extends DartLintRule {
           code: const LintCode(
             name: "edit_private_in_function",
             problemMessage:
-                "Edit declaration of private variable inside function.",
+                "Pedant: Edit declaration of private variable inside function.",
             correctionMessage:
                 "Please change this variable on public inside function.",
             errorSeverity: ErrorSeverity.WARNING,

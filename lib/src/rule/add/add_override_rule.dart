@@ -31,7 +31,7 @@ class AddOverrideRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_override",
-            problemMessage: "Add override annotation",
+            problemMessage: "Pedant: Add override annotation.",
             correctionMessage:
                 "Please add @override annotation to this field of method.",
             errorSeverity: ErrorSeverity.WARNING,

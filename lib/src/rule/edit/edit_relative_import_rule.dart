@@ -29,7 +29,7 @@ class EditRelativeImportRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "edit_relative_import",
-            problemMessage: "Edit relative resource import.",
+            problemMessage: "Pedant: Edit relative resource import.",
             correctionMessage:
                 "Please edit for this resource relative import to absolute.",
             errorSeverity: ErrorSeverity.WARNING,

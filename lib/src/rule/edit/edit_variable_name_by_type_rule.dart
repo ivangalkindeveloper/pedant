@@ -28,7 +28,7 @@ class EditVariableNameByTypeRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "edit_variable_name_by_type",
-            problemMessage: "Edit variable name relative to its type",
+            problemMessage: "Pedant: Edit variable name relative to its type.",
             correctionMessage:
                 "Please edit the variable name to include part of the name of its typing.",
             errorSeverity: ErrorSeverity.WARNING,

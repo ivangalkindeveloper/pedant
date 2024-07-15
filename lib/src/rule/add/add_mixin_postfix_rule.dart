@@ -29,7 +29,7 @@ class AddMixinPostfixRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_mixin_postfix",
-            problemMessage: "Add mixin postfix",
+            problemMessage: "Pedant: Add mixin postfix.",
             correctionMessage: "Please add postfix 'Mixin' to this mixin.",
             errorSeverity: ErrorSeverity.ERROR,
           ),

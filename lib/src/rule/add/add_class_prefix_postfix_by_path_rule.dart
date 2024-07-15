@@ -24,7 +24,7 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
             code: LintCode(
               name: "add_prefix_by_path",
               problemMessage:
-                  "Сlass name must starts with an prefix: ${pathNameListItem.nameList.join(", ")}.",
+                  "Pedant: Сlass name must starts with an prefix: ${pathNameListItem.nameList.join(", ")}.",
               correctionMessage: "Please add prefix in class.",
               errorSeverity: ErrorSeverity.ERROR,
             ),

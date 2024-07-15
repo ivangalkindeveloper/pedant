@@ -28,7 +28,7 @@ class AddCommaRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_comma",
-            problemMessage: "Add comma",
+            problemMessage: "Pedant: Add comma.",
             correctionMessage: "Please add comma to this place.",
             errorSeverity: ErrorSeverity.WARNING,
           ),

@@ -37,9 +37,9 @@ class DeleteTypeRule extends DartLintRule {
           code: LintCode(
             name: "delete_type",
             problemMessage:
-                "Delete type: ${deleteListItem.nameList.join(", ")}.",
+                "Pedant: Delete type: ${deleteListItem.nameList.join(", ")}.",
             correctionMessage:
-                "Please delete this type from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}",
+                "Please delete this type from code snippet.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

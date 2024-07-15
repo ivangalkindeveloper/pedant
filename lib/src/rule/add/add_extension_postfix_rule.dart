@@ -29,7 +29,7 @@ class AddExtensionPostfixRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_extension_postfix",
-            problemMessage: "Add extension postfix",
+            problemMessage: "Pedant: Add extension postfix.",
             correctionMessage:
                 "Please add postfix 'Extension' to this extension.",
             errorSeverity: ErrorSeverity.ERROR,

@@ -30,7 +30,7 @@ class AddConstructorRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_constructor",
-            problemMessage: "Add class constructor",
+            problemMessage: "Pedant: Add class constructor.",
             correctionMessage:
                 "Please add default constructor declaration to this class.",
             errorSeverity: ErrorSeverity.ERROR,

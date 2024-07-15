@@ -28,7 +28,8 @@ class AddBlocCubitStateSealedRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_bloc_cubit_state_sealed",
-            problemMessage: "Add Bloc or Cubit State class sealed keyword",
+            problemMessage:
+                "Pedant: Add Bloc or Cubit State class sealed keyword.",
             correctionMessage:
                 "Please add 'sealed' keyword to base State class of this Bloc or Cubit.",
             errorSeverity: ErrorSeverity.ERROR,

@@ -1,3 +1,5 @@
+// const String topLevel = "TopLevel";
+
 // class ExampleClass {
 //   ExampleClass();
 
@@ -11,6 +13,7 @@
 
 //   void doSomething() {
 //     String a = this.field;
+//     String b = a.toLowerCase();
 //     this.anotherField.replaceAll(
 //           "",
 //           "",
@@ -23,5 +26,5 @@
 //     );
 //   }
 
-//   bool check() => this.field == "One" ? true : false;
+//   bool check() => topLevel == "One" ? true : false;
 // }

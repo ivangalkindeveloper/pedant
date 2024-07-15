@@ -29,7 +29,7 @@ class AddIfBracesRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_if_braces",
-            problemMessage: "Add 'if' statement braces",
+            problemMessage: "Pedant: Add 'if' statement braces.",
             correctionMessage:
                 "Please add braces to then block of this 'if' statement declaration.",
             errorSeverity: ErrorSeverity.WARNING,

@@ -28,7 +28,7 @@ class AddBlocCubitStatePostfixRule extends DartLintRule {
   }) : super(
           code: const LintCode(
             name: "add_bloc_cubit_state_postfix",
-            problemMessage: "Add Bloc or Cubit State class postfix",
+            problemMessage: "Pedant: Add Bloc or Cubit State class postfix.",
             correctionMessage:
                 "Please add 'State' postfix to base State class of this Bloc or Cubit.",
             errorSeverity: ErrorSeverity.ERROR,

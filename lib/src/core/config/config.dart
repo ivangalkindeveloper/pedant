@@ -2,6 +2,7 @@ import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/length_item.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
+import 'package:yaml/yaml.dart';
 
 // AddFinal
 // DeleteSwitchDefault
@@ -160,10 +161,21 @@ class Config {
             map["delete_bloc_cubit_dependent_flutter"] ?? true,
         deleteBlocCubitPublicProperty:
             map["delete_bloc_cubit_public_property"] ?? true,
-        deleteClassPostfixList:
-            map["delete_class_postfix_list"] as List<String>?,
-        deleteClassPrefixList: map["delete_class_prefix_list"] as List<String>?,
-        deleteFunctionList: map["delete_function_list"] as List<String>?,
+        deleteClassPostfixList: (map["delete_class_postfix_list"] as YamlList?)
+            ?.map(
+              (e) => e.toString(),
+            )
+            .toList(),
+        deleteClassPrefixList: (map["delete_class_prefix_list"] as YamlList?)
+            ?.map(
+              (e) => e.toString(),
+            )
+            .toList(),
+        deleteFunctionList: (map["delete_function_list"] as YamlList?)
+            ?.map(
+              (e) => e.toString(),
+            )
+            .toList(),
         deleteNew: map["delete_new"] ?? true,
         deletePackageList: (map["delete_package_list"] as List?)
             ?.map(
