@@ -69,7 +69,7 @@ class EditArrowFunctionRule extends DartLintRule {
           }
 
           final List<String> entitySplit = entity.toString().split(
-                "; ",
+                ";",
               );
           final TokenType? nextTokenType = functionBody.beginToken.next?.type;
           if (nextTokenType != Keyword.RETURN && entitySplit.length > 1) {

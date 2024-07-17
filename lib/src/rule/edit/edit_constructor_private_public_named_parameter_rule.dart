@@ -8,7 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_constructor.dart';
 import 'package:pedant/src/utility/fix_named_parameters.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
   static void combine({
@@ -131,7 +131,7 @@ class _Fix extends DartFix {
           ConstructorElement constructorElement,
         ) =>
             constructorDeclaration.visitChildren(
-          TreeVisitor(
+          AstTreeVisitor(
             onFormalParameterList: (
               FormalParameterList formalParameterList,
             ) {

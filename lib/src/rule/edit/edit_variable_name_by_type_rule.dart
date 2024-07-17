@@ -6,6 +6,8 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_variable.dart';
+import 'package:pedant/src/utility/type_checker/edge_insets_type_checker.dart';
+import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
 
 class EditVariableNameByTypeRule extends DartLintRule {
   static void combine({
@@ -48,8 +50,12 @@ class EditVariableNameByTypeRule extends DartLintRule {
           VariableDeclaration variableDeclaration,
           VariableElement variableElement,
         ) {
-          final String? identifier =
-              variableElement.type.element?.library?.identifier;
+          final Element? classElement = variableElement.type.element;
+          if (classElement == null) {
+            return;
+          }
+
+          final String? identifier = classElement.library?.identifier;
           if (identifier == null) {
             return;
           }
@@ -57,8 +63,31 @@ class EditVariableNameByTypeRule extends DartLintRule {
             return;
           }
 
-          final List<String> typeSplit = variableElement.type
-              .getDisplayString()
+          // Widget - child
+          if (widgetTypeChecker.isAssignableFrom(
+                classElement,
+              ) ==
+              true) {
+            return;
+          }
+          // EdgeIsets - padding
+          if (edgeInsetsTypeChecker.isAssignableFrom(
+                classElement,
+              ) ==
+              true) {
+            return;
+          }
+
+          final String? typeName = classElement.name;
+          if (typeName == null) {
+            return;
+          }
+
+          final List<String> typeSplit = typeName
+              .replaceAll(
+                RegExp(r'[^A-Za-z]'),
+                "",
+              )
               .split(
                 RegExp(r'(?=[A-Z])'),
               )
@@ -70,6 +99,10 @@ class EditVariableNameByTypeRule extends DartLintRule {
               )
               .toList();
           final List<String> variableSplit = variableElement.name
+              .replaceAll(
+                RegExp(r'[^A-Za-z]'),
+                "",
+              )
               .split(
                 RegExp(r'(?=[A-Z])'),
               )

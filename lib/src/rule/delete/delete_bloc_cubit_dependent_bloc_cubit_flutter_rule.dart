@@ -14,7 +14,7 @@ import 'package:pedant/src/utility/extension/add_constructor.dart';
 import 'package:pedant/src/utility/extension/add_constructor_field_initializer.dart';
 import 'package:pedant/src/utility/extension/add_cubit.dart';
 import 'package:pedant/src/utility/extension/add_field.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 import 'package:pedant/src/utility/type_checker/bloc_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/cubit_type_checkot.dart';
 
@@ -136,7 +136,7 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
     required ClassDeclaration classDeclaration,
   }) =>
       classDeclaration.visitChildren(
-        TreeVisitor(
+        AstTreeVisitor(
           onConstructorDeclaration: (
             ConstructorDeclaration constructorDeclaration,
           ) {
@@ -164,7 +164,7 @@ class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
             }
 
             constructorDeclaration.visitChildren(
-              TreeVisitor(
+              AstTreeVisitor(
                 onConstructorFieldInitializer: (
                   ConstructorFieldInitializer constructorFieldInitializer,
                 ) {

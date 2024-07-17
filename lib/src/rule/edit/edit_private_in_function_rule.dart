@@ -7,7 +7,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_variable.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class EditPrivateInFunctionRule extends DartLintRule {
   static void combine({
@@ -51,7 +51,7 @@ class EditPrivateInFunctionRule extends DartLintRule {
           FunctionBody node,
         ) =>
             node.visitChildren(
-          TreeVisitor(
+          AstTreeVisitor(
             onVariableDeclaration: (
               VariableDeclaration node,
             ) {

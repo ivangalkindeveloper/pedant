@@ -11,7 +11,7 @@ import 'package:pedant/src/utility/extension/add_bloc.dart';
 import 'package:pedant/src/utility/extension/add_cubit.dart';
 import 'package:pedant/src/utility/extension/add_field_formal_parameter.dart';
 import 'package:pedant/src/utility/extension/add_variable.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class DeleteBlocCubitPublicPropertyRule extends DartLintRule {
   static void combine({
@@ -76,7 +76,7 @@ class DeleteBlocCubitPublicPropertyRule extends DartLintRule {
     required ClassDeclaration classDeclaration,
   }) =>
       classDeclaration.visitChildren(
-        TreeVisitor(
+        AstTreeVisitor(
           onConstructorDeclaration: (
             ConstructorDeclaration constructorDeclaration,
           ) {

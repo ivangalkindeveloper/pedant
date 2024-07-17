@@ -9,7 +9,7 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/extension/add_function.dart';
 import 'package:pedant/src/utility/extension/add_method.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 import 'package:pedant/src/utility/type_checker/state_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
 
@@ -81,7 +81,7 @@ class DeleteWidgetFunctionMethodRule extends DartLintRule {
         ClassElement classElement,
       ) =>
           classDeclaration.visitChildren(
-        TreeVisitor(
+        AstTreeVisitor(
           onMethodDeclaration: (
             MethodDeclaration methodDeclaration,
           ) {

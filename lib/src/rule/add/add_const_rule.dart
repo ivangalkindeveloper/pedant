@@ -7,7 +7,7 @@ import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dar
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class AddConstRule extends DartLintRule {
   static void combine({
@@ -179,7 +179,7 @@ class AddConstRule extends DartLintRule {
     bool isConstInstanceCreationExpression = true;
 
     expression.visitChildren(
-      TreeVisitor(
+      AstTreeVisitor(
         onInstanceCreationExpression: (
           InstanceCreationExpression instanceCreationExpression,
         ) {

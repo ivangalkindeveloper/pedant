@@ -8,7 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/extension/add_constructor.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class AddConstConstructorRule extends DartLintRule {
   static void combine({
@@ -51,17 +51,31 @@ class AddConstConstructorRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
-          for (final FieldElement fieldElement in classElement.fields) {
-            if (fieldElement.isLate == true) {
-              return;
-            }
-            if (fieldElement.isFinal == false) {
-              return;
-            }
-          }
-
           classDeclaration.visitChildren(
-            TreeVisitor(
+            AstTreeVisitor(
+              onVariableDeclaration: (
+                VariableDeclaration variableDeclaration,
+              ) {
+                final VariableElement? variableElement =
+                    variableDeclaration.declaredElement;
+                if (variableElement == null) {
+                  return;
+                }
+                if (variableElement.enclosingElement != classElement) {
+                  return;
+                }
+
+                if (variableElement.isStatic == false) {
+                  if (variableElement.isFinal == false) {
+                    return;
+                  }
+                  if (variableElement.isLate == true) {
+                    return;
+                  }
+                }
+
+                //TODO Check initializer const
+              },
               onConstructorDeclaration: (
                 ConstructorDeclaration constructorDeclaration,
               ) {
@@ -76,11 +90,9 @@ class AddConstConstructorRule extends DartLintRule {
                 if (superConstructor?.isConst == false) {
                   return;
                 }
-
                 if (constructorElement.isConst == true) {
                   return;
                 }
-
                 if (constructorElement.isFactory == true) {
                   return;
                 }

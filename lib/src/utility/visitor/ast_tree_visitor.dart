@@ -1,8 +1,8 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
-class TreeVisitor extends RecursiveAstVisitor<void> {
-  const TreeVisitor({
+class AstTreeVisitor extends RecursiveAstVisitor<void> {
+  const AstTreeVisitor({
     this.onClassDeclaration,
     this.onClassTypeAlias,
     this.onConstructorDeclaration,
@@ -94,7 +94,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitClassDeclaration(
     ClassDeclaration node,
   ) {
-    super.visitClassDeclaration(node);
+    super.visitClassDeclaration(
+      node,
+    );
     this.onClassDeclaration?.call(
           node,
         );
@@ -104,7 +106,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitClassTypeAlias(
     ClassTypeAlias node,
   ) {
-    super.visitClassTypeAlias(node);
+    super.visitClassTypeAlias(
+      node,
+    );
     this.onClassTypeAlias?.call(
           node,
         );
@@ -114,7 +118,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitConstructorDeclaration(
     ConstructorDeclaration node,
   ) {
-    super.visitConstructorDeclaration(node);
+    super.visitConstructorDeclaration(
+      node,
+    );
     this.onConstructorDeclaration?.call(
           node,
         );
@@ -124,7 +130,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitConstructorFieldInitializer(
     ConstructorFieldInitializer node,
   ) {
-    super.visitConstructorFieldInitializer(node);
+    super.visitConstructorFieldInitializer(
+      node,
+    );
     this.onConstructorFieldInitializer?.call(
           node,
         );
@@ -134,7 +142,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitDeclaredIdentifier(
     DeclaredIdentifier node,
   ) {
-    super.visitDeclaredIdentifier(node);
+    super.visitDeclaredIdentifier(
+      node,
+    );
     this.onDeclaredIdentifier?.call(
           node,
         );
@@ -144,7 +154,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitDefaultFormalParameter(
     DefaultFormalParameter node,
   ) {
-    super.visitDefaultFormalParameter(node);
+    super.visitDefaultFormalParameter(
+      node,
+    );
     this.onDefaultFormalParameter?.call(
           node,
         );
@@ -154,7 +166,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitFieldDeclaration(
     FieldDeclaration node,
   ) {
-    super.visitFieldDeclaration(node);
+    super.visitFieldDeclaration(
+      node,
+    );
     this.onFieldDeclaration?.call(
           node,
         );
@@ -164,7 +178,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitFieldFormalParameter(
     FieldFormalParameter node,
   ) {
-    super.visitFieldFormalParameter(node);
+    super.visitFieldFormalParameter(
+      node,
+    );
     this.onFieldFormalParameter?.call(
           node,
         );
@@ -174,7 +190,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitFormalParameterList(
     FormalParameterList node,
   ) {
-    super.visitFormalParameterList(node);
+    super.visitFormalParameterList(
+      node,
+    );
     this.onFormalParameterList?.call(
           node,
         );
@@ -184,7 +202,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitFunctionDeclaration(
     FunctionDeclaration node,
   ) {
-    super.visitFunctionDeclaration(node);
+    super.visitFunctionDeclaration(
+      node,
+    );
     this.onFunctionDeclaration?.call(
           node,
         );
@@ -194,7 +214,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitInstanceCreationExpression(
     InstanceCreationExpression node,
   ) {
-    super.visitInstanceCreationExpression(node);
+    super.visitInstanceCreationExpression(
+      node,
+    );
     this.onInstanceCreationExpression?.call(
           node,
         );
@@ -204,7 +226,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitPropertyAccess(
     PropertyAccess node,
   ) {
-    super.visitPropertyAccess(node);
+    super.visitPropertyAccess(
+      node,
+    );
     this.onPropertyAccess?.call(
           node,
         );
@@ -214,7 +238,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitMethodDeclaration(
     MethodDeclaration node,
   ) {
-    super.visitMethodDeclaration(node);
+    super.visitMethodDeclaration(
+      node,
+    );
     this.onMethodDeclaration?.call(
           node,
         );
@@ -224,7 +250,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitMethodInvocation(
     MethodInvocation node,
   ) {
-    super.visitMethodInvocation(node);
+    super.visitMethodInvocation(
+      node,
+    );
     this.onMethodInvocation?.call(
           node,
         );
@@ -234,7 +262,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitSimpleFormalParameter(
     SimpleFormalParameter node,
   ) {
-    super.visitSimpleFormalParameter(node);
+    super.visitSimpleFormalParameter(
+      node,
+    );
     this.onSimpleFormalParameter?.call(
           node,
         );
@@ -244,7 +274,9 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitSimpleIdentifier(
     SimpleIdentifier node,
   ) {
-    super.visitSimpleIdentifier(node);
+    super.visitSimpleIdentifier(
+      node,
+    );
     this.onSimpleIdentifier?.call(
           node,
         );
@@ -254,50 +286,11 @@ class TreeVisitor extends RecursiveAstVisitor<void> {
   void visitVariableDeclaration(
     VariableDeclaration node,
   ) {
-    super.visitVariableDeclaration(node);
+    super.visitVariableDeclaration(
+      node,
+    );
     this.onVariableDeclaration?.call(
           node,
         );
   }
 }
-
-// node.visitChildren(
-//     TreeVisitor(
-//       onClassDeclaration: (node) => print(
-//         "onClassDeclaration: $node",
-//       ),
-//       onClassTypeAlias: (node) => print(
-//         "onClassTypeAlias: $node",
-//       ),
-//       onConstructorDeclaration: (node) => print(
-//         "onConstructorDeclaration: $node",
-//       ),
-//       onConstructorFieldInitializer: (node) => print(
-//         "onConstructorFieldInitializer: $node",
-//       ),
-//       onDefaultFormalParameter: (node) => print(
-//         "onDefaultFormalParameter: $node",
-//       ),
-//       onFieldDeclaration: (node) => print(
-//         "onFieldDeclaration: $node",
-//       ),
-//       onFieldFormalParameter: (node) => print(
-//         "onFieldFormalParameter: $node",
-//       ),
-//       onFunctionDeclaration: (node) => print(
-//         "onFunctionDeclaration: $node",
-//       ),
-//       onMethodDeclaration: (node) => print(
-//         "onMethodDeclaration: $node",
-//       ),
-//       onSimpleFormalParameter: (node) => print(
-//         "onSimpleFormalParameter: $node",
-//       ),
-//             onSimpleIdentifier: (node) => print(
-//         "onSimpleIdentifier: $node",
-//       ),
-//       onVariableDeclaration: (node) => print(
-//         "onVariableDeclaration: $node",
-//       ),
-//     ),
-//   );

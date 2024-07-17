@@ -7,7 +7,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
-import 'package:pedant/src/utility/tree_visitor.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class AddConstructorRule extends DartLintRule {
   static void combine({
@@ -53,7 +53,7 @@ class AddConstructorRule extends DartLintRule {
           bool hasDefaultConstructorDeclaration = false;
 
           classDeclaration.visitChildren(
-            TreeVisitor(
+            AstTreeVisitor(
               onConstructorDeclaration: (
                 ConstructorDeclaration constructorDeclaration,
               ) {
