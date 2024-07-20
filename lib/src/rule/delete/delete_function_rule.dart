@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
@@ -47,26 +48,41 @@ class DeleteFunctionRule extends DartLintRule {
   ) {
     context.registry.addMethodInvocation(
       (
-        MethodInvocation node,
+        MethodInvocation methodInvocation,
       ) =>
           _validate(
-        name: node.methodName.name,
-        onSuccess: () => reporter.atNode(
-          node,
-          this.code,
-        ),
+        name: methodInvocation.methodName.name,
+        onSuccess: () {
+          final int length = methodInvocation.length;
+
+          reporter.atOffset(
+            offset: methodInvocation.offset,
+            length: methodInvocation.endToken.next?.type == TokenType.SEMICOLON
+                ? length + 1
+                : length,
+            errorCode: this.code,
+          );
+        },
       ),
     );
     context.registry.addFunctionExpressionInvocation(
       (
-        FunctionExpressionInvocation node,
+        FunctionExpressionInvocation functionExpressionInvocation,
       ) =>
           _validate(
-        name: node.function.toString(),
-        onSuccess: () => reporter.atNode(
-          node,
-          this.code,
-        ),
+        name: functionExpressionInvocation.function.toString(),
+        onSuccess: () {
+          final int length = functionExpressionInvocation.length;
+
+          reporter.atOffset(
+            offset: functionExpressionInvocation.offset,
+            length: functionExpressionInvocation.endToken.next?.type ==
+                    TokenType.SEMICOLON
+                ? length + 1
+                : length,
+            errorCode: this.code,
+          );
+        },
       ),
     );
   }
@@ -75,7 +91,10 @@ class DeleteFunctionRule extends DartLintRule {
     required String name,
     required void Function() onSuccess,
   }) {
-    if (this.list.contains(name) == false) {
+    if (this.list.contains(
+              name,
+            ) ==
+        false) {
       return;
     }
 
