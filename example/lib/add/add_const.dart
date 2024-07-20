@@ -10,25 +10,34 @@
 
 // const int globalVar = 0;
 
-// const int anotherVar = globalVar;
+// const int anotherVar = 0;
 
 // const ConstClass topLevelConst = ConstClass(
 //   age: globalVar,
 // );
 
-// void b() {
-//   const ConstClass(
-//     age: anotherVar,
-//   );
+// void b(int age) async {
+  // const int localVar = 0;
+  // final List<String> errorsList = [];
 
-//   const int a = 0;
-//   const ConstClass constVariable = ConstClass(
-//     age: 20,
-//   );
+  // void func() {}
+
+  // ConstClass(
+  //   age: age,
+  // );
+
+  // const int a = 0;
+  // const ConstClass constVariable = ConstClass(
+  //   age: 20,
+  // );
 // }
+
+// Future<int> _getString() => Future.value(0);
 
 // const List<ConstClass> a = [
 //   ConstClass(
 //     age: 12,
 //   ),
 // ];
+
+

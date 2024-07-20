@@ -10,6 +10,10 @@ void validateConstInitializer({
     return;
   }
 
+  if (initializer is Literal) {
+    return;
+  }
+
   if (initializer is InstanceCreationExpression) {
     validateConstInstance(
       instanceCreationExpression: initializer,
@@ -79,16 +83,28 @@ void _validateInstanceChildren({
         if (staticElement == null) {
           return;
         }
-        if (staticElement is! PropertyAccessorElement) {
-          return;
+        if (staticElement is PropertyAccessorElement) {
+          final PropertyInducingElement? variable2 = staticElement.variable2;
+          if (variable2 == null) {
+            isConstInstanceCreationExpression = false;
+            return;
+          }
+          if (variable2.isConst == false) {
+            isConstInstanceCreationExpression = false;
+            return;
+          }
         }
-
-        final PropertyInducingElement? variable2 = staticElement.variable2;
-        if (variable2 == null) {
+        if (staticElement is FunctionElement) {
           isConstInstanceCreationExpression = false;
           return;
         }
-        if (variable2.isConst == false) {
+        if (staticElement is LocalVariableElement) {
+          if (staticElement.isConst == false) {
+            isConstInstanceCreationExpression = false;
+            return;
+          }
+        }
+        if (staticElement is ParameterElement) {
           isConstInstanceCreationExpression = false;
           return;
         }
