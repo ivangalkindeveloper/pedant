@@ -1,11 +1,12 @@
 // class ExampleClass {
-//   const ExampleClass({
-//     this.a = const Object(),
-//   });
+//   ExampleClass();
 
-//   const ExampleClass.from({
-//     dynamic a = const Object(),
-//   }) : this.a = a;
-
-//   final dynamic a;
+//   final String a = _someString();
 // }
+
+// final ExampleClass a = ExampleClass(
+//   a: _someString(),
+// );
+// final String b = _someString();
+
+// String _someString() => "";

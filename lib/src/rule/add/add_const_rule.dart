@@ -1,13 +1,12 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
+import 'package:pedant/src/utility/validate/validate_const_initializer.dart';
 
 class AddConstRule extends DartLintRule {
   static void combine({
@@ -49,7 +48,7 @@ class AddConstRule extends DartLintRule {
       (
         InstanceCreationExpression instanceCreationExpression,
       ) =>
-          this._validateInstance(
+          validateConstInstance(
         instanceCreationExpression: instanceCreationExpression,
         onSuccess: () => reporter.atNode(
           instanceCreationExpression,
@@ -110,11 +109,9 @@ class AddConstRule extends DartLintRule {
     if (variableList.isConst == true) {
       return;
     }
-
     if (variableList.isLate == true) {
       return;
     }
-
     if (variableList.isFinal == false) {
       return;
     }
@@ -122,111 +119,15 @@ class AddConstRule extends DartLintRule {
     for (final VariableDeclaration variableDeclaration
         in variableList.variables) {
       final Expression? initializer = variableDeclaration.initializer;
-
       if (initializer == null) {
         return;
       }
 
-      this._checkExpressionChildren(
-        expression: initializer,
-        onSuccess: () {
-          if (initializer is InstanceCreationExpression) {
-            this._validateInstance(
-              instanceCreationExpression: initializer,
-              onSuccess: onSuccess,
-            );
-            return;
-          }
-
-          onSuccess();
-        },
+      validateConstInitializer(
+        initializer: initializer,
+        onSuccess: onSuccess,
       );
     }
-  }
-
-  void _validateInstance({
-    required InstanceCreationExpression instanceCreationExpression,
-    required void Function() onSuccess,
-  }) {
-    if (instanceCreationExpression.isConst == true) {
-      return;
-    }
-
-    if (instanceCreationExpression.inConstantContext == true) {
-      return;
-    }
-
-    final ConstructorElement? staticElement =
-        instanceCreationExpression.constructorName.staticElement;
-    if (staticElement == null) {
-      return;
-    }
-
-    if (staticElement.isConst == false) {
-      return;
-    }
-
-    this._checkExpressionChildren(
-      expression: instanceCreationExpression,
-      onSuccess: onSuccess,
-    );
-  }
-
-  void _checkExpressionChildren({
-    required Expression expression,
-    required void Function() onSuccess,
-  }) {
-    bool isConstInstanceCreationExpression = true;
-
-    expression.visitChildren(
-      AstTreeVisitor(
-        onInstanceCreationExpression: (
-          InstanceCreationExpression instanceCreationExpression,
-        ) {
-          final ConstructorElement? childrenStaticElement =
-              instanceCreationExpression.constructorName.staticElement;
-
-          if (childrenStaticElement == null) {
-            isConstInstanceCreationExpression = false;
-            return;
-          }
-
-          if (childrenStaticElement.isConst == false) {
-            isConstInstanceCreationExpression = false;
-            return;
-          }
-        },
-        onSimpleIdentifier: (
-          SimpleIdentifier simpleIdentifier,
-        ) {
-          final Element? staticElement = simpleIdentifier.staticElement;
-          if (staticElement == null) {
-            return;
-          }
-
-          if (staticElement is! PropertyAccessorElement) {
-            return;
-          }
-
-          final PropertyInducingElement? variable2 = staticElement.variable2;
-          if (variable2 == null) {
-            isConstInstanceCreationExpression = false;
-            return;
-          }
-
-          if (variable2.isConst == false) {
-            isConstInstanceCreationExpression = false;
-            return;
-          }
-        },
-      ),
-    );
-
-    if (isConstInstanceCreationExpression == false) {
-      return;
-    }
-
-    onSuccess();
   }
 
   @override

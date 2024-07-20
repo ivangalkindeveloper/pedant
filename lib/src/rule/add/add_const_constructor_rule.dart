@@ -8,6 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/extension/add_constructor.dart';
+import 'package:pedant/src/utility/validate/validate_const_initializer.dart';
 import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class AddConstConstructorRule extends DartLintRule {
@@ -51,6 +52,10 @@ class AddConstConstructorRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
+          bool isConstFields = false;
+          bool isConstConstructor = false;
+          ConstructorElement? validatedConstructorElement;
+
           classDeclaration.visitChildren(
             AstTreeVisitor(
               onVariableDeclaration: (
@@ -64,7 +69,6 @@ class AddConstConstructorRule extends DartLintRule {
                 if (variableElement.enclosingElement != classElement) {
                   return;
                 }
-
                 if (variableElement.isStatic == false) {
                   if (variableElement.isFinal == false) {
                     return;
@@ -74,7 +78,15 @@ class AddConstConstructorRule extends DartLintRule {
                   }
                 }
 
-                //TODO Check initializer const
+                final Expression? initializer = variableDeclaration.initializer;
+                if (initializer == null) {
+                  return;
+                }
+
+                validateConstInitializer(
+                  initializer: initializer,
+                  onSuccess: () => isConstFields = true,
+                );
               },
               onConstructorDeclaration: (
                 ConstructorDeclaration constructorDeclaration,
@@ -97,12 +109,25 @@ class AddConstConstructorRule extends DartLintRule {
                   return;
                 }
 
-                reporter.atElement(
-                  constructorElement,
-                  this.code,
-                );
+                isConstConstructor = true;
+                validatedConstructorElement = constructorElement;
               },
             ),
+          );
+
+          if (isConstFields == false) {
+            return;
+          }
+          if (isConstConstructor == false) {
+            return;
+          }
+          if (validatedConstructorElement == null) {
+            return;
+          }
+
+          reporter.atElement(
+            validatedConstructorElement!,
+            this.code,
           );
         },
       );

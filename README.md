@@ -858,6 +858,11 @@ import 'package:example/src/example.dart';
 
 #### edit_variable_name_by_type
 You need to edit the variable name based on its type.
+Exceptions:
+| Type | Valid name example |
+|-|-|
+| Widget | child |
+| EdgeInsets | padding |
 
 ```dart
 // BAD:
