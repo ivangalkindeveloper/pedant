@@ -9,9 +9,9 @@ import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_class.dart';
 import 'package:pedant/src/utility/extension/add_function.dart';
 import 'package:pedant/src/utility/extension/add_method.dart';
-import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 import 'package:pedant/src/utility/type_checker/state_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class DeleteWidgetFunctionMethodRule extends DartLintRule {
   static void combine({
@@ -49,81 +49,58 @@ class DeleteWidgetFunctionMethodRule extends DartLintRule {
     CustomLintResolver resolver,
     ErrorReporter reporter,
     CustomLintContext context,
-  ) {
-    context.addFunction(
-      (
-        FunctionDeclaration functionDeclaration,
-        ExecutableElement executableElement,
-      ) {
-        final Element? element = executableElement.returnType.element;
-        if (element == null) {
-          return;
-        }
+  ) =>
+      context.addClass(
+        (
+          ClassDeclaration classDeclaration,
+          ClassElement classElement,
+        ) {
+          if (widgetTypeChecker.isAssignableFrom(
+                    classElement,
+                  ) ==
+                  false &&
+              stateTypeChecker.isAssignableFrom(
+                    classElement,
+                  ) ==
+                  false) {
+            return;
+          }
 
-        if (widgetTypeChecker.isAssignableFrom(
-              element,
-            ) ==
-            false) {
-          return;
-        }
-
-        print("addFunction: $element");
-
-        reporter.atNode(
-          functionDeclaration,
-          this.code,
-        );
-      },
-    );
-    context.addClass(
-      (
-        ClassDeclaration classDeclaration,
-        ClassElement classElement,
-      ) =>
           classDeclaration.visitChildren(
-        AstTreeVisitor(
-          onMethodDeclaration: (
-            MethodDeclaration methodDeclaration,
-          ) {
-            final ExecutableElement? executableElement =
-                methodDeclaration.declaredElement;
-            if (executableElement == null) {
-              return;
-            }
+            AstTreeVisitor(
+              onMethodDeclaration: (
+                MethodDeclaration methodDeclaration,
+              ) {
+                final ExecutableElement? executableElement =
+                    methodDeclaration.declaredElement;
+                if (executableElement == null) {
+                  return;
+                }
+                if (executableElement.name == "build") {
+                  return;
+                }
 
-            if ((widgetTypeChecker.isAssignableFrom(
-                          classElement,
-                        ) ==
-                        true ||
-                    stateTypeChecker.isAssignableFrom(
-                          classElement,
-                        ) ==
-                        true) &&
-                executableElement.name == "build") {
-              return;
-            }
+                final Element? returnElement =
+                    executableElement.returnType.element;
+                if (returnElement == null) {
+                  return;
+                }
+                if (widgetTypeChecker.isAssignableFrom(
+                      returnElement,
+                    ) ==
+                    false) {
+                  return;
+                }
 
-            final Element? returnElement = executableElement.returnType.element;
-            if (returnElement == null) {
-              return;
-            }
-
-            if (widgetTypeChecker.isAssignableFrom(
-                  returnElement,
-                ) ==
-                false) {
-              return;
-            }
-
-            reporter.atNode(
-              methodDeclaration,
-              this.code,
-            );
-          },
-        ),
-      ),
-    );
-  }
+                reporter.atNode(
+                  methodDeclaration,
+                  this.code,
+                );
+              },
+            ),
+          );
+        },
+      );
 
   @override
   List<Fix> getFixes() => [

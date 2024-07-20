@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+
 import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 void validateConstInitializer({

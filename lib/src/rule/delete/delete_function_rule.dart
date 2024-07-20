@@ -145,19 +145,29 @@ class _Fix extends DartFix {
       analysisError,
       (
         MethodInvocation methodInvocation,
-      ) =>
-          createChangeBuilder(
-        name: methodInvocation.methodName.name,
-      ),
+      ) {
+        if (methodInvocation.offset != analysisError.offset) {
+          return;
+        }
+
+        createChangeBuilder(
+          name: methodInvocation.methodName.name,
+        );
+      },
     );
     context.addFunctionInvocationIntersects(
       analysisError,
       (
         FunctionExpressionInvocation functionExpressionInvocation,
-      ) =>
-          createChangeBuilder(
-        name: functionExpressionInvocation.function.toString(),
-      ),
+      ) {
+        if (functionExpressionInvocation.offset != analysisError.offset) {
+          return;
+        }
+
+        createChangeBuilder(
+          name: functionExpressionInvocation.function.toString(),
+        );
+      },
     );
   }
 }

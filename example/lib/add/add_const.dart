@@ -17,19 +17,19 @@
 // );
 
 // void b(int age) async {
-  // const int localVar = 0;
-  // final List<String> errorsList = [];
+// const int localVar = 0;
+// final List<String> errorsList = [];
 
-  // void func() {}
+// void func() {}
 
-  // ConstClass(
-  //   age: age,
-  // );
+// ConstClass(
+//   age: age,
+// );
 
-  // const int a = 0;
-  // const ConstClass constVariable = ConstClass(
-  //   age: 20,
-  // );
+// const int a = 0;
+// const ConstClass constVariable = ConstClass(
+//   age: 20,
+// );
 // }
 
 // Future<int> _getString() => Future.value(0);
@@ -39,5 +39,3 @@
 //     age: 12,
 //   ),
 // ];
-
-

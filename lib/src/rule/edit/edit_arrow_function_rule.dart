@@ -128,11 +128,15 @@ class _Fix extends DartFix {
           changeBuilder.addDartFileEdit(
             (
               DartFileEditBuilder builder,
-            ) =>
-                builder.addSimpleReplacement(
-              analysisError.sourceRange,
-              "=> $cleanNode",
-            ),
+            ) {
+              builder.addSimpleReplacement(
+                analysisError.sourceRange,
+                "=> $cleanNode",
+              );
+              builder.format(
+                functionBody.sourceRange,
+              );
+            },
           );
         },
       );

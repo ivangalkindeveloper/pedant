@@ -14,9 +14,9 @@ import 'package:pedant/src/utility/extension/add_constructor.dart';
 import 'package:pedant/src/utility/extension/add_constructor_field_initializer.dart';
 import 'package:pedant/src/utility/extension/add_cubit.dart';
 import 'package:pedant/src/utility/extension/add_field.dart';
-import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 import 'package:pedant/src/utility/type_checker/bloc_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/cubit_type_checkot.dart';
+import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
 class DeleteBlocCubitDependentBlocCubitFlutterRule extends DartLintRule {
   static void combine({

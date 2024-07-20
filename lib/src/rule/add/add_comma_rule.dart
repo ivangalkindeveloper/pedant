@@ -42,6 +42,26 @@ class AddCommaRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    context.registry.addInstanceCreationExpression(
+      (
+        InstanceCreationExpression instanceCreationExpression,
+      ) {
+        final NodeList<Expression> arguments =
+            instanceCreationExpression.argumentList.arguments;
+        if (arguments.isEmpty) {
+          return;
+        }
+
+        final Expression lastArgument = arguments.last;
+        final Token endToken = lastArgument.endToken;
+
+        _validateAndReport(
+          reporter: reporter,
+          token: endToken.next,
+        );
+      },
+    );
+
     context.registry.addFormalParameterList(
       (
         FormalParameterList formalParameterList,
@@ -61,6 +81,7 @@ class AddCommaRule extends DartLintRule {
         );
       },
     );
+
     context.registry.addMethodInvocation(
       (
         MethodInvocation methodInvocation,
@@ -80,6 +101,7 @@ class AddCommaRule extends DartLintRule {
         );
       },
     );
+
     context.registry.addSuperConstructorInvocation(
       (
         SuperConstructorInvocation superConstructorInvocation,

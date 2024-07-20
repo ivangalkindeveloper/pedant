@@ -6,8 +6,6 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_variable.dart';
-import 'package:pedant/src/utility/type_checker/edge_insets_type_checker.dart';
-import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
 
 class EditVariableNameByTypeRule extends DartLintRule {
   static void combine({
@@ -59,22 +57,11 @@ class EditVariableNameByTypeRule extends DartLintRule {
           if (identifier == null) {
             return;
           }
-          if (identifier == "dart:core") {
+          print(identifier);
+          if (identifier.contains("dart:")) {
             return;
           }
-
-          // Widget - child
-          if (widgetTypeChecker.isAssignableFrom(
-                classElement,
-              ) ==
-              true) {
-            return;
-          }
-          // EdgeIsets - padding
-          if (edgeInsetsTypeChecker.isAssignableFrom(
-                classElement,
-              ) ==
-              true) {
+          if (identifier.contains("flutter:")) {
             return;
           }
 

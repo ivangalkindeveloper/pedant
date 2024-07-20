@@ -1,6 +1,6 @@
 // import 'package:flutter/widgets.dart';
 
-// SizedBox buildSizedBox() => SizedBox();
+// SizedBox buildSizedBox() => const SizedBox();
 
 // class ExampleStateless extends StatelessWidget {
 //   const ExampleStateless({
@@ -37,4 +37,10 @@
 //     BuildContext context,
 //   ) =>
 //       SizedBox();
+// }
+
+// class TextExample {
+//   TextExample();
+
+//   SizedBox buildSizedBox() => const SizedBox();
 // }

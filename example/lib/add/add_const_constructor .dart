@@ -10,3 +10,10 @@
 // final String b = _someString();
 
 // String _someString() => "";
+
+//TODO
+class TextExample {
+  TextExample();
+
+  String someString() => "";
+}
