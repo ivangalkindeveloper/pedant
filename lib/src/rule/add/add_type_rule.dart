@@ -71,6 +71,7 @@ class AddTypeRule extends DartLintRule {
         }
       },
     );
+
     context.addFunctionExpression(
       (
         FunctionExpression functionExpression,
@@ -89,6 +90,7 @@ class AddTypeRule extends DartLintRule {
         }
       },
     );
+
     context.addVariable(
       (
         VariableDeclaration variableDeclaration,
@@ -153,8 +155,8 @@ class _Fix extends DartFix {
         ConstructorDeclaration constructorDeclaration,
         ConstructorElement constructorElement,
       ) {
-        for (final ParameterElement parameterElement
-            in constructorElement.parameters) {
+        final List<ParameterElement> parameters = constructorElement.parameters;
+        for (final ParameterElement parameterElement in parameters) {
           if (analysisError.offset != parameterElement.nameOffset) {
             continue;
           }
@@ -165,14 +167,15 @@ class _Fix extends DartFix {
         }
       },
     );
+
     context.addFunctionExpressionIntersects(
       analysisError,
       (
         FunctionExpression functionExpression,
         ExecutableElement executableElement,
       ) {
-        for (final ParameterElement parameterElement
-            in executableElement.parameters) {
+        final List<ParameterElement> parameters = executableElement.parameters;
+        for (final ParameterElement parameterElement in parameters) {
           if (analysisError.offset != parameterElement.nameOffset) {
             continue;
           }
@@ -183,15 +186,18 @@ class _Fix extends DartFix {
         }
       },
     );
-    context.addVariableIntersects(
-      analysisError,
-      (
-        VariableDeclaration variableDeclaration,
-        VariableElement variableElement,
-      ) =>
-          createChangeBuilder(
+
+    context.addVariableIntersects(analysisError, (
+      VariableDeclaration variableDeclaration,
+      VariableElement variableElement,
+    ) {
+      if (analysisError.offset != variableElement.nameOffset) {
+        return;
+      }
+
+      createChangeBuilder(
         type: variableElement.type,
-      ),
-    );
+      );
+    });
   }
 }

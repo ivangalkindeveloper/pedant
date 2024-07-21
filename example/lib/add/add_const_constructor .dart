@@ -1,7 +1,8 @@
 // class ExampleClass {
-//   const ExampleClass();
+//   ExampleClass();
 
 //   final String a = "";
+//   final String b = _someString();
 // }
 
 // final ExampleClass a = ExampleClass(

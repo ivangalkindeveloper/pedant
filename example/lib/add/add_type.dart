@@ -1,3 +1,16 @@
+// final List<int> acctNumbers = ""
+//     .codeUnits
+//     .map(
+//       (
+//         int unit,
+//       ) =>
+//           unit -
+//           '0'.codeUnitAt(
+//             0,
+//           ),
+//     )
+//     .toList();
+
 // final globalVariable = "";
 
 // void doSome({
@@ -15,3 +28,4 @@
 
 //   final classField;
 // }
+

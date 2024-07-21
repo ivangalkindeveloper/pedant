@@ -52,8 +52,7 @@ class AddConstConstructorRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
-          bool isConstFields = classElement.fields.isEmpty ? true : false;
-          bool isConstConstructor = false;
+          int constFieldCounter = 0;
           ConstructorElement? validatedConstructorElement;
 
           classDeclaration.visitChildren(
@@ -65,9 +64,11 @@ class AddConstConstructorRule extends DartLintRule {
                   return;
                 }
 
+                // Это валидация одного поля!!!
+
                 validateConstVariableList(
                   variableList: fieldDeclaration.fields,
-                  onSuccess: () => isConstFields = true,
+                  onSuccess: () => constFieldCounter++,
                 );
               },
               onConstructorDeclaration: (
@@ -91,16 +92,12 @@ class AddConstConstructorRule extends DartLintRule {
                   return;
                 }
 
-                isConstConstructor = true;
                 validatedConstructorElement = constructorElement;
               },
             ),
           );
 
-          if (isConstFields == false) {
-            return;
-          }
-          if (isConstConstructor == false) {
+          if (constFieldCounter != classElement.fields.length) {
             return;
           }
           if (validatedConstructorElement == null) {
