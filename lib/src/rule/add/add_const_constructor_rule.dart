@@ -64,8 +64,6 @@ class AddConstConstructorRule extends DartLintRule {
                   return;
                 }
 
-                // Это валидация одного поля!!!
-
                 validateConstVariableList(
                   variableList: fieldDeclaration.fields,
                   onSuccess: () => constFieldCounter++,
