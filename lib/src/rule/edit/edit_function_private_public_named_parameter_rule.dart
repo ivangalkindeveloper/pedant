@@ -135,9 +135,10 @@ class _Fix extends DartFix {
               FormalParameterList formalParameterList,
             ) =>
                 fixNamedParameters(
+              priority: priority,
+              resolver: resolver,
               reporter: reporter,
               analysisError: analysisError,
-              priority: priority,
               parameterList: executableElement.parameters,
               range: SourceRange(
                 formalParameterList.beginToken.offset + 1,

@@ -2,6 +2,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
@@ -170,11 +171,18 @@ class _Fix extends DartFix {
     changeBuilder.addDartFileEdit(
       (
         DartFileEditBuilder builder,
-      ) =>
-          builder.addSimpleInsertion(
-        analysisError.sourceRange.offset,
-        ",",
-      ),
+      ) {
+        builder.addSimpleInsertion(
+          analysisError.sourceRange.offset,
+          ",",
+        );
+        builder.format(
+          SourceRange(
+            0,
+            resolver.source.contents.data.length,
+          ),
+        );
+      },
     );
   }
 }

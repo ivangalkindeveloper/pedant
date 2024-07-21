@@ -16,7 +16,7 @@
 
 // import 'package:flutter/widgets.dart';
 
-// // ignore: delete_widget_function_method
+// // ignore: delete_widget_method
 // Widget sort({
 //   required List<String> strings,
 // }) =>

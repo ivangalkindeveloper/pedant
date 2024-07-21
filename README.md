@@ -79,7 +79,7 @@ custom_lint:
       delete_new: true
       # delete_package_list: - Check note
       # delete_type_list: - Check note
-      delete_widget_function_method: true
+      delete_widget_method: true
       edit_arrow_function: true
       edit_constructor_private_named_parameter: true
       edit_constructor_public_named_parameter: true
@@ -693,8 +693,8 @@ return Scaffold(
 );
 ```
 
-#### delete_widget_function_method
-Need to remove the function that returns Widget.
+#### delete_widget_method
+Need to remove the function that returns Widget in StatelessWidget, StatefulWidget or State.
 
 ```dart
 // BAD:

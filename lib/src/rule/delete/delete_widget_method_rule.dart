@@ -13,31 +13,31 @@ import 'package:pedant/src/utility/type_checker/state_type_checker.dart';
 import 'package:pedant/src/utility/type_checker/widget_type_checker.dart';
 import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
-class DeleteWidgetFunctionMethodRule extends DartLintRule {
+class DeleteWidgetMethodRule extends DartLintRule {
   static void combine({
     required Config config,
     required List<LintRule> ruleList,
   }) {
-    if (config.deleteWidgetFunctionMethod == false) {
+    if (config.deleteWidgetMethod == false) {
       return;
     }
 
     ruleList.add(
-      DeleteWidgetFunctionMethodRule(
+      DeleteWidgetMethodRule(
         priority: config.priority,
       ),
     );
   }
 
-  const DeleteWidgetFunctionMethodRule({
+  const DeleteWidgetMethodRule({
     required this.priority,
   }) : super(
           code: const LintCode(
-            name: "delete_widget_function_method",
+            name: "delete_widget_method",
             problemMessage:
-                "Pedant: Delete function or method returning a Widget.",
+                "Pedant: Delete method returning a Widget in StatelessWidget, StatefulWidget or State.",
             correctionMessage:
-                "Please celete this function or method returning a Widget.",
+                "Please celete this method returning a Widget in StatelessWidget, StatefulWidget or State.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

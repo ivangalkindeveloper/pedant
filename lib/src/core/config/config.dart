@@ -43,7 +43,7 @@ class Config {
     this.deleteNew = true,
     this.deletePackageList,
     this.deleteTypeList,
-    this.deleteWidgetFunctionMethod = true,
+    this.deleteWidgetMethod = true,
     //
     this.editArrowFunction = true,
     this.editContructorPrivateNamedParameter = true,
@@ -92,7 +92,7 @@ class Config {
   final bool deleteNew;
   final List<DeleteListItem>? deletePackageList;
   final List<DeleteListItem>? deleteTypeList;
-  final bool deleteWidgetFunctionMethod;
+  final bool deleteWidgetMethod;
   //
   final bool editArrowFunction;
   final bool editContructorPrivateNamedParameter;
@@ -188,8 +188,7 @@ class Config {
               (e) => DeleteListItem.fromYaml(e),
             )
             .toList(),
-        deleteWidgetFunctionMethod:
-            map["delete_widget_function_method"] ?? true,
+        deleteWidgetMethod: map["delete_widget_method"] ?? true,
         //
         editArrowFunction: map["edit_arrow_function"] ?? true,
         editContructorPrivateNamedParameter:
