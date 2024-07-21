@@ -52,41 +52,48 @@ class AddConstConstructorRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
-          bool isConstFields = false;
+          bool isConstFields = classElement.fields.isEmpty ? true : false;
           bool isConstConstructor = false;
           ConstructorElement? validatedConstructorElement;
 
           classDeclaration.visitChildren(
             AstTreeVisitor(
-              onVariableDeclaration: (
-                VariableDeclaration variableDeclaration,
+              onFieldDeclaration: (
+                FieldDeclaration fieldDeclaration,
               ) {
-                final VariableElement? variableElement =
-                    variableDeclaration.declaredElement;
-                if (variableElement == null) {
-                  return;
-                }
-                if (variableElement.enclosingElement != classElement) {
-                  return;
-                }
-                if (variableElement.isStatic == false) {
-                  if (variableElement.isFinal == false) {
-                    return;
-                  }
-                  if (variableElement.isLate == true) {
-                    return;
-                  }
-                }
-
-                final Expression? initializer = variableDeclaration.initializer;
-                if (initializer == null) {
+                if (fieldDeclaration.isStatic == true) {
                   return;
                 }
 
-                validateConstInitializer(
-                  initializer: initializer,
-                  onSuccess: () => isConstFields = true,
-                );
+                final VariableDeclarationList fields = fieldDeclaration.fields;
+                if (fields.isConst == true) {
+                  return;
+                }
+                if (fields.isLate == true) {
+                  return;
+                }
+                if (fields.isFinal == false) {
+                  return;
+                }
+
+                for (final VariableDeclaration variableDeclaration
+                    in fields.variables) {
+                  final Expression? initializer =
+                      variableDeclaration.initializer;
+                  if (initializer == null) {
+                    continue;
+                  }
+
+                  bool isConstInitializer = false;
+                  validateConstInitializer(
+                    initializer: initializer,
+                    onSuccess: () => isConstInitializer = true,
+                  );
+                  if (isConstInitializer == true) {
+                    return;
+                  }
+                }
+                isConstFields = true;
               },
               onConstructorDeclaration: (
                 ConstructorDeclaration constructorDeclaration,
@@ -96,16 +103,16 @@ class AddConstConstructorRule extends DartLintRule {
                 if (constructorElement == null) {
                   return;
                 }
-
-                final ConstructorElement? superConstructor =
-                    constructorElement.superConstructor;
-                if (superConstructor?.isConst == false) {
-                  return;
-                }
                 if (constructorElement.isConst == true) {
                   return;
                 }
                 if (constructorElement.isFactory == true) {
+                  return;
+                }
+
+                final ConstructorElement? superConstructor =
+                    constructorElement.superConstructor;
+                if (superConstructor?.isConst == false) {
                   return;
                 }
 

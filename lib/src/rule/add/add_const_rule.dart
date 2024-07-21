@@ -120,7 +120,7 @@ class AddConstRule extends DartLintRule {
         in variableList.variables) {
       final Expression? initializer = variableDeclaration.initializer;
       if (initializer == null) {
-        return;
+        continue;
       }
 
       validateConstInitializer(

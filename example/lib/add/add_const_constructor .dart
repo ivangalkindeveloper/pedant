@@ -11,9 +11,8 @@
 
 // String _someString() => "";
 
-//TODO
-class TextExample {
-  TextExample();
+// class TextExample {
+//   const TextExample();
 
-  String someString() => "";
-}
+//   String someString() => "";
+// }
