@@ -82,8 +82,9 @@ class EditFunctionPrivatePublicNamedParameterRule extends DartLintRule {
             return;
           }
 
-          for (final ParameterElement parameterElement
-              in executableElement.parameters) {
+          final List<ParameterElement> parameters =
+              executableElement.parameters;
+          for (final ParameterElement parameterElement in parameters) {
             if (parameterElement.isRequired == false) {
               continue;
             }

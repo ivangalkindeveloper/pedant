@@ -57,10 +57,14 @@ class EditVariableNameByTypeRule extends DartLintRule {
           if (identifier == null) {
             return;
           }
-          if (identifier.contains("dart:")) {
+          if (identifier.contains(
+            "dart:",
+          )) {
             return;
           }
-          if (identifier.contains("package:flutter/")) {
+          if (identifier.contains(
+            "package:flutter/",
+          )) {
             return;
           }
 

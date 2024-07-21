@@ -86,12 +86,12 @@ class DeleteBlocCubitPublicPropertyRule extends DartLintRule {
               return;
             }
 
-            for (final ParameterElement parameter
-                in declaredElement.parameters) {
+            final List<ParameterElement> parameters =
+                declaredElement.parameters;
+            for (final ParameterElement parameter in parameters) {
               if (parameter.isPrivate) {
                 continue;
               }
-
               if (parameter.isInitializingFormal == false) {
                 continue;
               }
@@ -105,13 +105,13 @@ class DeleteBlocCubitPublicPropertyRule extends DartLintRule {
           onFieldDeclaration: (
             FieldDeclaration fieldDeclaration,
           ) {
-            for (final VariableDeclaration variable
-                in fieldDeclaration.fields.variables) {
-              final declaredElement = variable.declaredElement;
+            final NodeList<VariableDeclaration> variables =
+                fieldDeclaration.fields.variables;
+            for (final VariableDeclaration variable in variables) {
+              final VariableElement? declaredElement = variable.declaredElement;
               if (declaredElement == null) {
                 continue;
               }
-
               if (declaredElement.isPrivate) {
                 continue;
               }

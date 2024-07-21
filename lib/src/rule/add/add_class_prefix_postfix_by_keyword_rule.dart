@@ -95,16 +95,14 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
             classDeclaration.mixinKeyword,
             classDeclaration.sealedKeyword,
           ].whereType<Token>().toList();
-
           if (tokenList.isEmpty) {
             return;
           }
 
           for (final Token token in tokenList) {
-            if (this
-                .keywordListNameItem
-                .keywordList
-                .contains(token.toString())) {
+            if (this.keywordListNameItem.keywordList.contains(
+                  token.toString(),
+                )) {
               isMatch = true;
             }
           }

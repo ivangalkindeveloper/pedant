@@ -33,7 +33,7 @@ class DeleteNewRule extends DartLintRule {
             problemMessage:
                 "Pedant: Keyword 'new' is useless in last version of Dart SDK.",
             correctionMessage: "Please delete 'new' operator.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: ErrorSeverity.ERROR,
           ),
         );
 
@@ -54,13 +54,13 @@ class DeleteNewRule extends DartLintRule {
             return;
           }
 
-          final String keywordName = keyword.toString();
-          if (keywordName != "new") {
+          final TokenType tokenType = keyword.type;
+          if (tokenType != Keyword.NEW) {
             return;
           }
 
           reporter.atToken(
-            node.keyword!,
+            keyword,
             this.code,
           );
         },

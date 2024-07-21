@@ -3,15 +3,55 @@ import 'package:analyzer/dart/element/element.dart';
 
 import 'package:pedant/src/utility/visitor/ast_tree_visitor.dart';
 
-void validateConstInitializer({
+void validateConstVariableList({
+  required VariableDeclarationList variableList,
+  required void Function() onSuccess,
+}) {
+  final NodeList<VariableDeclaration> variables = variableList.variables;
+  if (variables.isEmpty) {
+    onSuccess();
+    return;
+  }
+  if (variableList.isConst == true) {
+    return;
+  }
+  if (variableList.isLate == true) {
+    return;
+  }
+  if (variableList.isFinal == false) {
+    return;
+  }
+
+  for (final VariableDeclaration variableDeclaration in variables) {
+    final Expression? initializer = variableDeclaration.initializer;
+    if (initializer == null) {
+      continue;
+    }
+
+    bool isConstInitializer = false;
+    _validateConstInitializer(
+      initializer: initializer,
+      onSuccess: () => isConstInitializer = true,
+    );
+    if (isConstInitializer == false) {
+      return;
+    }
+  }
+
+  onSuccess();
+}
+
+void _validateConstInitializer({
   required Expression initializer,
   required void Function() onSuccess,
 }) {
   if (initializer is MethodInvocation) {
     return;
   }
-
-  if (initializer is Literal) {
+  if (initializer is ListLiteral) {
+    return;
+  }
+  if (initializer is SetOrMapLiteral) {
     return;
   }
 

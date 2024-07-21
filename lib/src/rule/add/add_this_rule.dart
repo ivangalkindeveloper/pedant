@@ -57,6 +57,11 @@ class AddThisRule extends DartLintRule {
             onSimpleIdentifier: (
               SimpleIdentifier simpleIdentifier,
             ) {
+              if (simpleIdentifier.beginToken.previous?.previous?.type ==
+                  Keyword.THIS) {
+                return;
+              }
+
               final FieldElement? fieldElement = classElement.getField(
                 simpleIdentifier.name,
               );
@@ -70,11 +75,6 @@ class AddThisRule extends DartLintRule {
                 return;
               }
 
-              if (simpleIdentifier.beginToken.previous?.previous?.type ==
-                  Keyword.THIS) {
-                return;
-              }
-
               reporter.atNode(
                 simpleIdentifier,
                 this.code,
@@ -83,6 +83,10 @@ class AddThisRule extends DartLintRule {
             onMethodInvocation: (
               MethodInvocation methodInvocation,
             ) {
+              if (methodInvocation.beginToken.type == Keyword.THIS) {
+                return;
+              }
+
               final MethodElement? methodElement = classElement.getMethod(
                 methodInvocation.methodName.name,
               );
@@ -93,10 +97,6 @@ class AddThisRule extends DartLintRule {
                 return;
               }
               if (methodElement.enclosingElement == classElement) {
-                return;
-              }
-
-              if (methodInvocation.beginToken.type == Keyword.THIS) {
                 return;
               }
 

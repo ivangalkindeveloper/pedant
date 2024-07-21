@@ -63,7 +63,10 @@ class DeletePackageRule extends LintRule {
     final List<(int, String)> indexList = [];
 
     for (final String packageName in this.deleteListItem.nameList) {
-      if (allDependencies.contains(packageName) == false) {
+      if (allDependencies.contains(
+            packageName,
+          ) ==
+          false) {
         continue;
       }
 
@@ -79,7 +82,10 @@ class DeletePackageRule extends LintRule {
       );
     }
 
-    for (final (int, String) packageLine in indexList) {
+    for (final (
+      int,
+      String,
+    ) packageLine in indexList) {
       reporter.atOffset(
         offset: packageLine.$1,
         length: packageLine.$2.length,

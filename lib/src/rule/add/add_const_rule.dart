@@ -44,6 +44,7 @@ class AddConstRule extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
+    // Validate instance creation
     context.registry.addInstanceCreationExpression(
       (
         InstanceCreationExpression instanceCreationExpression,
@@ -57,11 +58,12 @@ class AddConstRule extends DartLintRule {
       ),
     );
 
+    // Validate top level variable
     context.registry.addTopLevelVariableDeclaration(
       (
         TopLevelVariableDeclaration topLevelVariableDeclaration,
       ) =>
-          this._validateVariableList(
+          validateConstVariableList(
         variableList: topLevelVariableDeclaration.variables,
         onSuccess: () => reporter.atNode(
           topLevelVariableDeclaration,
@@ -70,6 +72,7 @@ class AddConstRule extends DartLintRule {
       ),
     );
 
+    // Validate static field
     context.registry.addFieldDeclaration(
       (
         FieldDeclaration fieldDeclaration,
@@ -78,7 +81,7 @@ class AddConstRule extends DartLintRule {
           return;
         }
 
-        this._validateVariableList(
+        validateConstVariableList(
           variableList: fieldDeclaration.fields,
           onSuccess: () => reporter.atNode(
             fieldDeclaration,
@@ -92,7 +95,7 @@ class AddConstRule extends DartLintRule {
       (
         VariableDeclarationStatement variableDeclarationStatement,
       ) =>
-          this._validateVariableList(
+          validateConstVariableList(
         variableList: variableDeclarationStatement.variables,
         onSuccess: () => reporter.atNode(
           variableDeclarationStatement,
@@ -100,34 +103,6 @@ class AddConstRule extends DartLintRule {
         ),
       ),
     );
-  }
-
-  void _validateVariableList({
-    required VariableDeclarationList variableList,
-    required void Function() onSuccess,
-  }) {
-    if (variableList.isConst == true) {
-      return;
-    }
-    if (variableList.isLate == true) {
-      return;
-    }
-    if (variableList.isFinal == false) {
-      return;
-    }
-
-    for (final VariableDeclaration variableDeclaration
-        in variableList.variables) {
-      final Expression? initializer = variableDeclaration.initializer;
-      if (initializer == null) {
-        continue;
-      }
-
-      validateConstInitializer(
-        initializer: initializer,
-        onSuccess: onSuccess,
-      );
-    }
   }
 
   @override

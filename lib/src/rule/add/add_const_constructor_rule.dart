@@ -65,35 +65,10 @@ class AddConstConstructorRule extends DartLintRule {
                   return;
                 }
 
-                final VariableDeclarationList fields = fieldDeclaration.fields;
-                if (fields.isConst == true) {
-                  return;
-                }
-                if (fields.isLate == true) {
-                  return;
-                }
-                if (fields.isFinal == false) {
-                  return;
-                }
-
-                for (final VariableDeclaration variableDeclaration
-                    in fields.variables) {
-                  final Expression? initializer =
-                      variableDeclaration.initializer;
-                  if (initializer == null) {
-                    continue;
-                  }
-
-                  bool isConstInitializer = false;
-                  validateConstInitializer(
-                    initializer: initializer,
-                    onSuccess: () => isConstInitializer = true,
-                  );
-                  if (isConstInitializer == true) {
-                    return;
-                  }
-                }
-                isConstFields = true;
+                validateConstVariableList(
+                  variableList: fieldDeclaration.fields,
+                  onSuccess: () => isConstFields = true,
+                );
               },
               onConstructorDeclaration: (
                 ConstructorDeclaration constructorDeclaration,

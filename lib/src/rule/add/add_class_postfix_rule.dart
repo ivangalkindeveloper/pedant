@@ -135,7 +135,6 @@ class AddClassPostfixRule extends DartLintRule {
               false) {
             return;
           }
-
           if (classElement.displayName.endsWith(
                 postfix,
               ) ==

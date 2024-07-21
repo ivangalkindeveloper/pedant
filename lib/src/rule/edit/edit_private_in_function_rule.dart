@@ -59,7 +59,6 @@ class EditPrivateInFunctionRule extends DartLintRule {
               if (declaredElement == null) {
                 return;
               }
-
               if (declaredElement.isPrivate == false) {
                 return;
               }
