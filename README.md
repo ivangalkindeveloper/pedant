@@ -2,17 +2,17 @@
 A strict static analyzer and script for formatting Dart code.\
 Designed to solve problems in a project at the design and support stages.
 
-Analyzer:
- - strict architectural rules;
- - strict stylistic rules;
- - not strict rules of approach.
-
 Script:
  - automatic fix of detected linter errors;
  - sorting in alphabetical order of the fields of .arb files;
  - sorting in alphabetical order and converting declarations of imports, exports and parts;
  - sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml;
  - Dart code formatting.
+
+Analyzer:
+ - strict architectural rules;
+ - strict stylistic rules;
+ - not strict rules of approach.
 
 
 ## Get started

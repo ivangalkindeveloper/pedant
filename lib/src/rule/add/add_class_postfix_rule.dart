@@ -13,8 +13,6 @@ import 'package:pedant/src/utility/type_checker/change_notifier_type_checker.dar
 import 'package:pedant/src/utility/type_checker/cubit_type_checkot.dart';
 import 'package:pedant/src/utility/type_checker/value_notifier_type_checker.dart';
 
-// TODO Count of extended classes
-
 class AddClassPostfixRule extends DartLintRule {
   static void combine({
     required Config config,
@@ -30,8 +28,15 @@ class AddClassPostfixRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
           validate: ({
+            required String superName,
             required ClassElement classElement,
           }) {
+            if (superName.contains(
+                  "Bloc",
+                ) ==
+                false) {
+              return false;
+            }
             if (blocTypeChecker.isAssignableFrom(
                   classElement,
                 ) ==
@@ -58,8 +63,19 @@ class AddClassPostfixRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
           validate: ({
+            required String superName,
             required ClassElement classElement,
           }) {
+            if (superName.contains(
+                      "ChangeNotifier",
+                    ) ==
+                    false &&
+                superName.contains(
+                      "ValueNotifier",
+                    ) ==
+                    false) {
+              return false;
+            }
             if (changeNotifierTypeChecker.isAssignableFrom(
                       classElement,
                     ) ==
@@ -89,8 +105,15 @@ class AddClassPostfixRule extends DartLintRule {
             errorSeverity: ErrorSeverity.ERROR,
           ),
           validate: ({
+            required String superName,
             required ClassElement classElement,
           }) {
+            if (superName.contains(
+                  "Cubit",
+                ) ==
+                false) {
+              return false;
+            }
             if (cubitTypeChecker.isAssignableFrom(
                   classElement,
                 ) ==
@@ -115,6 +138,7 @@ class AddClassPostfixRule extends DartLintRule {
   });
 
   final bool Function({
+    required String superName,
     required ClassElement classElement,
   }) validate;
   final String postfix;
@@ -131,7 +155,14 @@ class AddClassPostfixRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
+          final String? superName =
+              classDeclaration.extendsClause?.superclass.element?.name;
+          if (superName == null) {
+            return;
+          }
+
           if (validate(
+                superName: superName,
                 classElement: classElement,
               ) ==
               false) {
