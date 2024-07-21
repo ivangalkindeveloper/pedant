@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
@@ -62,17 +61,8 @@ class EditArrowFunctionRule extends DartLintRule {
             return;
           }
 
-          final SyntacticEntity? entity =
-              functionBody.childEntities.firstOrNull;
-          if (entity == null) {
-            return;
-          }
-
-          final List<String> entitySplit = entity.toString().split(
-                ";",
-              );
           final TokenType? nextTokenType = functionBody.beginToken.next?.type;
-          if (nextTokenType != Keyword.RETURN && entitySplit.length > 1) {
+          if (nextTokenType != Keyword.RETURN) {
             return;
           }
 

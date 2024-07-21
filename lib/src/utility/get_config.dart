@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 import 'package:pedant/src/core/config/config.dart';
@@ -14,8 +16,8 @@ Config getConfig({
       map: rules.entries.first.value.json,
     );
   } catch (error, stackTrace) {
-    print(error);
-    print(stackTrace);
+    stdout.write(error);
+    stdout.write(stackTrace);
     return const Config();
   }
 }
