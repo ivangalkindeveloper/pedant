@@ -49,7 +49,10 @@ void sortConvertExportImportPart({
 
   for (final File file in sortedDartFiles) {
     stdout.write(
-      "Sorted/converted: ${file.path.replaceAll("$currentPath/lib/", "")}\n",
+      "Sorted/converted: ${file.path.replaceAll(
+        "$currentPath/lib/",
+        "",
+      )}\n",
     );
   }
   stdout.write(
@@ -67,13 +70,28 @@ List<File> _getFiles({
     recursive: true,
   );
   for (final FileSystemEntity entity in entities) {
-    if (entity is! File ||
-        !entity.path.endsWith(
+    if (entity is! File) {
+      continue;
+    }
+
+    final String entityPath = entity.path.replaceAll(
+      path,
+      "",
+    );
+    if (entityPath.endsWith(
           ".dart",
-        ) ||
-        entity.path.contains(
-          "generated_plugin_registrant",
-        )) {
+        ) ==
+        false) {
+      continue;
+    }
+    if (entityPath.startsWith(
+              "/lib",
+            ) ==
+            false &&
+        entityPath.startsWith(
+              "/bin",
+            ) ==
+            false) {
       continue;
     }
 

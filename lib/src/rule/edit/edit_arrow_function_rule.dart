@@ -101,13 +101,26 @@ class _Fix extends DartFix {
         (
           FunctionBody functionBody,
         ) {
+          if (analysisError.offset != functionBody.offset) {
+            return;
+          }
+
+          final Token? nextToken = functionBody.endToken.next;
+          final TokenType? nextTokenType = nextToken?.type;
+          final Token? nextNextToken = nextToken?.next;
+          final TokenType? nextNextTokenType = nextNextToken?.type;
+          final int intent = nextTokenType == TokenType.CLOSE_PAREN ||
+                  nextNextTokenType == TokenType.CLOSE_PAREN
+              ? 2
+              : 1;
+
           final String nodeString = functionBody.toString();
           final String cleanNode = nodeString
               .substring(
                 1,
-                nodeString.length - 1,
+                nodeString.length - intent,
               )
-              .replaceAll(
+              .replaceFirst(
                 "return ",
                 "",
               );
@@ -118,15 +131,11 @@ class _Fix extends DartFix {
           changeBuilder.addDartFileEdit(
             (
               DartFileEditBuilder builder,
-            ) {
-              builder.addSimpleReplacement(
-                analysisError.sourceRange,
-                "=> $cleanNode",
-              );
-              builder.format(
-                functionBody.sourceRange,
-              );
-            },
+            ) =>
+                builder.addSimpleReplacement(
+              analysisError.sourceRange,
+              "=> $cleanNode",
+            ),
           );
         },
       );

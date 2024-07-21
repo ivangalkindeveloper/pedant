@@ -72,6 +72,12 @@ class EditVariableNameByTypeRule extends DartLintRule {
           if (typeName == null) {
             return;
           }
+          final String variableName = variableElement.name;
+          if (variableName.toLowerCase().contains(
+                typeName.toLowerCase(),
+              )) {
+            return;
+          }
 
           final List<String> typeSplit = typeName
               .replaceAll(
@@ -88,7 +94,7 @@ class EditVariableNameByTypeRule extends DartLintRule {
                     value.toLowerCase(),
               )
               .toList();
-          final List<String> variableSplit = variableElement.name
+          final List<String> variableSplit = variableName
               .replaceAll(
                 RegExp(r'[^A-Za-z]'),
                 "",
@@ -105,7 +111,9 @@ class EditVariableNameByTypeRule extends DartLintRule {
               .toList();
 
           for (final String variableSplitPart in variableSplit) {
-            if (typeSplit.contains(variableSplitPart)) {
+            if (typeSplit.contains(
+              variableSplitPart,
+            )) {
               return;
             }
           }

@@ -13,6 +13,8 @@ import 'package:pedant/src/utility/type_checker/change_notifier_type_checker.dar
 import 'package:pedant/src/utility/type_checker/cubit_type_checkot.dart';
 import 'package:pedant/src/utility/type_checker/value_notifier_type_checker.dart';
 
+// TODO Count of extended classes
+
 class AddClassPostfixRule extends DartLintRule {
   static void combine({
     required Config config,
@@ -50,7 +52,7 @@ class AddClassPostfixRule extends DartLintRule {
         AddClassPostfixRule(
           code: const LintCode(
             name: "add_controller_postfix",
-            problemMessage: "Add Controller postfix",
+            problemMessage: "Pedant: Add Controller postfix",
             correctionMessage:
                 "Please add postfix 'Controller' to this ChangeNotifier or ValueNotifier.",
             errorSeverity: ErrorSeverity.ERROR,
@@ -82,7 +84,7 @@ class AddClassPostfixRule extends DartLintRule {
         AddClassPostfixRule(
           code: const LintCode(
             name: "add_cubit_postfix",
-            problemMessage: "Add Cubit postfix",
+            problemMessage: "Pedant: Add Cubit postfix",
             correctionMessage: "Please add postfix 'Cubit' to this Cubit.",
             errorSeverity: ErrorSeverity.ERROR,
           ),

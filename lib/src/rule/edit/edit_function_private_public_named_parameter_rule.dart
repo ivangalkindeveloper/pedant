@@ -136,7 +136,6 @@ class _Fix extends DartFix {
             ) =>
                 fixNamedParameters(
               priority: priority,
-              resolver: resolver,
               reporter: reporter,
               analysisError: analysisError,
               parameterList: executableElement.parameters,

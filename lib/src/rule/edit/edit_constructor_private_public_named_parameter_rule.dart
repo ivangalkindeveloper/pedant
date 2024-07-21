@@ -25,7 +25,7 @@ class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
           code: const LintCode(
             name: "edit_constructor_private_named_parameter",
             problemMessage:
-                "Pedant: Edit private constructor parameters to maned.",
+                "Pedant: Edit private constructor parameters to named.",
             correctionMessage:
                 "Please edit all parameters of this private constructor to named.",
             errorSeverity: ErrorSeverity.WARNING,
@@ -45,7 +45,7 @@ class EditConstructorPrivatePublicNamedParameterRule extends DartLintRule {
           code: const LintCode(
             name: "edit_constructor_public_named_parameter",
             problemMessage:
-                "Pedant: Edit public constructor parameters to maned.",
+                "Pedant: Edit public constructor parameters to named.",
             correctionMessage:
                 "Please edit all parameters of this public constructor to named.",
             errorSeverity: ErrorSeverity.WARNING,
@@ -146,7 +146,6 @@ class _Fix extends DartFix {
 
               return fixNamedParameters(
                 priority: priority,
-                resolver: resolver,
                 reporter: reporter,
                 analysisError: analysisError,
                 parameterList: constructorElement.parameters,

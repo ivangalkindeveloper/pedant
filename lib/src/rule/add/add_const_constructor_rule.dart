@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
@@ -60,6 +61,7 @@ class AddConstConstructorRule extends DartLintRule {
               onFieldDeclaration: (
                 FieldDeclaration fieldDeclaration,
               ) {
+                // Validate class fields
                 if (fieldDeclaration.isStatic == true) {
                   return;
                 }
@@ -72,6 +74,31 @@ class AddConstConstructorRule extends DartLintRule {
               onConstructorDeclaration: (
                 ConstructorDeclaration constructorDeclaration,
               ) {
+                // Validate constructor initializers
+                int constInitializer = 0;
+                constructorDeclaration.visitChildren(
+                  AstTreeVisitor(
+                    onConstructorFieldInitializer: (
+                      ConstructorFieldInitializer constructorFieldInitializer,
+                    ) =>
+                        validateConstChildren(
+                      node: constructorFieldInitializer,
+                      onSuccess: () => constInitializer++,
+                    ),
+                  ),
+                );
+                if (constInitializer !=
+                    constructorDeclaration.initializers.length) {
+                  return;
+                }
+
+                // Validate constrcutor body function
+                if (constructorDeclaration.body.beginToken.type !=
+                    TokenType.SEMICOLON) {
+                  return;
+                }
+
+                // Validate constructor
                 final ConstructorElement? constructorElement =
                     constructorDeclaration.declaredElement;
                 if (constructorElement == null) {
@@ -84,6 +111,7 @@ class AddConstConstructorRule extends DartLintRule {
                   return;
                 }
 
+                // Validate super constructor
                 final ConstructorElement? superConstructor =
                     constructorElement.superConstructor;
                 if (superConstructor?.isConst == false) {

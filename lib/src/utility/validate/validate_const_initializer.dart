@@ -63,8 +63,8 @@ void _validateConstInitializer({
     return;
   }
 
-  _validateInstanceChildren(
-    expression: initializer,
+  validateConstChildren(
+    node: initializer,
     onSuccess: onSuccess,
   );
 }
@@ -89,19 +89,19 @@ void validateConstInstance({
     return;
   }
 
-  _validateInstanceChildren(
-    expression: instanceCreationExpression,
+  validateConstChildren(
+    node: instanceCreationExpression,
     onSuccess: onSuccess,
   );
 }
 
-void _validateInstanceChildren({
-  required Expression expression,
+void validateConstChildren({
+  required AstNode node,
   required void Function() onSuccess,
 }) {
-  bool isConstInstanceCreationExpression = true;
+  bool isConstExpression = true;
 
-  expression.visitChildren(
+  node.visitChildren(
     AstTreeVisitor(
       onInstanceCreationExpression: (
         InstanceCreationExpression instanceCreationExpression,
@@ -109,11 +109,11 @@ void _validateInstanceChildren({
         final ConstructorElement? childrenStaticElement =
             instanceCreationExpression.constructorName.staticElement;
         if (childrenStaticElement == null) {
-          isConstInstanceCreationExpression = false;
+          isConstExpression = false;
           return;
         }
         if (childrenStaticElement.isConst == false) {
-          isConstInstanceCreationExpression = false;
+          isConstExpression = false;
           return;
         }
       },
@@ -127,38 +127,38 @@ void _validateInstanceChildren({
         if (staticElement is PropertyAccessorElement) {
           final PropertyInducingElement? variable2 = staticElement.variable2;
           if (variable2 == null) {
-            isConstInstanceCreationExpression = false;
+            isConstExpression = false;
             return;
           }
           if (variable2.isConst == false) {
-            isConstInstanceCreationExpression = false;
+            isConstExpression = false;
             return;
           }
         }
         if (staticElement is FunctionElement) {
-          isConstInstanceCreationExpression = false;
+          isConstExpression = false;
           return;
         }
         if (staticElement is LocalVariableElement) {
           if (staticElement.isConst == false) {
-            isConstInstanceCreationExpression = false;
+            isConstExpression = false;
             return;
           }
         }
         if (staticElement is ParameterElement) {
-          isConstInstanceCreationExpression = false;
+          isConstExpression = false;
           return;
         }
       },
       onMethodInvocation: (
         MethodInvocation methodInvocation,
       ) {
-        isConstInstanceCreationExpression = false;
+        isConstExpression = false;
       },
     ),
   );
 
-  if (isConstInstanceCreationExpression == false) {
+  if (isConstExpression == false) {
     return;
   }
 

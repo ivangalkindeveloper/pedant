@@ -96,13 +96,13 @@ Note:\
 Default list of delete_package_list check [here](https://github.com/ivangalkindeveloper/pedant/blob/master/lib/src/core/default/default_delete_package_list.dart).\
 Default list of delete_type_list check [here](https://github.com/ivangalkindeveloper/pedant/blob/master/lib/src/core/default/default_delete_type_list.dart).
 
-### CLI
+### Script
 The script is designed from the point of view of maximum coverage and bringing order to the project.\
 Run the script:
 ```shell
 dart run pedant
 ```
-Arguments:
+#### Arguments
 ```shell
  --no-fix - disable fix of analyzed linter problems;
  --no-sort-arb - disable alphabetical sorting of .arb files;
@@ -110,9 +110,51 @@ Arguments:
  --no-sort-pubspec-dependencies - disable alphabetical sorting dependencшуы in the pubspec.yaml file;
  --no-format - disable final formatting at the script completion stage;
 ```
+#### Sorting arb files
+All found files are sorted in alphabetical order.
+#### Sorting Dart declarations
+The script sorts and converts Dart declarations of imports, exports and parts in the following and alphabetical order.
+```dart
+// Comments before declarations
 
+// 1. Library declaration
+library example;
 
-## Rules
+// 2. Export declarations
+export 'package:example/0.dart';
+export 'package:example/1.dart';
+
+// 3. Dart import declarations
+import 'dart:async';
+import 'dart:io';
+
+// 4. Flutter import declarations
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+
+// 5. Package import declarations
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// 6. Project import declarations
+import 'package:example/0.dart';
+import 'package:example/1.dart';
+
+// 7. Part declarations
+part '0.dart';
+part '1.dart';
+
+// 8. Part of declaration
+part of '0.dart';
+
+// Rest of the code
+```
+Only files located in the /bin and /lib directories are sorted.
+#### Sorting pubspec dependencies
+All dependencies in 'dependencies', 'dev_dependencies' and 'dependency_overrides' keys are sorted in alphabetical order in pubspec.yaml.
+
+## Linter
+Linter has next rules:
 ### Add
 #### add_bloc_cubit_part
 The Bloc/Cubit state and event class must be located either in the same file or in the same visibility area through part/part of.

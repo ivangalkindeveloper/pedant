@@ -7,7 +7,6 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 void fixNamedParameters({
   required int priority,
-  required CustomLintResolver resolver,
   required ChangeReporter reporter,
   required AnalysisError analysisError,
   required List<ParameterElement> parameterList,
@@ -85,12 +84,6 @@ void fixNamedParameters({
               : range.length,
         ),
         result,
-      );
-      builder.format(
-        SourceRange(
-          0,
-          resolver.source.contents.data.length,
-        ),
       );
     },
   );

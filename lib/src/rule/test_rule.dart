@@ -17,7 +17,7 @@ class TestRule extends DartLintRule {
       : super(
           code: const LintCode(
             name: "test",
-            problemMessage: "Test.",
+            problemMessage: "Pedant: Test.",
             errorSeverity: ErrorSeverity.ERROR,
           ),
         );

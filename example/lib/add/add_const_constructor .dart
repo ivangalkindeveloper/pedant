@@ -1,8 +1,8 @@
 // class ExampleClass {
-//   ExampleClass();
+//   const ExampleClass() : this.b = "";
 
 //   final String a = "";
-//   final String b = _someString();
+//   final String b;
 // }
 
 // final ExampleClass a = ExampleClass(
