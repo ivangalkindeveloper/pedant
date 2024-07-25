@@ -121,8 +121,8 @@ The script sorts and converts Dart declarations of imports, exports and parts in
 library example;
 
 // 2. Export declarations
-export 'package:example/0.dart';
-export 'package:example/1.dart';
+export 'package:example/one.dart';
+export 'package:example/two.dart';
 
 // 3. Dart import declarations
 import 'dart:async';
@@ -137,15 +137,15 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // 6. Project import declarations
-import 'package:example/0.dart';
-import 'package:example/1.dart';
+import 'package:example/one.dart';
+import 'package:example/two.dart';
 
 // 7. Part declarations
-part '0.dart';
-part '1.dart';
+part 'one.dart';
+part 'two.dart';
 
 // 8. Part of declaration
-part of '0.dart';
+part of 'one.dart';
 
 // Rest of the code
 ```
@@ -158,26 +158,25 @@ Linter has next rules:
 ### Add
 #### add_bloc_cubit_part
 The Bloc/Cubit state and event class must be located either in the same file or in the same visibility area through part/part of.
-
 ```dart
 // BAD:
 import 'package:example/example_event.dart';
 import 'package:example/example_state.dart';
 
-class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
   ...
 }
 
 // GOOD:
-class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
   ...
 }
 
-sealed class IExampleEvent {
+sealed class ExampleEvent {
   ...
 }
 
-sealed class IExampleState {
+sealed class ExampleState {
   ...
 }
 
@@ -185,29 +184,27 @@ sealed class IExampleState {
 part of 'example_event.dart';
 part of 'example_state.dart';
 
-class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
   ...
 }
 ```
 
 #### add_bloc_cubit_state_postfix
 The Bloc/Cubit state class must have a State postfix.
-
 ```dart
 // BAD:
-sealed class IExampleSt {
+sealed class ExampleSt {
   ...
 }
 
 // GOOD:
-sealed class IExampleState {
+sealed class ExampleState {
   ...
 }
 ```
 
 #### add_bloc_cubit_state_sealed
 The Bloc/Cubit state class must be declared with the 'sealed' keyword.
-
 ```dart
 // BAD:
 class ExampleState {
@@ -215,29 +212,27 @@ class ExampleState {
 }
 
 // GOOD:
-sealed class IExampleState {
+sealed class ExampleState {
   ...
 }
 ```
 
 #### add_bloc_event_postfix
 The Bloc event class must have the Event postfix.
-
 ```dart
 // BAD:
-sealed class IExampleEv {
+sealed class ExampleEv {
   ...
 }
 
 // GOOD:
-sealed class IExampleEvent {
+sealed class ExampleEvent {
   ...
 }
 ```
 
 #### add_bloc_event_sealed
 The Bloc event class must be declared with the 'sealed' keyword.
-
 ```dart
 // BAD:
 class ExampleEvent {
@@ -245,22 +240,21 @@ class ExampleEvent {
 }
 
 // GOOD:
-sealed class IExampleEvent {
+sealed class ExampleEvent {
   ...
 }
 ```
 
 #### add_bloc_postfix
 The Bloc class must have a Bloc postfix.
-
 ```dart
 // BAD:
-class ExampleBlc extends Bloc<IExampleEvent, IExampleState> {
+class ExampleBlc extends Bloc<ExampleEvent, ExampleState> {
   ...
 }
 
 // GOOD:
-class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
+class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
   ...
 }
 ```
@@ -289,7 +283,14 @@ base class ExampleBase {
 
 #### add_class_postfix_by_path_list
 Classes that are located along the path from the list must have the appropriate postfix.
-
+Example:
+```yaml
+add_class_postfix_by_path_list:
+  -
+    nameList:
+      - Model
+    path: lib/src
+```
 ```dart
 // BAD:
 base class Example {
@@ -297,7 +298,7 @@ base class Example {
 }
 
 // GOOD:
-base class ExampleBase {
+base class ExampleModel {
   ...
 }
 ```
@@ -328,7 +329,14 @@ interface class IExample {
 
 #### add_class_prefix_by_path_list
 Classes that are located along the path from the list must have the appropriate prefix.
-
+Example:
+```yaml
+add_class_prefix_by_keyword_list:
+  -
+    nameList:
+      - Main
+    path: lib/src
+```
 ```dart
 // BAD:
 interface class Example {
@@ -336,14 +344,13 @@ interface class Example {
 }
 
 // GOOD:
-interface class IExample {
+interface class MainExample {
   ...
 }
 ```
 
 #### add_comma
 There must be a comma at the end of the parameter list.
-
 ```dart
 // BAD:
 (a, b) {}
@@ -369,7 +376,6 @@ void exampleFunction({
 
 #### add_const_constructor
 A class that has all final fields must have a const constructor.
-
 ```dart
 // BAD:
 class Example {
@@ -393,7 +399,6 @@ class Example {
 
 #### add_const
 Global variables, static fields, variables in functions, and objects that have the final keyword and can be constants must have the 'const' keyword.
-
 ```dart
 // BAD:
 final Example topLevel = Example(
@@ -459,7 +464,6 @@ class ExampleController extends ChangeNotifier {}
 
 #### add_cubit_postfix
 The Cubit class must have the Cubit postfix.
-
 ```dart
 // BAD:
 class ExampleCub extends Cubit<ExampleState> {
@@ -474,7 +478,6 @@ class ExampleCubit extends Cubit<ExampleState> {
 
 #### add_extension_postfix
 The extension must have the Extension postfix.
-
 ```dart
 // BAD:
 extension ExampleX on Object {}
@@ -485,7 +488,6 @@ extension ExampleExtension on Object {}
 
 #### add_if_braces
 The if expression must have parentheses.
-
 ```dart
 // BAD:
 if (list.isEmpty) return;
@@ -498,7 +500,6 @@ if (list.isEmpty) {
 
 #### add_mixin_postfix
 A mixin must have a Mixin postfix.
-
 ```dart
 // BAD:
 mixin StringMix on Object {}
@@ -509,7 +510,6 @@ mixin StringMixin on Object {}
 
 #### add_override
 Fields and methods of a class overridden from the base one must have the @override annotation.
-
 ```dart
 // BAD:
 class Example {
@@ -526,7 +526,6 @@ class Example {
 
 #### add_this
 Within a class, access to internal fields and methods must begin with the this keyword.
-
 ```dart
 // BAD:
 class Example {
@@ -537,7 +536,6 @@ class Example {
   @override
   String toString() => title;
 }
-
 
 // GOOD:
 class Example {
@@ -552,7 +550,6 @@ class Example {
 
 #### add_type
 Variables and parameters of closures must have a type.
-
 ```dart
 // BAD:
 void exampleFunction(
@@ -573,7 +570,6 @@ void exampleFunction(
 ### Delete
 #### delete_bloc_cubit_dependent_bloc_cubit
 Need to remove the Bloc/Cubit dependency in the Bloc/Cubit class.
-
 ```dart
 // BAD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
@@ -597,7 +593,6 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 
 #### delete_bloc_cubit_dependent_flutter
 Need to remove the Flutter resource dependency in the Bloc/Cubit class.
-
 ```dart
 // BAD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
@@ -621,7 +616,6 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 
 #### delete_bloc_cubit_public_property
 Need to remove public properties in the Bloc/Cubit class.
-
 ```dart
 // BAD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
@@ -644,7 +638,6 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 
 #### delete_class_postfix_list
 Need to remove the class postfix included in the list.
-
 ```dart
 // BAD:
 class ExampleModel {
@@ -659,7 +652,6 @@ class Example {
 
 #### delete_class_prefix_list
 Need to remove the class prefix included in the list.
-
 ```dart
 // BAD:
 class ModelExample {
@@ -674,7 +666,6 @@ class Example {
 
 #### delete_function_list
 Need to remove a function from the list.
-
 ```dart
 // BAD:
 void exampleFunction() {
@@ -687,7 +678,6 @@ void exampleFunction() {}
 
 #### delete_new
 Need to remove the 'new' keyword when creating the instance.
-
 ```dart
 // BAD:
 final ExampleClass example = new ExampleClass();
@@ -698,7 +688,6 @@ final ExampleClass example = ExampleClass();
 
 #### delete_package_list
 Need to remove the package that is on the list.
-
 ```yaml
 # BAD:
 dependencies:
@@ -715,7 +704,6 @@ dependencies:
 
 #### delete_type_list
 Need to remove a type from the list.
-
 ```dart
 // BAD:
 return Scaffold(
@@ -737,7 +725,6 @@ return Scaffold(
 
 #### delete_widget_method
 Need to remove the function that returns Widget in StatelessWidget, StatefulWidget or State.
-
 ```dart
 // BAD:
 Widget _buildRow() => Row(
@@ -753,7 +740,6 @@ List<String> _entityList() => [
 ### Edit
 #### edit_arrow_function
 Need to edit the arrow function.
-
 ```dart
 // BAD:
 int exampleFunction() {
@@ -766,7 +752,6 @@ int exampleFunction() => 1 + 1;
 
 #### edit_constructor_private_named_parameter
 Need to edit all parameters of the private constructor into named ones.
-
 ```dart
 // BAD:
 class _ExampleClass {
@@ -791,7 +776,6 @@ class _ExampleClass {
 
 #### edit_constructor_public_named_parameter
 Need to edit all parameters of the public constructor into named ones.
-
 ```dart
 // BAD:
 class ExampleClass {
@@ -819,7 +803,6 @@ Need to edit the file located along the path to the allowable code length.
 
 #### edit_function_private_named_parameter
 Need to edit all parameters of a private function into named ones.
-
 ```dart
 // BAD:
 void _exampleFunction(
@@ -840,7 +823,6 @@ void _exampleFunction({
 
 #### edit_function_public_named_parameter
 Need to edit all parameters of a public function into named ones.
-
 ```dart
 // BAD:
 void exampleFunction(
@@ -861,7 +843,6 @@ void exampleFunction({
 
 #### edit_multiple_variable
 Need to edit the declaration of the list of variables into separate ones.
-
 ```dart
 // BAD:
 final String variable0, variable1, variable2 = "";
@@ -874,7 +855,6 @@ final String variable2 = "";
 
 #### edit_private_in_function
 Need to edit a private variable to public in a function.
-
 ```dart
 // BAD:
 void exampleFunction() {
@@ -889,7 +869,6 @@ void exampleFunction() {
 
 #### edit_relative_import
 Need to edit relative import to absolute.
-
 ```dart
 // BAD:
 import '../src/example.dart';
@@ -901,7 +880,6 @@ import 'package:example/src/example.dart';
 #### edit_variable_name_by_type
 You need to edit the variable name based on its type.
 Exceptions - resources form Dart and Flutter SDK.
-
 ```dart
 // BAD:
 final ExampleClass a = ExampleClass();
