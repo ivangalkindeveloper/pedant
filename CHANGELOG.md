@@ -1,3 +1,6 @@
+## 1.0.4
+* Fix add_override rule and other.
+
 ## 1.0.3
 * Fix implementations of export/import/part sortings.
 
