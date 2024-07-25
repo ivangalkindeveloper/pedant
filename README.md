@@ -17,13 +17,13 @@ Analyzer:
 
 ## Get started
 ### Installing
-1) Add two packages to the pubspec.yaml file in the dev_dependencies section:
+1) Add two packages to the `pubspec.yaml` file in the dev_dependencies section:
 ```yaml
 dev_dependencies:
   custom_lint: ^latest_version
   pedant: ^latest_version
 ```
-2) Add the inclusion of a custom analyzer to the analysis_options.yaml file:
+2) Add the inclusion of a custom analyzer to the `analysis_options.yaml` file:
 ```yaml
 analyzer:
   plugins:
@@ -891,3 +891,13 @@ final ExampleClass example = ExampleClass();
 ### Other
 #### Priority
 The priority of displayed commands in the IDE.
+
+## Additional information
+For debugging analyzer, you'll have to update your `analysis_options.yaml` as followed:
+```yaml
+custom_lint:
+  debug: true
+```
+A file `custom_lint.log` that records analyzer errors will automatically appear in the project.\
+Be sure to attach the log from this file if errors occur.\
+Feel free to open an issue if you find any bugs or errors or suggestions.
