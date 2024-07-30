@@ -30,7 +30,7 @@ Analyzer:
   - [Add rules](#add-rules)
   - [Delete rules](#delete-rules)
   - [Edit rules](#edit-rules)
-  - [Other](#other-rules)
+  - [Other](#other)
 - [Additional information](#additional-information)
 
 ## Benefits
