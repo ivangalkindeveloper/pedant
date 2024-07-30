@@ -4,9 +4,11 @@ Designed to solve problems in a project at the design and support stages.
 
 Script:
  - automatic fix of detected linter errors;
- - sorting in alphabetical order of the fields of .arb files;
- - sorting in alphabetical order and converting declarations of imports, exports and parts;
- - sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml;
+ - sorting in alphabetical order of the fields of `.arb` files;
+ - sorting in alphabetical order import, export and part declarations of `.dart` files;
+ - converting relative import declarations of `.dart` files;
+ - deleting unused import declarations of `.dart` files;
+ - sorting in alphabetical order of `dependencies`, `dev_dependencies`, `dependency_overrides` keys in `pubspec.yaml`;
  - Dart code formatting.
 
 Analyzer:
@@ -14,10 +16,28 @@ Analyzer:
  - strict stylistic rules;
  - not strict rules of approach.
 
+- [Benefits](#benefits)
+- [Getting started](#getting-started)
+  - [Installing](#installing)
+  - [Config](#config)
+- [Script](#script)
+  - [Arguments](#arguments)
+  - [Sorting arb files](#sorting-arb-files)
+  - [Convert dart declarations](#convert-dart-declarations)
+  - [Sorting pubspec dependencies](#sorting-pubspec-dependencies)
+- [Linter](#linter)
+  - [Add rules](#add-rules)
+  - [Delete rules](#delete-rules)
+  - [Edit rules](#edit-rules)
+  - [Other](#other-rules)
+- [Additional information](#additional-information)
 
-## Get started
+## Benefits
+The package allows you to maintain projects of any size in terms of code base and localizations in a clean and tidy manner, focusing on the fact that the linter rules were not violated and the script was run before merging the code base.
+
+## Getting started
 ### Installing
-1) Add two packages to the `pubspec.yaml` file in the dev_dependencies section:
+1) Add two packages to the `pubspec.yaml` file in the `dev_dependencies` section:
 ```yaml
 dev_dependencies:
   custom_lint: ^latest_version
@@ -96,24 +116,25 @@ Note:\
 Default list of delete_package_list check [here](https://github.com/ivangalkindeveloper/pedant/blob/master/lib/src/core/default/default_delete_package_list.dart).\
 Default list of delete_type_list check [here](https://github.com/ivangalkindeveloper/pedant/blob/master/lib/src/core/default/default_delete_type_list.dart).
 
-### Script
+
+## Script
 The script is designed from the point of view of maximum coverage and bringing order to the project.\
 Run the script:
 ```shell
 dart run pedant
 ```
-#### Arguments
+### Arguments
 ```shell
  --no-fix - disable fix of analyzed linter problems;
  --no-sort-arb - disable alphabetical sorting of .arb files;
- --no-convert-import - disable alphabetical sorting of declarations of imports, exports and parts of .dart files;
+ --no-convert-import - disable alphabetical sorting of declarations of imports, exports and parts and deleting unused imports of .dart files;
  --no-sort-pubspec - disable alphabetical sorting dependencшуы in the pubspec.yaml file;
  --no-format - disable final formatting at the script completion stage;
 ```
-#### Sorting arb files
+### Sorting arb files
 All found files are sorted in alphabetical order.
-#### Sorting Dart declarations
-The script sorts and converts Dart declarations of imports, exports and parts in the following and alphabetical order.
+### Convert dart declarations
+The script sorts and converts Dart declarations of imports, exports and parts in the following and alphabetical order:
 ```dart
 -- Lines before declarations --
 
@@ -146,15 +167,16 @@ part of 'one.dart';
 
 -- Rest lines of the code --
 ```
-Only files located in the /bin and /lib directories are sorted.
-#### Sorting pubspec dependencies
-All dependencies in 'dependencies', 'dev_dependencies' and 'dependency_overrides' keys are sorted in alphabetical order in pubspec.yaml.
+Unused import declarations will be deleted.
+Only files located in the `/bin/...` and `/lib/...` directories are sorted.
+### Sorting pubspec dependencies
+All dependencies in `dependencies`, `dev_dependencies` and `dependency_overrides` keys are sorted in alphabetical order in `pubspec.yaml`.
 
 ## Linter
 Linter has next rules:
-### Add
+### Add rules
 #### add_bloc_cubit_part
-The Bloc/Cubit state and event class must be located either in the same file or in the same visibility area through part/part of.
+The Bloc/Cubit state and event class must be located either in the same file or in the same visibility area through `part`/`part of`.
 ```dart
 // BAD:
 import 'package:example/example_event.dart';
@@ -187,7 +209,7 @@ class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
 ```
 
 #### add_bloc_cubit_state_postfix
-The Bloc/Cubit state class must have a State postfix.
+The `Bloc`/`Cubit` state class must have a `State` postfix.
 ```dart
 // BAD:
 sealed class ExampleSt {
@@ -201,7 +223,7 @@ sealed class ExampleState {
 ```
 
 #### add_bloc_cubit_state_sealed
-The Bloc/Cubit state class must be declared with the 'sealed' keyword.
+The `Bloc`/`Cubit` state class must be declared with the `sealed` keyword.
 ```dart
 // BAD:
 class ExampleState {
@@ -215,7 +237,7 @@ sealed class ExampleState {
 ```
 
 #### add_bloc_event_postfix
-The Bloc event class must have the Event postfix.
+The `Bloc` event class must have the `Event` postfix.
 ```dart
 // BAD:
 sealed class ExampleEv {
@@ -229,7 +251,7 @@ sealed class ExampleEvent {
 ```
 
 #### add_bloc_event_sealed
-The Bloc event class must be declared with the 'sealed' keyword.
+The `Bloc` event class must be declared with the `sealed` keyword.
 ```dart
 // BAD:
 class ExampleEvent {
@@ -243,7 +265,7 @@ sealed class ExampleEvent {
 ```
 
 #### add_bloc_postfix
-The Bloc class must have a Bloc postfix.
+The `Bloc` class must have a `Bloc` postfix.
 ```dart
 // BAD:
 class ExampleBlc extends Bloc<ExampleEvent, ExampleState> {
@@ -395,7 +417,7 @@ class Example {
 ```
 
 #### add_const
-Global variables, static fields, variables in functions, and objects that have the final keyword and can be constants must have the 'const' keyword.
+Global variables, static fields, variables in functions, and objects that have the final keyword and can be constants must have the `const` keyword.
 ```dart
 // BAD:
 final Example topLevel = Example(
@@ -449,7 +471,7 @@ class Example {
 ```
 
 #### add_controller_postfix
-The ChangeNotifier/ValueNotifier class must have a Controller postfix.
+The `ChangeNotifier`/`ValueNotifier` class must have a `Controller` postfix.
 
 ```dart
 // BAD:
@@ -460,7 +482,7 @@ class ExampleController extends ChangeNotifier {}
 ```
 
 #### add_cubit_postfix
-The Cubit class must have the Cubit postfix.
+The `Cubit` class must have the `Cubit` postfix.
 ```dart
 // BAD:
 class ExampleCub extends Cubit<ExampleState> {
@@ -474,7 +496,7 @@ class ExampleCubit extends Cubit<ExampleState> {
 ```
 
 #### add_extension_postfix
-The extension must have the Extension postfix.
+The extension must have the `Extension` postfix.
 ```dart
 // BAD:
 extension ExampleX on Object {}
@@ -496,7 +518,7 @@ if (list.isEmpty) {
 ```
 
 #### add_mixin_postfix
-A mixin must have a Mixin postfix.
+A mixin must have a `Mixin` postfix.
 ```dart
 // BAD:
 mixin StringMix on Object {}
@@ -506,7 +528,7 @@ mixin StringMixin on Object {}
 ```
 
 #### add_override
-Fields and methods of a class overridden from the base one must have the @override annotation.
+Fields and methods of a class overridden from the base one must have the `@override` annotation.
 ```dart
 // BAD:
 class Example {
@@ -522,7 +544,7 @@ class Example {
 ```
 
 #### add_this
-Within a class, access to internal fields and methods must begin with the this keyword.
+Within a class, access to internal fields and methods must begin with the `this` keyword.
 ```dart
 // BAD:
 class Example {
@@ -564,9 +586,9 @@ void exampleFunction(
 ```
 
 
-### Delete
+### Delete rules
 #### delete_bloc_cubit_dependent_bloc_cubit
-Need to remove the Bloc/Cubit dependency in the Bloc/Cubit class.
+Need to remove the `Bloc`/`Cubit` dependency in the `Bloc`/`Cubit` class.
 ```dart
 // BAD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
@@ -589,7 +611,7 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 ```
 
 #### delete_bloc_cubit_dependent_flutter
-Need to remove the Flutter resource dependency in the Bloc/Cubit class.
+Need to remove the `Flutter` resource dependency in the `Bloc`/`Cubit` class.
 ```dart
 // BAD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
@@ -612,7 +634,7 @@ class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
 ```
 
 #### delete_bloc_cubit_public_property
-Need to remove public properties in the Bloc/Cubit class.
+Need to remove public properties in the `Bloc`/`Cubit` class.
 ```dart
 // BAD:
 class ExampleBloc extends Bloc<IExampleEvent, IExampleState> {
@@ -674,7 +696,7 @@ void exampleFunction() {}
 ```
 
 #### delete_new
-Need to remove the 'new' keyword when creating the instance.
+Need to remove the `new` keyword when creating the instance.
 ```dart
 // BAD:
 final ExampleClass example = new ExampleClass();
@@ -721,7 +743,7 @@ return Scaffold(
 ```
 
 #### delete_widget_method
-Need to remove the function that returns Widget in StatelessWidget, StatefulWidget or State.
+Need to remove the function that returns `Widget` in `StatelessWidget`, `StatefulWidget` or `State`.
 ```dart
 // BAD:
 Widget _buildRow() => Row(
@@ -734,7 +756,7 @@ List<String> _entityList() => [
 ];
 ```
 
-### Edit
+### Edit rules
 #### edit_arrow_function
 Need to edit the arrow function.
 ```dart
