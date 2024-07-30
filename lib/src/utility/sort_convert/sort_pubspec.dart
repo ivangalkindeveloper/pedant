@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:tint/tint.dart';
 import 'package:yaml/yaml.dart';
 
-void sortPubspecDependencies({
+void sortPubspec({
   required String currentPath,
 }) {
   stdout.write(

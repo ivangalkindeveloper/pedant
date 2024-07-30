@@ -6,7 +6,6 @@ import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/default/default_delete_type_list.dart';

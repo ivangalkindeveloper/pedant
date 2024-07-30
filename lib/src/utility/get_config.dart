@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
 
 Config getConfig({

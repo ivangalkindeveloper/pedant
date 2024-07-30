@@ -1,7 +1,6 @@
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/length_item.dart';
 

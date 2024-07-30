@@ -1,14 +1,12 @@
 import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:tint/tint.dart';
 import 'package:yaml/yaml.dart';
+import 'package:pedant/src/utility/convert_relative_import.dart';
 
-import 'package:pedant/src/utility/convert_import.dart';
-
-void sortConvertExportImportPart({
+Future<void> convertImport({
   required String currentPath,
-}) {
+}) async {
   stdout.write(
     "Sorting/converting import, export and part declarations...\n".yellow(),
   );
@@ -21,7 +19,8 @@ void sortConvertExportImportPart({
   );
   final dynamic projectName = pubspecYaml["name"];
 
-  final List<File> dartFiles = _getFiles(
+  final Map<String, List<String>> unusedImportMap = await _getUnusedImportMap();
+  final List<File> dartFiles = _getFileList(
     path: currentPath,
   );
   final List<File> sortedDartFiles = [];
@@ -30,6 +29,7 @@ void sortConvertExportImportPart({
     final File? sortedFile = _sortFile(
       projectName: projectName,
       file: dartFile,
+      unusedImportMap: unusedImportMap,
     );
     if (sortedFile == null) {
       continue;
@@ -60,7 +60,62 @@ void sortConvertExportImportPart({
   );
 }
 
-List<File> _getFiles({
+Future<Map<String, List<String>>> _getUnusedImportMap() async {
+  final ProcessResult processResult = await Process.run(
+    'dart',
+    const [
+      'analyze',
+    ],
+  );
+
+  final dynamic stdout = processResult.stdout;
+  if (stdout is! String) {
+    return const {};
+  }
+
+  final List<String> analyzeSplit = stdout.split(
+    "\n",
+  );
+  analyzeSplit.removeWhere(
+    (
+      String element,
+    ) =>
+        element.contains(
+          "unused_import",
+        ) ==
+        false,
+  );
+
+  final Map<String, List<String>> unusedImportMap = {};
+  for (int index = 0; index <= analyzeSplit.length - 1; index++) {
+    try {
+      final String analyzeLine = analyzeSplit[index];
+      final List<String> analyzeLineSplit = analyzeLine.split(
+        " - ",
+      );
+
+      final String filePath = analyzeLineSplit[1].split(":").first;
+      final String unusedImportLine = analyzeLineSplit[2].split("'")[1];
+      final List<String>? key = unusedImportMap[filePath];
+      if (key == null) {
+        unusedImportMap[filePath] = [
+          unusedImportLine,
+        ];
+        continue;
+      }
+
+      key.add(
+        unusedImportLine,
+      );
+    } catch (error) {
+      continue;
+    }
+  }
+
+  return unusedImportMap;
+}
+
+List<File> _getFileList({
   required String path,
 }) {
   final List<File> dartFiles = [];
@@ -106,6 +161,7 @@ List<File> _getFiles({
 File? _sortFile({
   required String projectName,
   required File file,
+  required Map<String, List<String>> unusedImportMap,
 }) {
   final RegExp prefixLibrary = RegExp(
     "library ",
@@ -113,16 +169,16 @@ File? _sortFile({
   final RegExp prefixExport = RegExp(
     "export [\"']",
   );
-  final RegExp prefixDart = RegExp(
+  final RegExp prefixImportDart = RegExp(
     "import [\"']dart:",
   );
-  final RegExp prefixFlutter = RegExp(
+  final RegExp prefixImportFlutter = RegExp(
     "import [\"']package:flutter/",
   );
-  final RegExp prefixPackage = RegExp(
+  final RegExp prefixImportPackage = RegExp(
     "import [\"']package:",
   );
-  final RegExp prefixProject = RegExp(
+  final RegExp prefixImportProject = RegExp(
     "import [\"']package:$projectName/",
   );
   final RegExp prefixPart = RegExp(
@@ -168,7 +224,7 @@ File? _sortFile({
     if (_isRelativeImport(
       line: line,
     )) {
-      line = convertImport(
+      line = convertRelativeImport(
         projectName: projectName,
         libPath: "${Directory.current.path}/lib/",
         filePath: file.path,
@@ -195,8 +251,17 @@ File? _sortFile({
     }
 
     if (line.startsWith(
-      prefixDart,
+      prefixImportDart,
     )) {
+      if (_isUnusedImport(
+        projectName: projectName,
+        file: file,
+        unusedImportMap: unusedImportMap,
+        line: line,
+      )) {
+        continue;
+      }
+
       final (
         int,
         String,
@@ -215,8 +280,17 @@ File? _sortFile({
     }
 
     if (line.startsWith(
-      prefixFlutter,
+      prefixImportFlutter,
     )) {
+      if (_isUnusedImport(
+        projectName: projectName,
+        file: file,
+        unusedImportMap: unusedImportMap,
+        line: line,
+      )) {
+        continue;
+      }
+
       final (
         int,
         String,
@@ -235,8 +309,17 @@ File? _sortFile({
     }
 
     if (line.startsWith(
-      prefixProject,
+      prefixImportProject,
     )) {
+      if (_isUnusedImport(
+        projectName: projectName,
+        file: file,
+        unusedImportMap: unusedImportMap,
+        line: line,
+      )) {
+        continue;
+      }
+
       final (
         int,
         String,
@@ -255,8 +338,17 @@ File? _sortFile({
     }
 
     if (line.startsWith(
-      prefixPackage,
+      prefixImportPackage,
     )) {
+      if (_isUnusedImport(
+        projectName: projectName,
+        file: file,
+        unusedImportMap: unusedImportMap,
+        line: line,
+      )) {
+        continue;
+      }
+
       final (
         int,
         String,
@@ -313,21 +405,26 @@ File? _sortFile({
     linesSorted.addAll(
       linesBeforeDeclarations,
     );
-    if (linesBeforeDeclarations.last.isNotEmpty) {
-      linesSorted.add(
-        "",
-      );
-    }
+  }
+  if (linesSorted.isNotEmpty && linesSorted.last.isNotEmpty) {
+    linesSorted.add(
+      "",
+    );
   }
 
   void combineLines({
     required List<String> list,
+    required bool isIntent,
   }) {
-    if (list.isNotEmpty) {
-      list.sort();
-      linesSorted.addAll(
-        list,
-      );
+    if (list.isEmpty) {
+      return;
+    }
+
+    list.sort();
+    linesSorted.addAll(
+      list,
+    );
+    if (isIntent) {
       linesSorted.add(
         "",
       );
@@ -336,28 +433,41 @@ File? _sortFile({
 
   combineLines(
     list: libraries,
+    isIntent: true,
   );
   combineLines(
     list: exports,
+    isIntent: true,
   );
   combineLines(
     list: importsDart,
+    isIntent: false,
   );
   combineLines(
     list: importsFlutter,
+    isIntent: false,
   );
   combineLines(
     list: importsPackage,
+    isIntent: false,
   );
   combineLines(
     list: importsProject,
+    isIntent: true,
   );
   combineLines(
     list: parts,
+    isIntent: true,
   );
   combineLines(
     list: partOfs,
+    isIntent: true,
   );
+  if (linesSorted.isNotEmpty && linesSorted.last.isNotEmpty) {
+    linesSorted.add(
+      "",
+    );
+  }
 
   linesSorted.addAll(
     linesAfterDeclarations,
@@ -388,6 +498,33 @@ File? _sortFile({
   );
 
   return sortedFile;
+}
+
+bool _isUnusedImport({
+  required String projectName,
+  required File file,
+  required Map<String, List<String>> unusedImportMap,
+  required String line,
+}) {
+  try {
+    for (final MapEntry<String, List<String>> entry
+        in unusedImportMap.entries) {
+      if (file.path.endsWith(
+            entry.key,
+          ) ==
+          false) {
+        continue;
+      }
+
+      return entry.value.contains(
+        line.split("'")[1],
+      );
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
 }
 
 bool _isRelativeImport({

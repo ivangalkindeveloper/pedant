@@ -3,6 +3,19 @@ description: A strict static analyzer and script for formatting Dart code.
 version: 1.0.4
 repository: https://github.com/ivangalkindeveloper/pedant
 
+topics:
+  - linter
+  - lints
+  - lint
+  - analysis
+  - cli
+  - script
+  - dart
+  - flutter
+  - tool
+  - utility
+  - utils
+
 environment:
   sdk: ">=3.3.3 <4.0.0"
 

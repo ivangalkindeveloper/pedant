@@ -1,5 +1,4 @@
 import 'package:yaml/yaml.dart';
-
 import 'package:pedant/src/core/data/delete_list_item.dart';
 import 'package:pedant/src/core/data/keyword_list_name_item.dart';
 import 'package:pedant/src/core/data/length_item.dart';
@@ -7,6 +6,7 @@ import 'package:pedant/src/core/data/path_name_list_item.dart';
 
 // AddFinal
 // DeleteSwitchDefault
+// DeleteUnusedImport
 
 class Config {
   const Config({

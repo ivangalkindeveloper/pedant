@@ -3,7 +3,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/core/data/path_name_list_item.dart';
 import 'package:pedant/src/core/data/pre_post_fix_type.dart';

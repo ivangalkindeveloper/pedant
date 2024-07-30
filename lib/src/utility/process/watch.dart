@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:tint/tint.dart';
 
 void watch({

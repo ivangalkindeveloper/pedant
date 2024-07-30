@@ -1,5 +1,4 @@
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/rule/add/add_bloc_cubit_event_state_file_rule.dart';
 import 'package:pedant/src/rule/add/add_bloc_cubit_state_postfix_rule.dart';

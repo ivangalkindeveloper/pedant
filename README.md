@@ -106,8 +106,8 @@ dart run pedant
 ```shell
  --no-fix - disable fix of analyzed linter problems;
  --no-sort-arb - disable alphabetical sorting of .arb files;
- --no-sort-convert-export-import-part - disable alphabetical sorting of declarations of imports, exports and parts of .dart files;
- --no-sort-pubspec-dependencies - disable alphabetical sorting dependencшуы in the pubspec.yaml file;
+ --no-convert-import - disable alphabetical sorting of declarations of imports, exports and parts of .dart files;
+ --no-sort-pubspec - disable alphabetical sorting dependencшуы in the pubspec.yaml file;
  --no-format - disable final formatting at the script completion stage;
 ```
 #### Sorting arb files
@@ -115,39 +115,36 @@ All found files are sorted in alphabetical order.
 #### Sorting Dart declarations
 The script sorts and converts Dart declarations of imports, exports and parts in the following and alphabetical order.
 ```dart
-// Comments before declarations
+-- Lines before declarations --
 
-// 1. Library declaration
+1. Library declaration
 library example;
 
-// 2. Export declarations
+2. Export declarations
 export 'package:example/one.dart';
 export 'package:example/two.dart';
 
-// 3. Dart import declarations
+3. Dart import declarations
 import 'dart:async';
 import 'dart:io';
-
-// 4. Flutter import declarations
+4. Flutter import declarations
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
-// 5. Package import declarations
+5. Package import declarations
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// 6. Project import declarations
+6. Project import declarations
 import 'package:example/one.dart';
 import 'package:example/two.dart';
 
-// 7. Part declarations
+7. Part declarations
 part 'one.dart';
 part 'two.dart';
 
-// 8. Part of declaration
+8. Part of declaration
 part of 'one.dart';
 
-// Rest of the code
+-- Rest lines of the code --
 ```
 Only files located in the /bin and /lib directories are sorted.
 #### Sorting pubspec dependencies

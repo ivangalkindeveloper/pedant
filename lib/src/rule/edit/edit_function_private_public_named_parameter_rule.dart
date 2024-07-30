@@ -4,7 +4,6 @@ import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
 import 'package:pedant/src/utility/extension/add_function.dart';
 import 'package:pedant/src/utility/fix_named_parameters.dart';

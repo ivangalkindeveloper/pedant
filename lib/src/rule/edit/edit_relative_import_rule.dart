@@ -3,9 +3,8 @@ import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-
 import 'package:pedant/src/core/config/config.dart';
-import 'package:pedant/src/utility/convert_import.dart';
+import 'package:pedant/src/utility/convert_relative_import.dart';
 import 'package:pedant/src/utility/extension/add_import_directive.dart';
 
 class EditRelativeImportRule extends DartLintRule {
@@ -89,7 +88,7 @@ class _Fix extends DartFix {
           ImportDirective importDirective,
         ) {
           final String source = importDirective.toSource();
-          final String sourceValid = convertImport(
+          final String sourceValid = convertRelativeImport(
             projectName: context.pubspec.name,
             libPath: "${resolver.path.split("/lib").first}/lib/",
             filePath: resolver.path,
