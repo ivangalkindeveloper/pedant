@@ -8,7 +8,7 @@ Script:
  - sorting in alphabetical order import, export and part declarations of `.dart` files;
  - converting relative import declarations of `.dart` files;
  - deleting unused import declarations of `.dart` files;
- - sorting in alphabetical order of `dependencies`, `dev_dependencies`, `dependency_overrides` keys in `pubspec.yaml`;
+ - sorting in alphabetical order of `dependencies`, `dev_dependencies`, `dependency_overrides` keys in `pubspec.yaml` file;
  - Dart code formatting.
 
 Analyzer:
@@ -168,16 +168,16 @@ part of 'one.dart';
 
 -- Rest lines of the code --
 ```
-Unused import declarations will be deleted.
+Unused import declarations will be deleted.\
 Only files located in the `/bin/...` and `/lib/...` directories are sorted.
 ### Sorting pubspec dependencies
-All dependencies in `dependencies`, `dev_dependencies` and `dependency_overrides` keys are sorted in alphabetical order in `pubspec.yaml`.
+All dependencies in `dependencies`, `dev_dependencies` and `dependency_overrides` keys are sorted in alphabetical order in `pubspec.yaml` file.
 
 ## Linter
 Linter has next rules:
 ### Add rules
 #### add_bloc_cubit_part
-The Bloc/Cubit state and event class must be located either in the same file or in the same visibility area through `part`/`part of`.
+The `Bloc`/`Cubit` state and event class must be located either in the same file or in the same visibility area through `part`/`part of`.
 ```dart
 // BAD:
 import 'package:example/example_event.dart';
