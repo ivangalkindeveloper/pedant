@@ -16,10 +16,11 @@ Analyzer:
  - strict stylistic rules;
  - not strict rules of approach.
 
+## Getting started
 - [Benefits](#benefits)
-- [Getting started](#getting-started)
+- [Installation and configuration](#installation-and-configuration)
   - [Installing](#installing)
-  - [Config](#config)
+  - [Configuration](#configuration)
 - [Script](#script)
   - [Arguments](#arguments)
   - [Sorting arb files](#sorting-arb-files)
@@ -35,7 +36,7 @@ Analyzer:
 ## Benefits
 The package allows you to maintain projects of any size in terms of code base and localizations in a clean and tidy manner, focusing on the fact that the linter rules were not violated and the script was run before merging the code base.
 
-## Getting started
+## Installation and configuration
 ### Installing
 1) Add two packages to the `pubspec.yaml` file in the `dev_dependencies` section:
 ```yaml
@@ -56,7 +57,7 @@ custom_lint:
 ```
 It is advisable to restart the IDE after connecting the analyzer.
 
-### Config
+### Configuration
 Current default configuration:
 ```yaml
 custom_lint:
