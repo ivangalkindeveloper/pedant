@@ -5,22 +5,10 @@ repository: https://github.com/ivangalkindeveloper/pedant
 
 topics:
   - linter
-  - lints
-  - lint
-  - analysis
-  - cli
   - script
   - dart
   - flutter
-  - tool
-  - utility
-  - utils
-  - formatting
   - code-style
-  - code
-  - style
-  - rule
-  - rules
 
 environment:
   sdk: ">=3.3.3 <4.0.0"
