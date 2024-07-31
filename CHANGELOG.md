@@ -1,6 +1,9 @@
+## 1.0.6
+* Update README.
+
 ## 1.0.5
 * Add deleting unused import declarations;
-* Updating README;
+* Update README;
 * Minor fixes.
 
 ## 1.0.4
