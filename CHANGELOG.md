@@ -1,3 +1,8 @@
+## 1.0.5
+* Add deleting unused import declarations;
+* Updating README;
+* Minor fixes.
+
 ## 1.0.4
 * Fix add_override rule and other.
 
