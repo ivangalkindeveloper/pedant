@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/source_range.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -27,7 +27,7 @@ class EditFunctionPrivatePublicNamedParameterRule extends DartLintRule {
                 "Pedant: Edit private function parameters to named.",
             correctionMessage:
                 "Please edit all parameters of this private function to named.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: error.ErrorSeverity.WARNING,
           ),
           priority: config.priority,
         ),
@@ -46,7 +46,7 @@ class EditFunctionPrivatePublicNamedParameterRule extends DartLintRule {
             problemMessage: "Pedant: Edit public function parameters to named.",
             correctionMessage:
                 "Please edit all parameters of this public function to named.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: error.ErrorSeverity.WARNING,
           ),
           priority: config.priority,
         ),
@@ -119,8 +119,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) =>
       context.addFunctionIntersects(
         analysisError,

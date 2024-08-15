@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -30,7 +30,7 @@ class AddMixinPostfixRule extends DartLintRule {
             name: "add_mixin_postfix",
             problemMessage: "Pedant: Add mixin postfix.",
             correctionMessage: "Please add postfix 'Mixin' to this mixin.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: error.ErrorSeverity.ERROR,
           ),
         );
 
@@ -81,8 +81,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) =>
       context.addMixinIntersects(
         analysisError,

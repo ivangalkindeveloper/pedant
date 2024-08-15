@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:tint/tint.dart';
 
-void watch({
+void lintWatch({
   required String currentPath,
 }) {
   stdout.write(

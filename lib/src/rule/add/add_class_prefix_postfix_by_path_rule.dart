@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -25,7 +25,7 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
               problemMessage:
                   "Pedant: Сlass name must starts with an prefix: ${pathNameListItem.nameList.join(", ")}.",
               correctionMessage: "Please add prefix in class.",
-              errorSeverity: ErrorSeverity.ERROR,
+              errorSeverity: error.ErrorSeverity.ERROR,
             ),
             pathNameListItem: pathNameListItem,
             type: PrePostFixType.prefix,
@@ -47,7 +47,7 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
               problemMessage:
                   "Сlass name must ends with an postfix: ${pathNameListItem.nameList.join(", ")}.",
               correctionMessage: "Please add postfix in class.",
-              errorSeverity: ErrorSeverity.ERROR,
+              errorSeverity: error.ErrorSeverity.ERROR,
             ),
             pathNameListItem: pathNameListItem,
             type: PrePostFixType.postfix,

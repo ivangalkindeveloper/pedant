@@ -1,4 +1,4 @@
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -17,7 +17,7 @@ class TestRule extends DartLintRule {
           code: const LintCode(
             name: "test",
             problemMessage: "Pedant: Test.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: error.ErrorSeverity.ERROR,
           ),
         );
 
@@ -558,10 +558,6 @@ class TestRule extends DartLintRule {
     });
     context.registry.addObjectPattern((node) {
       print("addObjectPattern");
-      print("${node.toString()}\n");
-    });
-    context.registry.addOnClause((node) {
-      print("addOnClause");
       print("${node.toString()}\n");
     });
     context.registry.addParenthesizedExpression((node) {

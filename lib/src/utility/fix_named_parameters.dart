@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -8,7 +8,7 @@ import 'package:custom_lint_builder/custom_lint_builder.dart';
 void fixNamedParameters({
   required int priority,
   required ChangeReporter reporter,
-  required AnalysisError analysisError,
+  required error.AnalysisError analysisError,
   required List<ParameterElement> parameterList,
   required SourceRange range,
   SourceRange? superRange,

@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -22,7 +22,7 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
             problemMessage:
                 "Pedant: Сlass name must not contain an prefix: ${deleteClassPrefixList.join(", ")}.",
             correctionMessage: "Please delete prefix in class.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: error.ErrorSeverity.ERROR,
           ),
           list: deleteClassPrefixList,
           validaton: ({
@@ -46,7 +46,7 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
           problemMessage:
               "Pedant: Сlass name must not contain an postfix: ${deleteClassPostfixList.join(", ")}.",
           correctionMessage: "Please delete postfix in class.",
-          errorSeverity: ErrorSeverity.ERROR,
+          errorSeverity: error.ErrorSeverity.ERROR,
         ),
         list: deleteClassPostfixList,
         validaton: ({
@@ -148,8 +148,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) =>
       context.addClassIntersects(
         analysisError,
@@ -178,7 +178,7 @@ class _Fix extends DartFix {
       );
 
   String _getValidName({
-    required AnalysisError analysisError,
+    required error.AnalysisError analysisError,
     required String name,
   }) {
     final List<String> postfixList = analysisError.message

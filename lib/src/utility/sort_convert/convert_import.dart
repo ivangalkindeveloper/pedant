@@ -19,7 +19,6 @@ Future<void> convertImport({
   );
   final dynamic projectName = pubspecYaml["name"];
 
-  final Map<String, List<String>> unusedImportMap = await _getUnusedImportMap();
   final List<File> dartFiles = _getFileList(
     path: currentPath,
   );
@@ -29,7 +28,6 @@ Future<void> convertImport({
     final File? sortedFile = _sortFile(
       projectName: projectName,
       file: dartFile,
-      unusedImportMap: unusedImportMap,
     );
     if (sortedFile == null) {
       continue;
@@ -58,61 +56,6 @@ Future<void> convertImport({
   stdout.write(
     "\n",
   );
-}
-
-Future<Map<String, List<String>>> _getUnusedImportMap() async {
-  final ProcessResult processResult = await Process.run(
-    'dart',
-    const [
-      'analyze',
-    ],
-  );
-
-  final dynamic stdout = processResult.stdout;
-  if (stdout is! String) {
-    return const {};
-  }
-
-  final List<String> analyzeSplit = stdout.split(
-    "\n",
-  );
-  analyzeSplit.removeWhere(
-    (
-      String element,
-    ) =>
-        element.contains(
-          "unused_import",
-        ) ==
-        false,
-  );
-
-  final Map<String, List<String>> unusedImportMap = {};
-  for (int index = 0; index <= analyzeSplit.length - 1; index++) {
-    try {
-      final String analyzeLine = analyzeSplit[index];
-      final List<String> analyzeLineSplit = analyzeLine.split(
-        " - ",
-      );
-
-      final String filePath = analyzeLineSplit[1].split(":").first;
-      final String unusedImportLine = analyzeLineSplit[2].split("'")[1];
-      final List<String>? key = unusedImportMap[filePath];
-      if (key == null) {
-        unusedImportMap[filePath] = [
-          unusedImportLine,
-        ];
-        continue;
-      }
-
-      key.add(
-        unusedImportLine,
-      );
-    } catch (error) {
-      continue;
-    }
-  }
-
-  return unusedImportMap;
 }
 
 List<File> _getFileList({
@@ -161,7 +104,6 @@ List<File> _getFileList({
 File? _sortFile({
   required String projectName,
   required File file,
-  required Map<String, List<String>> unusedImportMap,
 }) {
   final RegExp prefixLibrary = RegExp(
     "library ",
@@ -253,15 +195,6 @@ File? _sortFile({
     if (line.startsWith(
       prefixImportDart,
     )) {
-      if (_isUnusedImport(
-        projectName: projectName,
-        file: file,
-        unusedImportMap: unusedImportMap,
-        line: line,
-      )) {
-        continue;
-      }
-
       final (
         int,
         String,
@@ -282,15 +215,6 @@ File? _sortFile({
     if (line.startsWith(
       prefixImportFlutter,
     )) {
-      if (_isUnusedImport(
-        projectName: projectName,
-        file: file,
-        unusedImportMap: unusedImportMap,
-        line: line,
-      )) {
-        continue;
-      }
-
       final (
         int,
         String,
@@ -311,15 +235,6 @@ File? _sortFile({
     if (line.startsWith(
       prefixImportProject,
     )) {
-      if (_isUnusedImport(
-        projectName: projectName,
-        file: file,
-        unusedImportMap: unusedImportMap,
-        line: line,
-      )) {
-        continue;
-      }
-
       final (
         int,
         String,
@@ -340,15 +255,6 @@ File? _sortFile({
     if (line.startsWith(
       prefixImportPackage,
     )) {
-      if (_isUnusedImport(
-        projectName: projectName,
-        file: file,
-        unusedImportMap: unusedImportMap,
-        line: line,
-      )) {
-        continue;
-      }
-
       final (
         int,
         String,
@@ -498,33 +404,6 @@ File? _sortFile({
   );
 
   return sortedFile;
-}
-
-bool _isUnusedImport({
-  required String projectName,
-  required File file,
-  required Map<String, List<String>> unusedImportMap,
-  required String line,
-}) {
-  try {
-    for (final MapEntry<String, List<String>> entry
-        in unusedImportMap.entries) {
-      if (file.path.endsWith(
-            entry.key,
-          ) ==
-          false) {
-        continue;
-      }
-
-      return entry.value.contains(
-        line.split("'")[1],
-      );
-    }
-
-    return false;
-  } catch (error) {
-    return false;
-  }
 }
 
 bool _isRelativeImport({

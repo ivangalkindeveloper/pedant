@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -30,7 +30,7 @@ class EditVariableNameByTypeRule extends DartLintRule {
             problemMessage: "Pedant: Edit variable name relative to its type.",
             correctionMessage:
                 "Please edit the variable name to include part of the name of its typing.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: error.ErrorSeverity.WARNING,
           ),
         );
 

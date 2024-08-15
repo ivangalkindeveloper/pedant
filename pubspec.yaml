@@ -1,6 +1,6 @@
 name: pedant
 description: A strict static analyzer and script for formatting Dart code.
-version: 1.0.6
+version: 1.0.7
 repository: https://github.com/ivangalkindeveloper/pedant
 
 topics:
@@ -8,18 +8,18 @@ topics:
   - linter
   - script
   - code-style
-  - formatting
+  - format
 
 environment:
   sdk: ">=3.3.3 <4.0.0"
 
 dependencies:
-  analyzer: ^6.5.0
+  analyzer: ^6.8.0
   analyzer_plugin: ^0.11.3
   args: ^2.5.0
   collection: ^1.18.0
   custom_lint: ^0.6.4
-  custom_lint_builder: ^0.6.4
+  custom_lint_builder: ^0.6.5
   path: ^1.9.0
   tint: ^2.0.1
   yaml: ^3.1.2

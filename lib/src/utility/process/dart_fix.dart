@@ -1,18 +1,17 @@
 import 'dart:io';
 import 'package:tint/tint.dart';
 
-void fix({
+void dartFix({
   required String currentPath,
 }) {
   stdout.write(
-    "Fix current lint problems...\n".yellow(),
+    "Fix Dart code...\n".yellow(),
   );
   Process.runSync(
     "dart",
     const [
-      "run",
-      "custom_lint",
-      "--fix",
+      "fix",
+      "--apply",
     ],
     workingDirectory: currentPath,
   );

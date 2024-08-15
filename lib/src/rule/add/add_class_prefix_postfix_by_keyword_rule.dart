@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -27,7 +27,7 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
               problemMessage:
                   "Pedant: Сlass name must starts with an prefix: ${keywordListNameItem.name}.",
               correctionMessage: "Please add prefix in class.",
-              errorSeverity: ErrorSeverity.ERROR,
+              errorSeverity: error.ErrorSeverity.ERROR,
             ),
             keywordListNameItem: keywordListNameItem,
             type: PrePostFixType.prefix,
@@ -49,7 +49,7 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
               problemMessage:
                   "Сlass name must ends with an postfix: ${keywordListNameItem.name}.",
               correctionMessage: "Please add postfix in class.",
-              errorSeverity: ErrorSeverity.ERROR,
+              errorSeverity: error.ErrorSeverity.ERROR,
             ),
             keywordListNameItem: keywordListNameItem,
             type: PrePostFixType.postfix,
@@ -179,8 +179,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) =>
       context.addClassIntersects(
         analysisError,
@@ -209,7 +209,7 @@ class _Fix extends DartFix {
       );
 
   String _getValidName({
-    required AnalysisError analysisError,
+    required error.AnalysisError analysisError,
     required String name,
   }) {
     final String part = analysisError.message.split(":")[1].trim().replaceAll(

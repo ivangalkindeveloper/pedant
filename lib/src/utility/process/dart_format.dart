@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:tint/tint.dart';
 
-void format({
+void dartFormat({
   required String currentPath,
 }) {
   stdout.write(

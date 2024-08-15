@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:collection/collection.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -32,7 +32,7 @@ class DeletePackageRule extends LintRule {
                 "Pedant: Delete package and its dependencies: ${deleteListItem.nameList.first}.",
             correctionMessage:
                 "Please delete this package from pubspec.yaml.${deleteListItem.description != null ? "\n${deleteListItem.description}" : ""}.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: error.ErrorSeverity.ERROR,
           ),
         );
 
@@ -106,8 +106,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) {
     final File file = File(
       resolver.path,

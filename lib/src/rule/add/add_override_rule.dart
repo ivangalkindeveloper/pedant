@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -33,7 +33,7 @@ class AddOverrideRule extends DartLintRule {
             problemMessage: "Pedant: Add override annotation.",
             correctionMessage:
                 "Please add @override annotation to this field of method.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: error.ErrorSeverity.WARNING,
           ),
         );
 
@@ -200,8 +200,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) {
     context.registry.addFieldDeclaration(
       (

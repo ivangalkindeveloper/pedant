@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -29,7 +29,7 @@ class AddBlocEventSealedRule extends DartLintRule {
             problemMessage: "Pedant: Add Bloc Event class sealed keyword.",
             correctionMessage:
                 "Please add 'sealed' keyword base Event class of this Bloc.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: error.ErrorSeverity.ERROR,
           ),
         );
 

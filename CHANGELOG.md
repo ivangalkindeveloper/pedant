@@ -1,3 +1,6 @@
+## 1.0.7
+* Add Dart fix CLI feature.
+
 ## 1.0.6
 * Update README.
 

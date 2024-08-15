@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
 extension CustomLintContextExtension on CustomLintContext {
@@ -27,7 +27,7 @@ extension CustomLintContextExtension on CustomLintContext {
       );
 
   void addFieldElementIntersects(
-    AnalysisError analysisError,
+    error.AnalysisError analysisError,
     void Function(
       FieldDeclaration fieldDeclaration,
       Element element,
@@ -57,7 +57,7 @@ extension CustomLintContextExtension on CustomLintContext {
       );
 
   void addFieldVariableIntersects(
-    AnalysisError analysisError,
+    error.AnalysisError analysisError,
     void Function(
       FieldDeclaration fieldDeclaration,
       VariableElement variableElement,

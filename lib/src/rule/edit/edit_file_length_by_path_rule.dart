@@ -1,4 +1,4 @@
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -33,7 +33,7 @@ class EditFileLengthByPathRule extends DartLintRule {
             name: "edit_file_length_by_path",
             problemMessage: "Pedant: Edit file length.",
             correctionMessage: "Please edit this file for less length of code.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: error.ErrorSeverity.WARNING,
           ),
         );
 

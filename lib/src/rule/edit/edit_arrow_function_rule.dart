@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_dart.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -30,7 +30,7 @@ class EditArrowFunctionRule extends DartLintRule {
             name: "edit_arrow_function",
             problemMessage: "Pedant: Edit to arrow function.",
             correctionMessage: "Please edit this function to arrow function.",
-            errorSeverity: ErrorSeverity.WARNING,
+            errorSeverity: error.ErrorSeverity.WARNING,
           ),
         );
 
@@ -92,8 +92,8 @@ class _Fix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
+    error.AnalysisError analysisError,
+    List<error.AnalysisError> others,
   ) =>
       context.addFunctionBodyIntersects(
         analysisError,

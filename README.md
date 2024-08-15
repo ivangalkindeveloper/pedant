@@ -127,10 +127,11 @@ dart run pedant
 ### Arguments
 ```shell
  --no-fix - disable fix of analyzed linter problems;
+ --no-dart-fix - disable fix of analyzed Dart linter problems;
  --no-sort-arb - disable alphabetical sorting of .arb files;
  --no-convert-import - disable alphabetical sorting of declarations of imports, exports and parts and deleting unused imports of .dart files;
  --no-sort-pubspec - disable alphabetical sorting dependencies in the pubspec.yaml file;
- --no-format - disable final formatting at the script completion stage;
+ --no-dart-format - disable final formatting at the script completion stage;
 ```
 ### Sorting arb files
 All found files are sorted in alphabetical order.

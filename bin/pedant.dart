@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:tint/tint.dart';
-import 'package:pedant/src/utility/process/fix.dart';
-import 'package:pedant/src/utility/process/format.dart';
-import 'package:pedant/src/utility/process/watch.dart';
+import 'package:pedant/src/utility/process/dart_fix.dart';
+import 'package:pedant/src/utility/process/dart_format.dart';
+import 'package:pedant/src/utility/process/lint_fix.dart';
+import 'package:pedant/src/utility/process/lint_watch.dart';
 import 'package:pedant/src/utility/sort_convert/convert_import.dart';
 import 'package:pedant/src/utility/sort_convert/sort_arb.dart';
 import 'package:pedant/src/utility/sort_convert/sort_pubspec.dart';
@@ -18,6 +19,11 @@ Future<void> main(
       'no-fix',
       negatable: false,
       help: "Don't automatic fix all detected linter errors.",
+    )
+    ..addFlag(
+      'no-dart-fix',
+      negatable: false,
+      help: "Don't automatic fix all detected Dart linter errors.",
     )
     ..addFlag(
       'no-sort-arb',
@@ -37,7 +43,7 @@ Future<void> main(
           "Don't sorting in alphabetical order of dependencies, dev_dependencies, dependency_overrides keys in pubspec.yaml.",
     )
     ..addFlag(
-      'no-format',
+      'no-dart-format',
       negatable: false,
       help: "Don't Dart code formatting.",
     )
@@ -61,12 +67,18 @@ Future<void> main(
       return;
     }
 
-    watch(
+    lintWatch(
       currentPath: currentPath,
     );
 
     if (argResults["no-fix"] == false) {
-      fix(
+      lintFix(
+        currentPath: currentPath,
+      );
+    }
+
+    if (argResults["no-dart-fix"] == false) {
+      dartFix(
         currentPath: currentPath,
       );
     }
@@ -89,13 +101,13 @@ Future<void> main(
       );
     }
 
-    if (argResults["no-format"] == false) {
-      format(
+    if (argResults["no-dart-format"] == false) {
+      dartFormat(
         currentPath: currentPath,
       );
     }
 
-    watch(
+    lintWatch(
       currentPath: currentPath,
     );
 

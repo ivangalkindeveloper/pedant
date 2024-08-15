@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' as error;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:pedant/src/core/config/config.dart';
@@ -31,7 +31,7 @@ class AddBlocCubitEventStateFileRule extends DartLintRule {
                 "Pedant: Add Bloc or Cubit Event and State classes in this file or via part/part of.",
             correctionMessage:
                 "Please add Event and State classes to this same Bloc or Cubit file or via part/part of.",
-            errorSeverity: ErrorSeverity.ERROR,
+            errorSeverity: error.ErrorSeverity.ERROR,
           ),
         );
 
