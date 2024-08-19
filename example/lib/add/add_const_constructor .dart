@@ -1,19 +1,36 @@
-// class ExampleClass {
-//   const ExampleClass() : this.b = "";
+// ignore_for_file: edit_multiple_variable
 
-//   final String a = "";
-//   final String b;
-// }
+class ExampleClass {
+  // expect_lint: add_const_constructor
+  ExampleClass({
+    required this.a,
+  }) : this.b = "";
 
-// final ExampleClass a = ExampleClass(
-//   a: _someString(),
-// );
-// final String b = _someString();
+  final String a;
+  final String b;
+}
 
-// String _someString() => "";
+class TextExample {
+  // expect_lint: add_const_constructor
+  TextExample();
 
-// class TextExample {
-//   const TextExample();
+  String someString() => "";
+}
 
-//   String someString() => "";
-// }
+final ExampleClass example = ExampleClass(
+  a: _someString(),
+);
+final String b = _someString();
+
+String _someString() => "";
+
+class ExampleTwoClass {
+  // expect_lint: add_const_constructor
+  ExampleTwoClass({
+    required this.f,
+    required this.g,
+    required this.h,
+  });
+
+  final String f, g, h;
+}

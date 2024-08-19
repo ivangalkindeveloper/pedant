@@ -1,23 +1,26 @@
-// import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 
-// class ExampleClassBase {
-//   const ExampleClassBase();
+class ExampleClassBase {
+  const ExampleClassBase();
 
-//   final String field = "One";
+  final String field = "One";
 
-//   void doSomething() {}
-// }
+  void doSomething() {}
+}
 
-// class ExampleClass extends ExampleClassBase {
-//   const ExampleClass();
+class ExampleClass extends ExampleClassBase {
+  const ExampleClass();
 
-//   final String field = "Two";
+  // expect_lint: add_override
+  final String field = "Two";
 
-//   void doSomething() {}
-// }
+  // expect_lint: add_override
+  void doSomething() {}
+}
 
-// class Controller extends ChangeNotifier {
-//   Controller();
+class Controller extends ChangeNotifier {
+  Controller();
 
-//   void notifyListeners() {}
-// }
+  // expect_lint: add_override
+  void notifyListeners() {}
+}

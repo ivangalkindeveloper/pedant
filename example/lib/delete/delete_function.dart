@@ -1,16 +1,16 @@
-// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 
-// void a() {
-//   // expect_lint:
-//   print(
-//     "Hello World",
-//   );
-//   // expect_lint:
-//   debugPrintThrottled(
-//     "Hello World!",
-//   );
-//   // expect_lint:
-//   debugPrint(
-//     "Hello World!",
-//   );
-// }
+void a() {
+  // expect_lint: delete_function
+  print(
+    "Hello World",
+  );
+  // expect_lint: delete_function
+  debugPrintThrottled(
+    "Hello World!",
+  );
+  // expect_lint: delete_function
+  debugPrint(
+    "Hello World!",
+  );
+}

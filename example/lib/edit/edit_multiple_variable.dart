@@ -1,11 +1,13 @@
-// final String a = "", b = "", c = "";
+// expect_lint: edit_multiple_variable
+const String a = "", b = "", c = "";
 
-// class A {
-//   A(
-//     this.f,
-//     this.g,
-//     this.h,
-//   );
+class ExampleClass {
+  const ExampleClass({
+    required this.f,
+    required this.g,
+    required this.h,
+  });
 
-//   final String f, g, h;
-// }
+  // expect_lint: edit_multiple_variable
+  final String f, g, h;
+}

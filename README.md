@@ -286,9 +286,10 @@ Example:
 ```yaml
 add_class_postfix_by_keyword_list:
   -
+    name: Base
     keywordList:
       - base
-    name: Base
+
 ```
 ```dart
 // BAD:
@@ -308,9 +309,9 @@ Example:
 ```yaml
 add_class_postfix_by_path_list:
   -
+    path: lib/src
     nameList:
       - Model
-    path: lib/src
 ```
 ```dart
 // BAD:
@@ -330,11 +331,11 @@ Example:
 ```yaml
 add_class_prefix_by_keyword_list:
   -
+    name: I
     keywordList:
       - abstract
       - interface
       - sealed
-    name: I
 ```
 ```dart
 // BAD:
@@ -352,20 +353,20 @@ interface class IExample {
 Classes that are located along the path from the list must have the appropriate prefix.
 Example:
 ```yaml
-add_class_prefix_by_keyword_list:
+add_class_prefix_by_path_list:
   -
-    nameList:
-      - Main
     path: lib/src
+    nameList:
+      - Model
 ```
 ```dart
 // BAD:
-interface class Example {
+class Example {
   ...
 }
 
 // GOOD:
-interface class MainExample {
+class ModelExample {
   ...
 }
 ```
@@ -821,6 +822,13 @@ class ExampleClass {
 
 #### edit_file_length_by_path_list
 Need to edit the file located along the path to the allowable code length.
+Example:
+```yaml
+edit_file_length_by_path_list:
+  -
+    path: lib/src
+    length: 100
+```
 
 #### edit_function_private_named_parameter
 Need to edit all parameters of a private function into named ones.

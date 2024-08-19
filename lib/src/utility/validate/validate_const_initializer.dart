@@ -64,6 +64,7 @@ void _validateConstInitializer({
 
   validateConstChildren(
     node: initializer,
+    element: initializer.staticParameterElement,
     onSuccess: onSuccess,
   );
 }
@@ -90,12 +91,14 @@ void validateConstInstance({
 
   validateConstChildren(
     node: instanceCreationExpression,
+    element: staticElement,
     onSuccess: onSuccess,
   );
 }
 
 void validateConstChildren({
   required AstNode node,
+  required Element? element,
   required void Function() onSuccess,
 }) {
   bool isConstExpression = true;
@@ -144,7 +147,8 @@ void validateConstChildren({
             return;
           }
         }
-        if (staticElement is ParameterElement) {
+        if (staticElement is ParameterElement &&
+            staticElement.enclosingElement != element) {
           isConstExpression = false;
           return;
         }

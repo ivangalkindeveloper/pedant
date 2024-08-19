@@ -1,30 +1,40 @@
-// final List<int> acctNumbers = ""
-//     .codeUnits
-//     .map(
-//       (
-//         int unit,
-//       ) =>
-//           unit -
-//           '0'.codeUnitAt(
-//             0,
-//           ),
-//     )
-//     .toList();
+//ignore_for_file: unused_local_variable
 
-// final globalVariable = "";
+final List<int> acctNumbers = ""
+    .codeUnits
+    .map(
+      (
+        // expect_lint: add_type
+        unit,
+      ) =>
+          unit -
+          '0'.codeUnitAt(
+            0,
+          ),
+    )
+    .toList();
 
-// void doSome({
-//   field1,
-//   field2,
-// }) {
-//   final functionVariable0 = "";
-//   final functionVariable1 = "";
-// }
+// expect_lint: add_type
+const globalVariable = "";
 
-// class ExampleClass {
-//   const ExampleClass({
-//     classField,
-//   }) : this.classField = classField;
+void doSome({
+  // expect_lint: add_type
+  field1,
+  // expect_lint: add_type
+  field2,
+}) {
+  // expect_lint: add_type
+  const functionVariable0 = "";
+  // expect_lint: add_type
+  const functionVariable1 = "";
+}
 
-//   final classField;
-// }
+class ExampleClass {
+  const ExampleClass({
+    // expect_lint: add_type
+    classField,
+  }) : this.classField = classField;
+
+  // expect_lint: add_type
+  final classField;
+}

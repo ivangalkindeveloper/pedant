@@ -13,10 +13,28 @@ custom_lint:
       add_bloc_event_postfix: true
       add_bloc_event_sealed: true
       add_bloc_postfix: true
-      add_class_postfix_by_keyword_list: null
-      add_class_postfix_by_path_list: null
-      add_class_prefix_by_keyword_list: null
-      add_class_prefix_by_path_list: null
+      add_class_postfix_by_keyword_list:
+        -
+          name: Base
+          keywordList:
+            - base
+      add_class_postfix_by_path_list:
+        -
+          path: lib/add/add_class_postfix_by_path_list.dart
+          nameList:
+            - Example
+      add_class_prefix_by_keyword_list:
+        -
+          name: I
+          keywordList:
+            - abstract
+            - interface
+            - sealed
+      add_class_prefix_by_path_list:
+        -
+          path: lib/add/add_class_prefix_by_path_list.dart
+          nameList:
+            - Example
       add_comma: true
       add_const_constructor: true
       add_const: true
@@ -36,7 +54,10 @@ custom_lint:
         - Impl
         - Implementation
         - Model
-      delete_class_prefix_list: null
+      delete_class_prefix_list:
+        - Impl
+        - Implementation
+        - Model
       delete_function_list:
         - print
         - debugPrint
@@ -44,11 +65,14 @@ custom_lint:
       delete_new: true
       # delete_package_list: - Check note
       # delete_type_list: - Check note
-      delete_widget_method: true
+      delete_widget_function_method: true
       edit_arrow_function: true
       edit_constructor_private_named_parameter: true
       edit_constructor_public_named_parameter: true
-      edit_file_length_by_path_list: null
+      edit_file_length_by_path_list:
+        -
+          path: lib/edit/edit_file_length_by_path_list.dart
+          length: 100
       edit_function_private_named_parameter: true
       edit_function_public_named_parameter: true
       edit_multiple_variable: true

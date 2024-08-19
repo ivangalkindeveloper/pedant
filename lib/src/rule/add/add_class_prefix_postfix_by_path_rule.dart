@@ -21,7 +21,7 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
         ruleList.add(
           AddClassPrefixPostfixByPathRule(
             code: LintCode(
-              name: "add_prefix_by_path",
+              name: "add_class_prefix_by_path",
               problemMessage:
                   "Pedant: Сlass name must starts with an prefix: ${pathNameListItem.nameList.join(", ")}.",
               correctionMessage: "Please add prefix in class.",
@@ -43,7 +43,7 @@ class AddClassPrefixPostfixByPathRule extends DartLintRule {
         ruleList.add(
           AddClassPrefixPostfixByPathRule(
             code: LintCode(
-              name: "add_postfix_by_path",
+              name: "add_class_postfix_by_path",
               problemMessage:
                   "Сlass name must ends with an postfix: ${pathNameListItem.nameList.join(", ")}.",
               correctionMessage: "Please add postfix in class.",

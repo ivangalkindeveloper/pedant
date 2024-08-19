@@ -56,6 +56,10 @@ class AddThisRule extends DartLintRule {
             onSimpleIdentifier: (
               SimpleIdentifier simpleIdentifier,
             ) {
+              if (resolver.path.contains("add_this.dart") == false) {
+                return;
+              }
+
               if (simpleIdentifier.beginToken.previous?.previous?.type ==
                   Keyword.THIS) {
                 return;
@@ -68,9 +72,6 @@ class AddThisRule extends DartLintRule {
                 return;
               }
               if (fieldElement.isStatic == true) {
-                return;
-              }
-              if (fieldElement.enclosingElement == classElement) {
                 return;
               }
 
@@ -93,9 +94,6 @@ class AddThisRule extends DartLintRule {
                 return;
               }
               if (methodElement.isStatic == true) {
-                return;
-              }
-              if (methodElement.enclosingElement == classElement) {
                 return;
               }
 

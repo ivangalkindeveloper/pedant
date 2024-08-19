@@ -1,7 +1,6 @@
-// class ExampleClass {
-//   const ExampleClass();
+// expect_lint: add_constructor
+class ExampleClass {
+  final String internalFiled = "";
 
-//   final String internalFiled = "";
-
-//   static String someField = "";
-// }
+  static String someField = "";
+}

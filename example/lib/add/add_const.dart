@@ -1,41 +1,52 @@
-// class ConstClass {
-//   const ConstClass({
-//     required this.age,
-//   });
+//ignore_for_file: unused_local_variable, unused_element
 
-//   final int? age;
-// }
+class ConstClass {
+  const ConstClass({
+    required this.age,
+  });
 
-// // // ---
+  final int? age;
+}
 
-// const int globalVar = 0;
+// // ---
 
-// const int anotherVar = 0;
+// expect_lint: add_const
+final int globalVar = 0;
 
-// const ConstClass topLevelConst = ConstClass(
-//   age: globalVar,
-// );
+// expect_lint: add_const
+final int anotherVar = 0;
 
-// void b(int age) async {
-// const int localVar = 0;
-// final List<String> errorsList = [];
+final ConstClass topLevelConst = ConstClass(
+  age: globalVar,
+);
 
-// void func() {}
+void b({
+  required int age,
+}) async {
+  // expect_lint: add_const
+  final int localVar = 0;
+  final List<String> errorsList = [];
 
-// ConstClass(
-//   age: age,
-// );
+  void func() {}
 
-// const int a = 0;
-// const ConstClass constVariable = ConstClass(
-//   age: 20,
-// );
-// }
+  ConstClass(
+    age: age,
+  );
 
-// Future<int> _getString() => Future.value(0);
+  // expect_lint: add_const
+  final int a = 0;
+  // expect_lint: add_const
+  final ConstClass constVariable = ConstClass(
+    age: 20,
+  );
+}
 
-// const List<ConstClass> a = [
-//   ConstClass(
-//     age: 12,
-//   ),
-// ];
+Future<int> _getString() => Future.value(
+      0,
+    );
+
+const List<ConstClass> a = [
+  ConstClass(
+    age: 12,
+  ),
+];

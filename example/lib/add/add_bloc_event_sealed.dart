@@ -1,9 +1,17 @@
-// import 'package:bloc/bloc.dart';
+import 'package:bloc/bloc.dart';
 
-// class SomeBloc extends Bloc<BlocEvents, String> {
-//   SomeBloc() : super("") {}
-// }
+// expect_lint: add_bloc_event_sealed
+class SomeBloc extends Bloc<ExampleEvent, String> {
+  SomeBloc()
+      : super(
+          "",
+        ) {}
+}
 
-// class BlocEvents {
-//   const BlocEvents();
-// }
+class ExampleEvent {
+  const ExampleEvent();
+}
+
+class $ExampleEvent extends ExampleEvent {
+  const $ExampleEvent();
+}

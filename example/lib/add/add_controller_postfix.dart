@@ -1,9 +1,10 @@
-// import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 
-// class SomeControll extends ChangeNotifier {
-//   SomeControll();
-// }
+// expect_lint: add_controller_postfix
+class SomeControll extends ChangeNotifier {
+  SomeControll();
+}
 
-// class ExtendsControll extends SomeControll {
-//   ExtendsControll();
-// }
+class ExtendsControll extends SomeControll {
+  ExtendsControll();
+}

@@ -1,8 +1,22 @@
-// import 'package:bloc/bloc.dart';
+import 'package:bloc/bloc.dart';
 
-// class SomeBlos extends Bloc<String, String> {
-//   SomeBlos() : super("") {
-//     on<String>((event, emit) {});
-//     on<String>((event, emit) {});
-//   }
-// }
+// expect_lint: add_bloc_postfix
+class SomeBlos extends Bloc<String, String> {
+  SomeBlos()
+      : super(
+          "",
+        ) {
+    on<String>(
+      (
+        String event,
+        Emitter<String> emit,
+      ) {},
+    );
+    on<String>(
+      (
+        String event,
+        Emitter<String> emit,
+      ) {},
+    );
+  }
+}

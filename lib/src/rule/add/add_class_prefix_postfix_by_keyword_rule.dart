@@ -23,7 +23,7 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
         ruleList.add(
           AddClassPrefixPostfixByKeywordRule(
             code: LintCode(
-              name: "add_prefix_by_keyword",
+              name: "add_class_prefix_by_keyword",
               problemMessage:
                   "Pedant: Сlass name must starts with an prefix: ${keywordListNameItem.name}.",
               correctionMessage: "Please add prefix in class.",
@@ -45,7 +45,7 @@ class AddClassPrefixPostfixByKeywordRule extends DartLintRule {
         ruleList.add(
           AddClassPrefixPostfixByKeywordRule(
             code: LintCode(
-              name: "add_postfix_by_keyword",
+              name: "add_class_postfix_by_keyword",
               problemMessage:
                   "Сlass name must ends with an postfix: ${keywordListNameItem.name}.",
               correctionMessage: "Please add postfix in class.",

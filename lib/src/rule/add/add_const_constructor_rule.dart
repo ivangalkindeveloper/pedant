@@ -52,6 +52,10 @@ class AddConstConstructorRule extends DartLintRule {
           ClassDeclaration classDeclaration,
           ClassElement classElement,
         ) {
+          if (resolver.path.contains("add_const_constructor .dart") == false) {
+            return;
+          }
+
           int constFieldCounter = 0;
           ConstructorElement? validatedConstructorElement;
 
@@ -67,7 +71,8 @@ class AddConstConstructorRule extends DartLintRule {
 
                 validateConstVariableList(
                   variableList: fieldDeclaration.fields,
-                  onSuccess: () => constFieldCounter++,
+                  onSuccess: () => constFieldCounter +=
+                      fieldDeclaration.fields.variables.length,
                 );
               },
               onConstructorDeclaration: (
@@ -82,6 +87,8 @@ class AddConstConstructorRule extends DartLintRule {
                     ) =>
                         validateConstChildren(
                       node: constructorFieldInitializer,
+                      element:
+                          constructorFieldInitializer.fieldName.staticElement,
                       onSuccess: () => constInitializer++,
                     ),
                   ),

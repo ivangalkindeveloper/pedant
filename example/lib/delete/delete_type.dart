@@ -1,11 +1,13 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// final Container a = Container(
-//   color: Colors.white,
-// );
+// expect_lint: delete_type
+final Container a = Container(
+  color: Colors.white,
+);
 
-// final Widget b = Scaffold(
-//   body: Container(
-//     color: Colors.white,
-//   ),
-// );
+final Widget b = Scaffold(
+  // expect_lint: delete_type
+  body: Container(
+    color: Colors.white,
+  ),
+);

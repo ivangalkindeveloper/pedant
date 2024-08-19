@@ -1,9 +1,15 @@
-// void exampleFunction(
-//   String field0,
-//   String? field1,
-// ) {}
+// ignore_for_file: unused_element
 
-// void _exampleFunction(
-//   String field0,
-//   String? field1,
-// ) {}
+void exampleFunction(
+  // expect_lint: edit_function_public_named_parameter
+  String field0,
+  // expect_lint: edit_function_public_named_parameter
+  String? field1,
+) {}
+
+void _exampleFunction(
+  // expect_lint: edit_function_private_named_parameter
+  String field0,
+  // expect_lint: edit_function_private_named_parameter
+  String? field1,
+) {}

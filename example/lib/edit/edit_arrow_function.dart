@@ -1,67 +1,71 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// class SomeBloc extends Bloc<String, String> {
-//   SomeBloc()
-//       : super(
-//           "",
-//         ) {
-//     on<String>(
-//       (
-//         String event,
-//         Emitter<String> emit,
-//       ) {},
-//     );
-//   }
-// }
+class SomeBloc extends Bloc<String, String> {
+  SomeBloc()
+      : super(
+          "",
+        ) {
+    on<String>(
+      (
+        String event,
+        Emitter<String> emit,
+      ) {},
+    );
+  }
+}
 
-// import 'package:flutter/widgets.dart';
+Widget sort({
+  required List<String> strings,
+// expect_lint: edit_arrow_function
+}) {
+  return const SizedBox(
+    height: 12,
+    width: 12,
+  );
+}
 
-// // ignore: delete_widget_method
-// import 'package:flutter/widgets.dart';
+const int? count = 0;
 
-// Widget sort({
-//   required List<String> strings,
-// }) {
-//   return SizedBox(
-//     height: 12,
-//     width: 12,
-//   );
-// }
+class ExampleOneWidget extends StatelessWidget {
+  const ExampleOneWidget({
+    super.key,
+  });
 
-// import 'package:flutter/widgets.dart';
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
+    if (count == null) {
+      return const SizedBox();
+    }
 
-// const int count = 0;
+    if (count == 0) {
+      return const SizedBox();
+    }
 
-// class ExmapleWidget extends StatelessWidget {
-//   const ExmapleWidget({super.key});
+    return const Column();
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     if (count == null) {
-//       return const SizedBox();
-//     }
+class ExampleTwoWidget extends StatelessWidget {
+  const ExampleTwoWidget({
+    super.key,
+  });
 
-//     if (count == 0) {
-//       return const SizedBox();
-//     }
-
-//     return const Column();
-//   }
-// }
-
-// class ExampleWidget extends StatelessWidget {
-//   const ExampleWidget({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<SomeBloc, String>(
-//       builder: (context, state) {
-//         return const SizedBox();
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(
+    BuildContext context,
+    // expect_lint: edit_arrow_function
+  ) {
+    return BlocBuilder<SomeBloc, String>(
+      builder: (
+        BuildContext context,
+        String state,
+        // expect_lint: edit_arrow_function
+      ) {
+        return const SizedBox();
+      },
+    );
+  }
+}

@@ -1,31 +1,27 @@
-// import 'package:bloc/bloc.dart';
+// ignore_for_file: add_class_prefix_by_keyword
 
-// class SomeBloc extends Bloc<String, IBlocStates> {
-//   SomeBloc()
-//       : super(
-//           const BlocStates(),
-//         ) {}
-// }
+import 'package:bloc/bloc.dart';
 
-// sealed class IBlocStates {
-//   const IBlocStates();
-// }
+// expect_lint: add_bloc_cubit_state_postfix
+class SomeBloc extends Bloc<String, ExampleStates> {
+  SomeBloc()
+      : super(
+          const $ExampleStates(),
+        ) {}
+}
 
-// class BlocStates extends IBlocStates {
-//   const BlocStates();
-// }
+// expect_lint: add_bloc_cubit_state_postfix
+class SomeCubit extends Cubit<ExampleStates> {
+  SomeCubit()
+      : super(
+          const $ExampleStates(),
+        );
+}
 
-// class SomeCubit extends Cubit<ICubitStates> {
-//   SomeCubit()
-//       : super(
-//           const CubitStates(),
-//         );
-// }
+sealed class ExampleStates {
+  const ExampleStates();
+}
 
-// sealed class ICubitStates {
-//   const ICubitStates();
-// }
-
-// class CubitStates extends ICubitStates {
-//   const CubitStates();
-// }
+class $ExampleStates extends ExampleStates {
+  const $ExampleStates();
+}

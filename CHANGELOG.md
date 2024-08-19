@@ -1,3 +1,10 @@
+## 1.1.0
+* Fix add_const_constructor rule;
+* Fix add_const rule;
+* Fix add_this rule;
+* Updating custom_lint and analyzer packages;
+* Adding expect annotations for tests.
+
 ## 1.0.7
 * Add Dart fix CLI feature.
 

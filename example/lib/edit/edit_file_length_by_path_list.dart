@@ -1,111 +1,126 @@
-// // Fish body
-// import 'package:flutter/widgets.dart';
+// ignore_for_file: edit_file_length_by_path
+// Fish body
+import 'package:flutter/widgets.dart';
 
-// class Fish {
-//   String _name;
-//   int _age;
-//   double _length;
-//   Color _color;
+class Fish {
+  const Fish({
+    required this.name,
+    required this.age,
+    required this.length,
+    required this.color,
+  });
 
-//   Fish(
-//     this._name,
-//     this._age,
-//     this._length,
-//     this._color,
-//   );
+  final String name;
+  final int age;
+  final double length;
+  final Color color;
 
-//   void swim() => print(
-//         "$_name is swimming...",
-//       );
+  void swim() {}
 
-//   void eat() => print(
-//         "$_name is eating...",
-//       );
+  void eat() {}
 
-//   void sleep() => print(
-//         "$_name is sleeping...",
-//       );
-// }
+  void sleep() {}
+}
 
-// // Fish scales
-// class Scale {
-//   Color _color;
-//   double _size;
+// Fish scales
+class Scale {
+  const Scale({
+    required this.color,
+    required this.size,
+  });
 
-//   Scale(
-//     this._color,
-//     this._size,
-//   );
+  final Color color;
+  final double size;
 
-//   void shine() => print(
-//         "Scale is shining...",
-//       );
-// }
+  void shine() {}
+}
 
-// // Fish fin
-// class Fin {
-//   double _size;
-//   String _type;
+// Fish fin
+class Fin {
+  const Fin({
+    required this.type,
+    required this.size,
+  });
 
-//   Fin(
-//     this._size,
-//     this._type,
-//   );
+  final String type;
+  final double size;
 
-//   void flap() => print(
-//         "Fin is flapping...",
-//       );
-// }
+  void flap() {}
+}
 
-// // Fish tail
-// class Tail {
-//   double _size;
-//   String _shape;
+// Fish tail
+class Tail {
+  const Tail({
+    required this.shape,
+    required this.size,
+  });
+  final String shape;
+  final double size;
 
-//   Tail(
-//     this._size,
-//     this._shape,
-//   );
+  void wag() {}
+}
 
-//   void wag() => print(
-//         "Tail is wagging...",
-//       );
-// }
+// Create a fish
+void main() {
+  const Fish fish = Fish(
+    name: "Goldie",
+    age: 5,
+    length: 10.0,
+    color: Color(
+      0xFF0000FF,
+    ),
+  );
 
-// // Create a fish
-// void main() {
-//   Fish fish = Fish("Goldie", 5, 10.0, Color(0xFF0000FF));
+  // Create fish scales
+  const List<Scale> scales = [
+    Scale(
+      color: Color(
+        0xFF0000FF,
+      ),
+      size: 0.5,
+    ),
+    Scale(
+      color: Color(
+        0xFF0000FF,
+      ),
+      size: 0.5,
+    ),
+    Scale(
+      color: Color(
+        0xFF0000FF,
+      ),
+      size: 0.5,
+    ),
+  ];
 
-//   // Create fish scales
-//   List<Scale> scales = [
-//     Scale(Color(0xFF0000FF), 0.5),
-//     Scale(Color(0xFF0000FF), 0.5),
-//     Scale(Color(0xFF0000FF), 0.5),
-//   ];
+  const Fin fin = Fin(
+    type: "dorsal",
+    size: 2.0,
+  );
 
-//   // Create fish fin
-//   Fin fin = Fin(2.0, "dorsal");
+  // Create fish tail
+  const Tail tail = Tail(
+    shape: "forked",
+    size: 3.0,
+  );
 
-//   // Create fish tail
-//   Tail tail = Tail(3.0, "forked");
+  // Make the fish swim
+  fish.swim();
 
-//   // Make the fish swim
-//   fish.swim();
+  // Make the fish eat
+  fish.eat();
 
-//   // Make the fish eat
-//   fish.eat();
+  // Make the fish sleep
+  fish.sleep();
 
-//   // Make the fish sleep
-//   fish.sleep();
+  // Make the scales shine
+  for (Scale scale in scales) {
+    scale.shine();
+  }
 
-//   // Make the scales shine
-//   for (Scale scale in scales) {
-//     scale.shine();
-//   }
+  // Make the fin flap
+  fin.flap();
 
-//   // Make the fin flap
-//   fin.flap();
-
-//   // Make the tail wag
-//   tail.wag();
-// }
+  // Make the tail wag
+  tail.wag();
+}

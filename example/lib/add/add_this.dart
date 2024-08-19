@@ -1,30 +1,37 @@
-// const String topLevel = "TopLevel";
+//ignore_for_file: unused_local_variable
 
-// class ExampleClass {
-//   ExampleClass();
+const String topLevel = "TopLevel";
 
-//   final String field = "One";
+class ExampleClass {
+  ExampleClass();
 
-//   late final String anotherField = this.field;
+  final String field = "One";
 
-//   void doSome({
-//     required String value,
-//   }) {}
+  // expect_lint: add_this
+  late final String anotherField = field;
 
-//   void doSomething() {
-//     String a = this.field;
-//     String b = a.toLowerCase();
-//     this.anotherField.replaceAll(
-//           "",
-//           "",
-//         );
-//     this.field.split(
-//           "",
-//         );
-//     this.doSome(
-//       value: this.field,
-//     );
-//   }
+  void doSome({
+    required String value,
+  }) {}
 
-//   bool check() => topLevel == "One" ? true : false;
-// }
+  void doSomething() {
+    // expect_lint: add_this
+    String a = field;
+    String b = a.toLowerCase();
+    // expect_lint: add_this
+    anotherField.replaceAll(
+      "",
+      "",
+    );
+    // expect_lint: add_this
+    field.split(
+      "",
+    );
+    // expect_lint: add_this
+    doSome(
+      value: this.field,
+    );
+  }
+
+  bool check() => topLevel == "One" ? true : false;
+}
