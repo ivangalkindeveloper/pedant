@@ -111,21 +111,14 @@ class DeleteClassPrefixPostfixRule extends DartLintRule {
     required String name,
     required void Function() onSuccess,
   }) {
-    bool isMatch = false;
     for (final String matchName in this.list) {
       if (this.validaton(
         name: name,
         matchName: matchName,
       )) {
-        isMatch = true;
+        return onSuccess();
       }
     }
-
-    if (isMatch == false) {
-      return;
-    }
-
-    onSuccess();
   }
 
   @override

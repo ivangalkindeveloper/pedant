@@ -96,18 +96,11 @@ class DeleteTypeRule extends DartLintRule {
     required String name,
     required void Function() onSuccess,
   }) {
-    bool isMatch = false;
     for (final String typeName in deleteListItem.nameList) {
       if (typeName == name) {
-        isMatch = true;
+        return onSuccess();
       }
     }
-
-    if (isMatch == false) {
-      return;
-    }
-
-    onSuccess();
   }
 
   @override
