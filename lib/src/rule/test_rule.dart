@@ -68,8 +68,12 @@ class TestRule extends DartLintRule {
       print("addAssignedVariablePattern");
       print("${node.toString()}\n");
     });
-    context.registry.addAugmentationImportDirective((node) {
-      print("addAugmentationImportDirective");
+    context.registry.addAugmentedInvocation((node) {
+      print("addAugmentedInvocation");
+      print("${node.toString()}\n");
+    });
+    context.registry.addAugmentedExpression((node) {
+      print("addAugmentedExpression");
       print("${node.toString()}\n");
     });
     context.registry.addAwaitExpression((node) {
@@ -454,10 +458,6 @@ class TestRule extends DartLintRule {
     });
     context.registry.addLabeledStatement((node) {
       print("addLabeledStatement");
-      print("${node.toString()}\n");
-    });
-    context.registry.addLibraryAugmentationDirective((node) {
-      print("addLibraryAugmentationDirective");
       print("${node.toString()}\n");
     });
     context.registry.addLibraryDirective((node) {

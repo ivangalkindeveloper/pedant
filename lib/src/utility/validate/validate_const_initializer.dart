@@ -148,7 +148,7 @@ void validateConstChildren({
           }
         }
         if (staticElement is ParameterElement &&
-            staticElement.enclosingElement != element) {
+            staticElement.enclosingElement3 != element) {
           isConstExpression = false;
           return;
         }
